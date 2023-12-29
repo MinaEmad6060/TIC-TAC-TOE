@@ -11,13 +11,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-<<<<<<< HEAD
 import javafx.stage.Stage;
 //implement interface
 public class EmptyBoard extends AnchorPane implements BoardInterface{
-=======
-public class EmptyBoard extends AnchorPane implements BoardInterface {
->>>>>>> check-winner
 
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
@@ -55,16 +51,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
-<<<<<<< HEAD
+
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
-=======
-    Button arrBtn[][];
 
-    public EmptyBoard() {
-
->>>>>>> check-winner
         anchorPane = new AnchorPane();
         imageView = new ImageView();
         text = new Text();
@@ -416,30 +407,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
         getChildren().add(scoreO);
         getChildren().add(scoreX);
     }
-<<<<<<< HEAD
-
-
-
-
-   
 
     @Override
-    public short checkOnGame(Button[][] arrBtn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean checkWinner(int row1, int col1, int row2, int col2, int row3, int col3) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void hilightWin() {
+    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void updateScore() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public void drawAlert() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -460,7 +439,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
             }
         }
         //indecates availability of check
-        public boolean availableToCheck(Button arrBtn[][]){
+        public boolean availableToCheck(){
             boolean avFlag=false;
             int count=0;
             
@@ -470,7 +449,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
                     break;
                 }
                 for(int j=0; j<3; j++){
-                    if(!arrBtn[i][j].getText().equals(" ")){
+                    if(!gameBoard[i][j].getText().equals(" ")){
                         count++;
                         if(count>4){
                             avFlag=true;
@@ -482,8 +461,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
             return avFlag;
         }
         //
-
-=======
     
     public void checkWinner(){
         short checkWinnerRes;
@@ -505,10 +482,10 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            if(arrBtn[i][j].getText().equals(arrBtn[i][j+1].getText().equals(arrBtn[i][j+2].getText())))
+            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText())))
             {
                 result = 2;
-                hilight(i , j , i , j+1 , i , j+2);
+                hilightWin(i , j , i , j+1 , i , j+2);
                 return result;
             }
         }
@@ -520,10 +497,10 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            if(arrBtn[j][i].getText().equals(arrBtn[j+1][i].getText().equals(arrBtn[j+2][i].getText())))
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())))
             {
                 result = 2;
-                hilight(j , i , j+1 , i , j+2 , i);
+                hilightWin(j , i , j+1 , i , j+2 , i);
                 return result;
             }
         }
@@ -533,16 +510,16 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
     public short checkDiagonals()
     {
         short result = 0;
-        if(arrBtn[0][0].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][2].getText())))
+        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText().equals(gameBoard[2][2].getText())))
         {
             result = 2;
-            hilight(0 , 0 , 1 , 1 , 2 , 2);
+            hilightWin(0 , 0 , 1 , 1 , 2 , 2);
             return result;
         }
-        if(arrBtn[0][2].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][0].getText())))
+        if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText().equals(gameBoard[2][0].getText())))
         {
             result = 2;
-            hilight(0 , 2 , 1 , 1 , 2 , 0);
+            hilightWin(0 , 2 , 1 , 1 , 2 , 0);
             return result;
         }
         return result;
@@ -579,6 +556,4 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
         
         return result;
     }
- 
->>>>>>> check-winner
 }

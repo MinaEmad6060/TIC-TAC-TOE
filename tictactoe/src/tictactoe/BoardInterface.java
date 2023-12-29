@@ -1,24 +1,21 @@
 package tictactoe;
-<<<<<<< HEAD
-=======
-
->>>>>>> check-winner
-import javafx.scene.control.Button;
 
 interface BoardInterface {
   
   public void initBoard();
   
-  public boolean availableToCheck(Button arrBtn[][]);
+  public boolean availableToCheck();
   
-  public short checkOnGame(Button arrBtn[][]);
+  public short checkOnGame();
   
-  public boolean checkWinner(int row1 , int col1 , int row2 , int col2 , int row3 , int col3);
+  public void checkWinner();
   
-  public void hilightWin();
+  public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3);
   
   public void updateScore();
   
   public boolean checkDraw();
+  
+  public void drawAlert();
   
 }
