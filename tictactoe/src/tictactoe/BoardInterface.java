@@ -1,4 +1,4 @@
-package test.project;
+package tictactoe;
 
 import javafx.scene.control.Button;
 

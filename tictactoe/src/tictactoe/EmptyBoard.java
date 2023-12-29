@@ -11,7 +11,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class EmptyBoard extends AnchorPane {
+public class EmptyBoard extends AnchorPane implements BoardInterface {
 
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
@@ -49,6 +49,7 @@ public class EmptyBoard extends AnchorPane {
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
+    Button arrBtn[][];
 
     public EmptyBoard() {
 
@@ -393,5 +394,30 @@ public class EmptyBoard extends AnchorPane {
         getChildren().add(scoreO);
         getChildren().add(scoreX);
 
+    }
+    
+    public short checkOnGame(Button arrBtn[][]){
+        short result = 0;
+        if(checkWinner(0 , 0 , 0 , 1 , 0 , 2))
+        {
+            result = 2;
+            hilightwin(0 , 0 , 0 , 1 , 0 , 2);
+            navScreens();
+        }
+        else if(checkDraw())
+        {
+            result = 1;
+            drawAlert();
+        }
+        
+        return result;
+    }
+    public boolean checkWinner(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){
+        boolean winState = false;
+        if( arrBtn[row1][col1].getText().equals(arrBtn[row2][col2].getText().equals(arrBtn[row3][col3])))
+        {
+            winState = true;
+        }
+        return winState;
     }
 }
