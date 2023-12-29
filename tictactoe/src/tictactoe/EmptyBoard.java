@@ -396,28 +396,99 @@ public class EmptyBoard extends AnchorPane implements BoardInterface {
 
     }
     
-    public short checkOnGame(Button arrBtn[][]){
+    public void checkWinner(){
+        short checkWinnerRes;
+        checkWinnerRes = checkOnGame();
+        
+        if(checkWinnerRes == 2)
+        {
+            updateScore();
+            //navScreens();
+        }
+        else if (checkWinnerRes == 1)
+        {
+            drawAlert();
+        }
+    }
+    
+    public short checkRows()
+    {
         short result = 0;
-        if(checkWinner(0 , 0 , 0 , 1 , 0 , 2))
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(arrBtn[i][j].getText().equals(arrBtn[i][j+1].getText().equals(arrBtn[i][j+2].getText())))
+            {
+                result = 2;
+                hilight(i , j , i , j+1 , i , j+2);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkColumns()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(arrBtn[j][i].getText().equals(arrBtn[j+1][i].getText().equals(arrBtn[j+2][i].getText())))
+            {
+                result = 2;
+                hilight(j , i , j+1 , i , j+2 , i);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkDiagonals()
+    {
+        short result = 0;
+        if(arrBtn[0][0].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][2].getText())))
         {
             result = 2;
-            hilightwin(0 , 0 , 0 , 1 , 0 , 2);
-            navScreens();
+            hilight(0 , 0 , 1 , 1 , 2 , 2);
+            return result;
         }
-        else if(checkDraw())
+        if(arrBtn[0][2].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][0].getText())))
         {
-            result = 1;
-            drawAlert();
+            result = 2;
+            hilight(0 , 2 , 1 , 1 , 2 , 0);
+            return result;
+        }
+        return result;
+    }
+   
+    public short checkOnGame(){
+        short result = 0;
+        
+        result = checkRows();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkColumns();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkDiagonals();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        if(result != 2)
+        {
+            if(checkDraw())
+            {
+                result = 1;
+            }
         }
         
         return result;
     }
-    public boolean checkWinner(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){
-        boolean winState = false;
-        if( arrBtn[row1][col1].getText().equals(arrBtn[row2][col2].getText().equals(arrBtn[row3][col3])))
-        {
-            winState = true;
-        }
-        return winState;
-    }
+ 
 }
