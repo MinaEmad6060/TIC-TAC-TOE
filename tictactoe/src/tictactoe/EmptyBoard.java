@@ -11,8 +11,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class EmptyBoard extends AnchorPane {
-
+public class  EmptyBoard extends AnchorPane implements BoardInterface {
+    
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
     protected final Text text;
@@ -49,6 +49,7 @@ public class EmptyBoard extends AnchorPane {
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
+    boolean turn=true;
 
     public EmptyBoard() {
 
@@ -394,4 +395,44 @@ public class EmptyBoard extends AnchorPane {
         getChildren().add(scoreX);
 
     }
-}
+    
+    
+   
+   
+    @Override
+    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
+      if(turn){
+          gameBoard[row1][col1].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          gameBoard[row2][col2].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          gameBoard[row3][col3].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          
+      }
+      else{
+          gameBoard[row1][col1].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          gameBoard[row2][col2].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          gameBoard[row3][col3].setStyle("-fx-background-image: url('images/xo.png'); -fx-background-size: cover;");
+          
+      }
+      /*new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+      }).start();
+*/
+    }
+    @Override
+      public void updateScore(){
+          if(turn){ //global variable 
+              int score = Integer.parseInt(scoreX.getText());//get score text and convert to int
+              scoreX.setText(""+score+1);//update x score
+          }
+          else{
+             int score = Integer.parseInt(scoreO.getText());//
+             scoreO.setText(""+score+1);
+          }
+      }
+      
+    }
+
