@@ -11,8 +11,15 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+<<<<<<< HEAD
 public class  EmptyBoard extends AnchorPane implements BoardInterface {
     
+=======
+import javafx.stage.Stage;
+//implement interface
+public class EmptyBoard extends AnchorPane implements BoardInterface{
+
+>>>>>>> c30424085ccd6cc4d2366ad2c202d5e44ee10ec7
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
     protected final Text text;
@@ -51,7 +58,9 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
     protected final Text scoreX;
     boolean turn=true;
 
-    public EmptyBoard() {
+    int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
+    Button[][] gameBoard = new Button[3][3];  //creat array of buttons
+    public EmptyBoard(Stage s) {
 
         anchorPane = new AnchorPane();
         imageView = new ImageView();
@@ -89,7 +98,17 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         text11 = new Text();
         scoreO = new Text();
         scoreX = new Text();
-
+        //fill array of buttons
+        gameBoard[0][0]=button00;
+        gameBoard[0][1]=button01;
+        gameBoard[0][2]=button02;
+        gameBoard[1][0]=button10;
+        gameBoard[1][1]=button11;
+        gameBoard[1][2]=button12;
+        gameBoard[2][0]=button20;
+        gameBoard[2][1]=button21;
+        gameBoard[2][2]=button22;
+        //
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -108,7 +127,7 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         imageView.setLayoutY(43.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-        imageView.setImage(new Image(getClass().getResource("playerx.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("images/playerx.png").toExternalForm()));
 
         text.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text.setLayoutX(331.0);
@@ -188,7 +207,7 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         imageView0.setLayoutY(14.0);
         imageView0.setPickOnBounds(true);
         imageView0.setPreserveRatio(true);
-        imageView0.setImage(new Image(getClass().getResource("xo.png").toExternalForm()));
+        imageView0.setImage(new Image(getClass().getResource("images/xo.png").toExternalForm()));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text8.setLayoutX(88.0);
@@ -214,7 +233,7 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         imageView1.setLayoutY(43.0);
         imageView1.setPickOnBounds(true);
         imageView1.setPreserveRatio(true);
-        imageView1.setImage(new Image(getClass().getResource("playero.png").toExternalForm()));
+        imageView1.setImage(new Image(getClass().getResource("images/playero.png").toExternalForm()));
 
         exitButton.setFitHeight(134.0);
         exitButton.setFitWidth(174.0);
@@ -222,7 +241,7 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         exitButton.setLayoutY(623.0);
         exitButton.setPickOnBounds(true);
         exitButton.setPreserveRatio(true);
-        exitButton.setImage(new Image(getClass().getResource("exit.png").toExternalForm()));
+        exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
 
         AnchorPane.setRightAnchor(gridPane, 300.0);
         AnchorPane.setTopAnchor(gridPane, 238.0);
@@ -393,8 +412,8 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
         getChildren().add(text11);
         getChildren().add(scoreO);
         getChildren().add(scoreX);
-
     }
+<<<<<<< HEAD
     
     
    
@@ -436,3 +455,155 @@ public class  EmptyBoard extends AnchorPane implements BoardInterface {
       
     }
 
+=======
+
+    @Override
+    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateScore() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public void drawAlert() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean checkDraw(){
+        if(drawCount==9)
+            return true;
+        else
+        return false;
+    }
+
+    //initialize Board
+        public void initBoard(){
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    gameBoard[i][j].setText(" ");
+                }
+            }
+        }
+        //indecates availability of check
+        public boolean availableToCheck(){
+            boolean avFlag=false;
+            int count=0;
+            
+            for(int i=0; i<3; i++){
+                if(count>4){
+                    avFlag=true;
+                    break;
+                }
+                for(int j=0; j<3; j++){
+                    if(!gameBoard[i][j].getText().equals(" ")){
+                        count++;
+                        if(count>4){
+                            avFlag=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return avFlag;
+        }
+        //
+    
+    public void checkWinner(){
+        short checkWinnerRes;
+        checkWinnerRes = checkOnGame();
+        
+        if(checkWinnerRes == 2)
+        {
+            updateScore();
+            //navScreens();
+        }
+        else if (checkWinnerRes == 1)
+        {
+            drawAlert();
+        }
+    }
+    
+    public short checkRows()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText())))
+            {
+                result = 2;
+                hilightWin(i , j , i , j+1 , i , j+2);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkColumns()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())))
+            {
+                result = 2;
+                hilightWin(j , i , j+1 , i , j+2 , i);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkDiagonals()
+    {
+        short result = 0;
+        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText().equals(gameBoard[2][2].getText())))
+        {
+            result = 2;
+            hilightWin(0 , 0 , 1 , 1 , 2 , 2);
+            return result;
+        }
+        if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText().equals(gameBoard[2][0].getText())))
+        {
+            result = 2;
+            hilightWin(0 , 2 , 1 , 1 , 2 , 0);
+            return result;
+        }
+        return result;
+    }
+   
+    public short checkOnGame(){
+        short result = 0;
+        
+        result = checkRows();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkColumns();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkDiagonals();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        if(result != 2)
+        {
+            if(checkDraw())
+            {
+                result = 1;
+            }
+        }
+        
+        return result;
+    }
+}
+>>>>>>> c30424085ccd6cc4d2366ad2c202d5e44ee10ec7

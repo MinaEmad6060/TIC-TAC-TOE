@@ -19,7 +19,7 @@ public class Tictactoe extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new EmptyBoard();
+        Parent root = new Welcome(stage);
         
         Scene scene = new Scene(root);
         
