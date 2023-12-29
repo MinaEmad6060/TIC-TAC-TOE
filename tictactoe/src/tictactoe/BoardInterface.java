@@ -1,4 +1,8 @@
 package tictactoe;
+<<<<<<< HEAD
+=======
+
+>>>>>>> check-winner
 import javafx.scene.control.Button;
 
 interface BoardInterface {

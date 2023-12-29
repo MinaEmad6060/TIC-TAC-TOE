@@ -11,9 +11,13 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+<<<<<<< HEAD
 import javafx.stage.Stage;
 //implement interface
 public class EmptyBoard extends AnchorPane implements BoardInterface{
+=======
+public class EmptyBoard extends AnchorPane implements BoardInterface {
+>>>>>>> check-winner
 
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
@@ -51,9 +55,16 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
+<<<<<<< HEAD
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
+=======
+    Button arrBtn[][];
+
+    public EmptyBoard() {
+
+>>>>>>> check-winner
         anchorPane = new AnchorPane();
         imageView = new ImageView();
         text = new Text();
@@ -405,6 +416,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(scoreO);
         getChildren().add(scoreX);
     }
+<<<<<<< HEAD
 
 
 
@@ -471,4 +483,102 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         //
 
+=======
+    
+    public void checkWinner(){
+        short checkWinnerRes;
+        checkWinnerRes = checkOnGame();
+        
+        if(checkWinnerRes == 2)
+        {
+            updateScore();
+            //navScreens();
+        }
+        else if (checkWinnerRes == 1)
+        {
+            drawAlert();
+        }
+    }
+    
+    public short checkRows()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(arrBtn[i][j].getText().equals(arrBtn[i][j+1].getText().equals(arrBtn[i][j+2].getText())))
+            {
+                result = 2;
+                hilight(i , j , i , j+1 , i , j+2);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkColumns()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            if(arrBtn[j][i].getText().equals(arrBtn[j+1][i].getText().equals(arrBtn[j+2][i].getText())))
+            {
+                result = 2;
+                hilight(j , i , j+1 , i , j+2 , i);
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkDiagonals()
+    {
+        short result = 0;
+        if(arrBtn[0][0].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][2].getText())))
+        {
+            result = 2;
+            hilight(0 , 0 , 1 , 1 , 2 , 2);
+            return result;
+        }
+        if(arrBtn[0][2].getText().equals(arrBtn[1][1].getText().equals(arrBtn[2][0].getText())))
+        {
+            result = 2;
+            hilight(0 , 2 , 1 , 1 , 2 , 0);
+            return result;
+        }
+        return result;
+    }
+   
+    public short checkOnGame(){
+        short result = 0;
+        
+        result = checkRows();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkColumns();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkDiagonals();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        if(result != 2)
+        {
+            if(checkDraw())
+            {
+                result = 1;
+            }
+        }
+        
+        return result;
+    }
+ 
+>>>>>>> check-winner
 }
