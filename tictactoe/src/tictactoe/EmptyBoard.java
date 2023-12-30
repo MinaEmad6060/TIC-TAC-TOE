@@ -1,9 +1,12 @@
 package tictactoe;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -238,6 +241,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         exitButton.setPickOnBounds(true);
         exitButton.setPreserveRatio(true);
         exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
+        exitButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent event) {
+                    Welcome.navScreens(new Modes(s), s);
+            }
+        });
 
         AnchorPane.setRightAnchor(gridPane, 300.0);
         AnchorPane.setTopAnchor(gridPane, 238.0);
@@ -275,13 +283,37 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button00.setPrefWidth(174.0);
         button00.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button00, new Insets(0.0, 0.0, 0.0, 15.0));
-
+        button00.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
         GridPane.setColumnIndex(button01, 1);
         button01.setMnemonicParsing(false);
         button01.setPrefHeight(150.0);
         button01.setPrefWidth(174.0);
         button01.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button01, new Insets(0.0, 0.0, 0.0, 15.0));
+        button01.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
+        
 
         GridPane.setColumnIndex(button02, 2);
         button02.setMnemonicParsing(false);
@@ -289,6 +321,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button02.setPrefWidth(174.0);
         button02.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button02, new Insets(0.0, 0.0, 0.0, 15.0));
+        button02.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
 
         GridPane.setRowIndex(button10, 1);
         button10.setMnemonicParsing(false);
@@ -296,6 +340,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button10.setPrefWidth(174.0);
         button10.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button10, new Insets(0.0, 0.0, 0.0, 15.0));
+        button10.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
 
         GridPane.setColumnIndex(button11, 1);
         GridPane.setRowIndex(button11, 1);
@@ -304,6 +360,19 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button11.setPrefWidth(174.0);
         button11.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button11, new Insets(0.0, 0.0, 0.0, 15.0));
+        button11.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
+        
 
         GridPane.setColumnIndex(button12, 2);
         GridPane.setRowIndex(button12, 1);
@@ -312,6 +381,19 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button12.setPrefWidth(174.0);
         button12.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button12, new Insets(0.0, 0.0, 0.0, 15.0));
+        button12.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
+        
 
         GridPane.setRowIndex(button20, 2);
         button20.setMnemonicParsing(false);
@@ -319,6 +401,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button20.setPrefWidth(174.0);
         button20.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button20, new Insets(0.0, 0.0, 0.0, 15.0));
+        button20.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
 
         GridPane.setColumnIndex(button21, 1);
         GridPane.setRowIndex(button21, 2);
@@ -327,6 +421,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button21.setPrefWidth(174.0);
         button21.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button21, new Insets(0.0, 0.0, 0.0, 15.0));
+        button21.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
 
         GridPane.setColumnIndex(button22, 2);
         GridPane.setRowIndex(button22, 2);
@@ -335,6 +441,18 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         button22.setPrefWidth(174.0);
         button22.setStyle("-fx-background-color: #7949D0;");
         GridPane.setMargin(button22, new Insets(0.0, 0.0, 0.0, 15.0));
+        button22.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                if(turn){
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover;");
+                    turn=false;
+                }else{
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/o.PNG'); -fx-background-size: cover;");
+                    turn=true;
+                }
+            }
+        });
 
         text10.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text10.setLayoutX(93.0);
