@@ -10,8 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+<<<<<<< HEAD
 import javafx.stage.Stage;
 
+=======
+//implement interface
+>>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
 public class EmptyBoard extends AnchorPane implements BoardInterface{
 
     protected final AnchorPane anchorPane;
@@ -50,8 +54,15 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
+<<<<<<< HEAD
     int drawCount=0;               //counter for checkDraw  if checkwinner return false this counter increased by 1
     public EmptyBoard(Stage s) {
+=======
+    //creat array of buttons
+    Button[][] gameBoard = new Button[3][3];
+    //
+    public EmptyBoard() {
+>>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
 
         anchorPane = new AnchorPane();
         imageView = new ImageView();
@@ -89,7 +100,17 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text11 = new Text();
         scoreO = new Text();
         scoreX = new Text();
-
+        //fill array of buttons
+        gameBoard[0][0]=button00;
+        gameBoard[0][1]=button01;
+        gameBoard[0][2]=button02;
+        gameBoard[1][0]=button10;
+        gameBoard[1][1]=button11;
+        gameBoard[1][2]=button12;
+        gameBoard[2][0]=button20;
+        gameBoard[2][1]=button21;
+        gameBoard[2][2]=button22;
+        //
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -393,8 +414,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(text11);
         getChildren().add(scoreO);
         getChildren().add(scoreX);
-
     }
+<<<<<<< HEAD
 
     @Override
     public void initBoard() {
@@ -433,4 +454,37 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         else
         return false;
     }
+=======
+    //initialize Board
+        public void initBoard(){
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    gameBoard[i][j].setText(" ");
+                }
+            }
+        }
+        //indecates availability of check
+        public boolean availableToCheck(Button arrBtn[][]){
+            boolean avFlag=false;
+            int count=0;
+            
+            for(int i=0; i<3; i++){
+                if(count>4){
+                    avFlag=true;
+                    break;
+                }
+                for(int j=0; j<3; j++){
+                    if(!arrBtn[i][j].getText().equals(" ")){
+                        count++;
+                        if(count>4){
+                            avFlag=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return avFlag;
+        }
+        //
+>>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
 }
