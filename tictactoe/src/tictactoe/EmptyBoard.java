@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class EmptyBoard extends AnchorPane {
+public class EmptyBoard extends AnchorPane implements BoardInterface{
 
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
@@ -50,7 +50,7 @@ public class EmptyBoard extends AnchorPane {
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
-
+    int drawCount=0;               //counter for checkDraw  if checkwinner return false this counter increased by 1
     public EmptyBoard(Stage s) {
 
         anchorPane = new AnchorPane();
@@ -394,5 +394,43 @@ public class EmptyBoard extends AnchorPane {
         getChildren().add(scoreO);
         getChildren().add(scoreX);
 
+    }
+
+    @Override
+    public void initBoard() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean availableToCheck(Button[][] arrBtn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public short checkOnGame(Button[][] arrBtn) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean checkWinner(int row1, int col1, int row2, int col2, int row3, int col3) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void hilightWin() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateScore() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean checkDraw(){
+        if(drawCount==9)
+            return true;
+        else
+        return false;
     }
 }
