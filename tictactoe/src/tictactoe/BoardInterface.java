@@ -1,9 +1,8 @@
 package tictactoe;
-<<<<<<< HEAD
+
 
 import javafx.scene.control.Button;
-=======
->>>>>>> c30424085ccd6cc4d2366ad2c202d5e44ee10ec7
+
 
 interface BoardInterface {
   

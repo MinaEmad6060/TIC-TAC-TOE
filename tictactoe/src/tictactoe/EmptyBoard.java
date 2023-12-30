@@ -10,16 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-<<<<<<< HEAD
-public class  EmptyBoard extends AnchorPane implements BoardInterface {
-    
-=======
 import javafx.stage.Stage;
+
 //implement interface
 public class EmptyBoard extends AnchorPane implements BoardInterface{
 
->>>>>>> c30424085ccd6cc4d2366ad2c202d5e44ee10ec7
+
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
     protected final Text text;
@@ -412,12 +408,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(text11);
         getChildren().add(scoreO);
         getChildren().add(scoreX);
-    }
-<<<<<<< HEAD
-    
-    
-   
-   
+    } 
     @Override
     public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
       if(turn){
@@ -452,25 +443,14 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
              scoreO.setText(""+score+1);
           }
       }
-      
-    }
 
-=======
 
-    @Override
-    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void updateScore() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     @Override
     public void drawAlert() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+      
+   
     @Override
     public boolean checkDraw(){
         if(drawCount==9)
@@ -606,4 +586,3 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         return result;
     }
 }
->>>>>>> c30424085ccd6cc4d2366ad2c202d5e44ee10ec7
