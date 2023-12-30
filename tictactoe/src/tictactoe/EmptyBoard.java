@@ -15,9 +15,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.Event;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+import javafx.util.Duration;
+
+
 //implement interface
 public class EmptyBoard extends AnchorPane implements BoardInterface{
-
 
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
@@ -565,7 +575,51 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 
     @Override
     public void drawAlert() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Game Tie");
+                alert.setHeaderText("");
+                alert.setContentText("Game Tie, Do you want to play again?");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle("-fx-background-color: white;");
+                dialogPane.getStyleClass().remove("alert");
+                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
+                        "-fx-pref-height: 73.0;" +
+                        "-fx-pref-width: 665.0;" +
+                        "-fx-text-fill: #d1a823;" +
+                        "-fx-font-family: \"Cooper Black\";" +
+                        "-fx-font-size: 33.0;" +
+                          "-fx-padding: 10.0;");
+
+                ButtonType noButtonType = new ButtonType("No");
+                ButtonType yesButtonType = new ButtonType("Yes");
+                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+
+                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: red; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+                noButton.setTranslateX(-230);
+
+                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: green; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-pref-height: 50;");
+                yesButton.setTranslateX(-100);
+
+                alert.showAndWait();
+                
+                yesButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        //Welcome.navScreens(new EmptyBoard(s), s);
+                    }
+                });
+                noButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        //Welcome.navScreens(new Modes(s), s);
+                    }
+                });
     }
       
    
