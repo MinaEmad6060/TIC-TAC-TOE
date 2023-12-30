@@ -62,7 +62,7 @@ public class Welcome extends BorderPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         //setStyle("-fx-background-color: #1D1E3D;");
-          setStyle("-fx-background-image: url('tictactoe/images/background_1.jpg');");
+          setStyle("-fx-background-image: url('tictactoe/images/background.jpg');");
 
 
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
@@ -160,7 +160,7 @@ public class Welcome extends BorderPane {
         imageView.setLayoutY(7.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-        //imageView.setImage(new Image(getClass().getResource("../../../../../git_pro/Screenshot_2023-12-28_003411-removebg-preview.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("images/xo.png").toExternalForm()));
         setTop(anchorPane);
 
         BorderPane.setAlignment(anchorPane0, javafx.geometry.Pos.CENTER);

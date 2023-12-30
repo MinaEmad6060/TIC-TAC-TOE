@@ -108,7 +108,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         imageView.setLayoutY(43.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-        imageView.setImage(new Image(getClass().getResource("playerx.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("images/playerx.png").toExternalForm()));
 
         text.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text.setLayoutX(331.0);
@@ -188,7 +188,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         imageView0.setLayoutY(14.0);
         imageView0.setPickOnBounds(true);
         imageView0.setPreserveRatio(true);
-        imageView0.setImage(new Image(getClass().getResource("xo.png").toExternalForm()));
+        imageView0.setImage(new Image(getClass().getResource("images/xo.png").toExternalForm()));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text8.setLayoutX(88.0);
@@ -214,7 +214,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         imageView1.setLayoutY(43.0);
         imageView1.setPickOnBounds(true);
         imageView1.setPreserveRatio(true);
-        imageView1.setImage(new Image(getClass().getResource("playero.png").toExternalForm()));
+        imageView1.setImage(new Image(getClass().getResource("images/playero.png").toExternalForm()));
 
         exitButton.setFitHeight(134.0);
         exitButton.setFitWidth(174.0);
@@ -222,7 +222,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         exitButton.setLayoutY(623.0);
         exitButton.setPickOnBounds(true);
         exitButton.setPreserveRatio(true);
-        exitButton.setImage(new Image(getClass().getResource("exit.png").toExternalForm()));
+        exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
 
         AnchorPane.setRightAnchor(gridPane, 300.0);
         AnchorPane.setTopAnchor(gridPane, 238.0);
