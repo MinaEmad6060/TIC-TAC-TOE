@@ -10,12 +10,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-<<<<<<< HEAD
-import javafx.stage.Stage;
 
-=======
+import javafx.stage.Stage;
 //implement interface
->>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
 public class EmptyBoard extends AnchorPane implements BoardInterface{
 
     protected final AnchorPane anchorPane;
@@ -54,16 +51,9 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     protected final Text text11;
     protected final Text scoreO;
     protected final Text scoreX;
-<<<<<<< HEAD
-    int drawCount=0;               //counter for checkDraw  if checkwinner return false this counter increased by 1
+    int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
+    Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
-=======
-    //creat array of buttons
-    Button[][] gameBoard = new Button[3][3];
-    //
-    public EmptyBoard() {
->>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
-
         anchorPane = new AnchorPane();
         imageView = new ImageView();
         text = new Text();
@@ -415,17 +405,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(scoreO);
         getChildren().add(scoreX);
     }
-<<<<<<< HEAD
 
-    @Override
-    public void initBoard() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    @Override
-    public boolean availableToCheck(Button[][] arrBtn) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
+
+   
 
     @Override
     public short checkOnGame(Button[][] arrBtn) {
@@ -454,7 +438,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         else
         return false;
     }
-=======
+
     //initialize Board
         public void initBoard(){
             for(int i=0; i<3; i++){
@@ -486,5 +470,5 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             return avFlag;
         }
         //
->>>>>>> 587ac3b926ec0045b7bb056dae48c3c38948e219
+
 }
