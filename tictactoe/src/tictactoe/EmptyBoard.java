@@ -15,7 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-//implement interface
+
 public class EmptyBoard extends AnchorPane implements BoardInterface{
 
 
@@ -56,6 +56,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static Text scoreO;
     static Text scoreX;
     boolean turn=true;
+    
 
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
