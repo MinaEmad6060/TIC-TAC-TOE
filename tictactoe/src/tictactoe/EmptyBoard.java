@@ -50,8 +50,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     protected final Button button22;
     protected final Text text10;
     protected final Text text11;
-    protected final Text scoreO;
-    protected final Text scoreX;
+    static Text scoreO;
+    static Text scoreX;
     boolean turn=true;
 
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
