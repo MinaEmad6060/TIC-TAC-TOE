@@ -21,6 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> update-highlight
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
