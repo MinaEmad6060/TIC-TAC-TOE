@@ -2,11 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/BoardInterface.java</file>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/Modes.java</file>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/Tictactoe.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
     </open-files>
 </project-private>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="784.0" prefWidth="1200.0" style="-fx-background-color: #1D1E3D;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="419.0" prefWidth="1200.0" style="-fx-border-radius: 20;" vgap="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="  Welcome" wrappingWidth="567.341796875">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="  To" textAlignment="CENTER" wrappingWidth="388.87890625">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" prefHeight="86.0" prefWidth="568.0">
+               <children>
+                  <Text fill="#ffd652" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#00d6ff" strokeType="OUTSIDE" strokeWidth="0.0" text="I">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#ffd652" strokeType="OUTSIDE" strokeWidth="0.0" text="C ">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#00d6ff" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#ffd652" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#00d6ff" strokeType="OUTSIDE" strokeWidth="0.0" text="C ">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#ffd652" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#00d6ff" strokeType="OUTSIDE" strokeWidth="0.0" text="O">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#ffd652" strokeType="OUTSIDE" strokeWidth="0.0" text="E">
+                     <font>
+                        <Font name="Cooper Black" size="72.0" />
+                     </font>
+                  </Text>
+               </children>
+            </FlowPane>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </FlowPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="0.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="89.0" fitWidth="200.0" layoutX="14.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/xo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <Button fx:id="butStart" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="143.0" prefWidth="323.0" style="-fx-background-radius: 25;" text="Start" textFill="#d7b33e" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Cooper Black" size="80.0" />
+         </font>
+         <opaqueInsets>
+            <Insets top="300.0" />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets bottom="150.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+</BorderPane>

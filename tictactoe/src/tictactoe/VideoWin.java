@@ -1,5 +1,7 @@
 package tictactoe;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -48,6 +50,14 @@ public class VideoWin extends BorderPane {
         winIconImage = new ImageView();
         playerNumber = new Label();
         xoImage = new ImageView();
+        
+        if(!EmptyBoard.turn==true){
+            playerNumber.setText("Player 1");
+            EmptyBoard.turn=true;
+        }else{
+            playerNumber.setText("Player 2");
+            EmptyBoard.turn=false;
+        }
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -56,15 +66,18 @@ public class VideoWin extends BorderPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1D1E3D;");
-        String path = getClass().getResource("/tictactoe/videos/looser.mp4").toExternalForm();
+        String path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
         Media media = new Media(path); 
         MediaPlayer mediaPlayer = new MediaPlayer(media);  
         mediaView = new MediaView(mediaPlayer);
         mediaPlayer.play();
         
+        
+        
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
         flowPane.setPrefHeight(200.0);
         flowPane.setPrefWidth(1200.0);
+        FlowPane.setMargin(winExitBtn, new Insets(0.0, 0.0, 50.0, 0.0));
 
         winExitBtn.setMnemonicParsing(false);
         winExitBtn.setPrefHeight(75.0);
@@ -73,7 +86,14 @@ public class VideoWin extends BorderPane {
         winExitBtn.setText("Exit <<");
         winExitBtn.setTextFill(javafx.scene.paint.Color.WHITE);
         winExitBtn.setFont(new Font("Cooper Black", 35.0));
-        FlowPane.setMargin(winExitBtn, new Insets(0.0, 0.0, 50.0, 0.0));
+        winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                mediaPlayer.stop();
+                Welcome.navScreens(new Modes(s), s);
+                EmptyBoard.xScore = 0;
+                EmptyBoard.oScore = 0;
+            }});
 
         winPlayAgainBtn.setMnemonicParsing(false);
         winPlayAgainBtn.setPrefHeight(75.0);
@@ -82,7 +102,14 @@ public class VideoWin extends BorderPane {
         winPlayAgainBtn.setText("Play Again");
         winPlayAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#7949d0"));
         winPlayAgainBtn.setFont(new Font("Cooper Black", 35.0));
+        winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                mediaPlayer.stop();
+                Welcome.navScreens(new EmptyBoard(s), s);
+            }});
         FlowPane.setMargin(winPlayAgainBtn, new Insets(0.0, 0.0, 50.0, 200.0));
+        
         flowPane.setPadding(new Insets(80.0, 0.0, 0.0, 250.0));
         setBottom(flowPane);
 
@@ -129,10 +156,10 @@ public class VideoWin extends BorderPane {
         winIconImage.setPreserveRatio(true);
         winIconImage.setImage(new Image(getClass().getResource("/tictactoe/images/winnerIcon.png").toExternalForm()));
 
-        playerNumber.setText("Player Name");
         playerNumber.setTextFill(javafx.scene.paint.Color.WHITE);
         playerNumber.setFont(new Font("Cooper Black", 35.0));
         flowPane0.setPadding(new Insets(50.0, 0.0, 0.0, -65.0));
+
 
         GridPane.setValignment(xoImage, javafx.geometry.VPos.TOP);
         xoImage.setFitHeight(47.0);
