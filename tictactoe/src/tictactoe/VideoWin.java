@@ -78,7 +78,9 @@ public class VideoWin extends BorderPane {
          winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
+                mediaPlayer.pause();
                 Welcome.navScreens(new Modes(s), s);
+                
             }});
         FlowPane.setMargin(winExitBtn, new Insets(0.0, 0.0, 50.0, 0.0));
 
