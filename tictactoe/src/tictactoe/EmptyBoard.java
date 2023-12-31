@@ -21,11 +21,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> update-highlight
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -79,7 +76,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     boolean turn=true;
     Timeline timeline;
     
-
+    
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
@@ -613,7 +610,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text10.setText("score: ");
         text10.setWrappingWidth(190.3984339237213);
         text10.setFont(new Font("Cooper Black", 40.0));
-
         text11.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text11.setLayoutX(982.0);
         text11.setLayoutY(289.0);
@@ -622,7 +618,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text11.setText("score: ");
         text11.setWrappingWidth(190.3984339237213);
         text11.setFont(new Font("Cooper Black", 40.0));
-
         scoreO.setFill(javafx.scene.paint.Color.valueOf("#f5f5f5"));
         scoreO.setLayoutX(1106.0);
         scoreO.setLayoutY(289.0);
@@ -772,8 +767,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         public void initBoard(){
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
-                    gameBoard[i][j].setText(" ");
-                    
+                   gameBoard[i][j].setText(" "); 
                    gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
                    gameBoard[i][j].setDisable(false);
                 }
@@ -846,7 +840,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
             
-            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText()))
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()))
             {
                 result = 2;
                 hilightWin(j , i , j+1 , i , j+2 , i);
