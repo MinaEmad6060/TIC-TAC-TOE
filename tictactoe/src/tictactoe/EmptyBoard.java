@@ -70,7 +70,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static Text scoreX;
     static int xScore=0;
     static int oScore=0;
-    boolean turn=true;
+    static boolean turn=true;
     Timeline timeline;
     Stage stage;
     
@@ -84,9 +84,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         stage = s;
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
-
-
-
         }));
 
         anchorPane = new AnchorPane();
@@ -931,7 +928,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             System.out.println("check daig1");
             return result;
         }
-        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[0][0].getText().equals(" "))
+        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[1][1].getText().equals(" "))
         {
             result = 2;
             hilightWin(0 , 2 , 1 , 1 , 2 , 0);
@@ -985,5 +982,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 			}
 		}
 	}
+        exitButton.setDisable(true);
     }
 }
