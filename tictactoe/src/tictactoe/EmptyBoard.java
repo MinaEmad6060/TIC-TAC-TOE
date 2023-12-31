@@ -20,12 +20,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> update-highlight
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -82,17 +76,17 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     
 
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
-    Button[][] gameBoard = new Button[3][3];  //creat array of buttons
+    Button[][] gameBoard = new Button[3][3];//creat array of buttons
+   
     public EmptyBoard(Stage s) {
-<<<<<<< HEAD
-         timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-           // initBoard();
-           Welcome.navScreens( new VideoWin(s), s);
-=======
+
+
         stage = s;
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
->>>>>>> 07fb3f954e4d78b599d37dd7448b480cc7175bbf
+
+
+
         }));
 
         anchorPane = new AnchorPane();
@@ -684,8 +678,9 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(scoreO);
         getChildren().add(scoreX);
     } 
+                             
     @Override
-    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
+      public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
       if(!turn){
           gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
           gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -755,20 +750,24 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-<<<<<<< HEAD
+
                         //Welcome.navScreens(new EmptyBoard(s), s);
                         
-=======
+
                         Welcome.navScreens(new EmptyBoard(stage), stage);
->>>>>>> 07fb3f954e4d78b599d37dd7448b480cc7175bbf
+
+                        
+                        //Welcome.navScreens(new EmptyBoard(Stage s), s);
+
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        Welcome.navScreens(new Modes(stage), stage);
+                       Welcome.navScreens(new Modes(stage), stage);
                         xScore = 0;
                         oScore = 0;
+
                     }
                 });
                  alert.showAndWait();
@@ -869,6 +868,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             timeline.play();
 
         }
+
         else
         {
             drawCount++;
@@ -877,6 +877,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         {
             drawAlert();
         }
+        
+       
     }
     
     public short checkRows()
@@ -962,6 +964,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         
         if(result != 2)
+
         {
             drawCount++;
             if(checkDraw())
@@ -971,6 +974,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         
         return result;
+    
     }
     
     void disableBoard(){

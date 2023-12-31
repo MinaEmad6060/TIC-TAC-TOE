@@ -58,7 +58,7 @@ public class VideoWin extends BorderPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1D1E3D;");
-        String path = getClass().getResource("/tictactoe/videos/looser.mp4").toExternalForm();
+        String path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
         Media media = new Media(path); 
         MediaPlayer mediaPlayer = new MediaPlayer(media);  
         mediaView = new MediaView(mediaPlayer);
@@ -75,6 +75,13 @@ public class VideoWin extends BorderPane {
         winExitBtn.setText("Exit <<");
         winExitBtn.setTextFill(javafx.scene.paint.Color.WHITE);
         winExitBtn.setFont(new Font("Cooper Black", 35.0));
+         winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                mediaPlayer.pause();
+                Welcome.navScreens(new Modes(s), s);
+                
+            }});
         FlowPane.setMargin(winExitBtn, new Insets(0.0, 0.0, 50.0, 0.0));
          winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -89,6 +96,11 @@ public class VideoWin extends BorderPane {
         winPlayAgainBtn.setText("Play Again");
         winPlayAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#7949d0"));
         winPlayAgainBtn.setFont(new Font("Cooper Black", 35.0));
+        winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                Welcome.navScreens(new EmptyBoard(s), s);
+            }});
         FlowPane.setMargin(winPlayAgainBtn, new Insets(0.0, 0.0, 50.0, 200.0));
         
         winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>(){
