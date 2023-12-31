@@ -76,8 +76,10 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     
 
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
-    Button[][] gameBoard = new Button[3][3];  //creat array of buttons
+    Button[][] gameBoard = new Button[3][3];//creat array of buttons
+   
     public EmptyBoard(Stage s) {
+        
          timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             //initBoard();
             Welcome.navScreens(new VideoWin(s), s);
@@ -745,13 +747,14 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        //Welcome.navScreens(new EmptyBoard(s), s);
+                        
+                        //Welcome.navScreens(new EmptyBoard(Stage s), s);
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        //Welcome.navScreens(new Modes(s), s);
+                      //  Welcome.navScreens(new Modes(s), s);
                     }
                 });
     }
@@ -809,7 +812,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             timeline.play();
 
         }
-        else if (checkWinnerRes == 1)
+        else{
+            drawCount++;
+        }
+        
+         if (checkWinnerRes == 1)
         { 
             
             drawAlert();
@@ -899,7 +906,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         
         if(result != 2)
-        {
+        { 
+            drawCount++;
             if(checkDraw())
             {
                 result = 1;
