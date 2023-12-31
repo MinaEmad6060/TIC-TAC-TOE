@@ -79,7 +79,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
          timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            initBoard();
+            //initBoard();
+            Welcome.navScreens(new VideoWin(s), s);
         }));
 
         anchorPane = new AnchorPane();
@@ -809,7 +810,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 
         }
         else if (checkWinnerRes == 1)
-        {
+        { 
+            
             drawAlert();
         }
     }
