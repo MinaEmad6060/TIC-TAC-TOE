@@ -21,6 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> update-highlight
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -73,14 +78,21 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static int oScore=0;
     boolean turn=true;
     Timeline timeline;
+    Stage stage;
     
 
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
+<<<<<<< HEAD
          timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
            // initBoard();
            Welcome.navScreens( new VideoWin(s), s);
+=======
+        stage = s;
+         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            Welcome.navScreens(new VideoWin(stage), stage);
+>>>>>>> 07fb3f954e4d78b599d37dd7448b480cc7175bbf
         }));
 
         anchorPane = new AnchorPane();
@@ -267,7 +279,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
         exitButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event) {
-                    Welcome.navScreens(new Modes(s), s);
+                exitAlert();
             }
         });
 
@@ -739,30 +751,77 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                         + "-fx-background-color: green; -fx-background-radius: 10;"
                         + "-fx-text-fill: white; -fx-pref-height: 50;");
                 yesButton.setTranslateX(-100);
-
-                alert.showAndWait();
                 
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
+<<<<<<< HEAD
                         //Welcome.navScreens(new EmptyBoard(s), s);
                         
+=======
+                        Welcome.navScreens(new EmptyBoard(stage), stage);
+>>>>>>> 07fb3f954e4d78b599d37dd7448b480cc7175bbf
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        //Welcome.navScreens(new Modes(s), s);
+                        Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
                     }
                 });
+                 alert.showAndWait();
     }
 
+    public void exitAlert() {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Exit Game");
+                alert.setHeaderText("");
+                alert.setContentText("Do you want to Exit?");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle("-fx-background-color: white;");
+                dialogPane.getStyleClass().remove("alert");
+                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
+                        "-fx-pref-height: 73.0;" +
+                        "-fx-pref-width: 665.0;" +
+                        "-fx-text-fill: #d1a823;" +
+                        "-fx-font-family: \"Cooper Black\";" +
+                        "-fx-font-size: 33.0;" +
+                          "-fx-padding: 10.0;");
+
+                ButtonType noButtonType = new ButtonType("No");
+                ButtonType yesButtonType = new ButtonType("Yes");
+                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+
+                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: red; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+                noButton.setTranslateX(-230);
+
+                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: green; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-pref-height: 50;");
+                yesButton.setTranslateX(-100);
+                
+                yesButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
+                    }
+                });
+                alert.showAndWait();
+    }
     @Override
     public boolean checkDraw(){
-        if(drawCount==9)
+        if(drawCount == 9)
             return true;
         else
-        return false;
+            return false;
     }
 
     //initialize Board
@@ -810,7 +869,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             timeline.play();
 
         }
-        else if (checkWinnerRes == 1)
+        else
+        {
+            drawCount++;
+        }
+        if (checkWinnerRes == 1)
         {
             drawAlert();
         }
@@ -822,7 +885,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
             
-            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()))
+            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()) &&!gameBoard[i][i].getText().equals(" "))
             {
                 result = 2;
                 hilightWin(i , j , i , j+1 , i , j+2);
@@ -843,11 +906,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
             
-            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText()))
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
             {
                 result = 2;
                 hilightWin(j , i , j+1 , i , j+2 , i);
-                  System.out.println("check col");
+                System.out.println("check col");
                 return result;
             }
         }
@@ -858,7 +921,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     {
         short result = 0;
         System.out.println("check daigonal");
-        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()))
+        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) &&!gameBoard[0][0].getText().equals(" "))
         {
             result = 2;
             System.out.println("daigonal Win");
@@ -866,7 +929,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             System.out.println("check daig1");
             return result;
         }
-        if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()))
+        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[0][0].getText().equals(" "))
         {
             result = 2;
             hilightWin(0 , 2 , 1 , 1 , 2 , 0);
@@ -900,6 +963,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         
         if(result != 2)
         {
+            drawCount++;
             if(checkDraw())
             {
                 result = 1;
