@@ -1,5 +1,7 @@
 package tictactoe;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -74,6 +76,11 @@ public class VideoWin extends BorderPane {
         winExitBtn.setTextFill(javafx.scene.paint.Color.WHITE);
         winExitBtn.setFont(new Font("Cooper Black", 35.0));
         FlowPane.setMargin(winExitBtn, new Insets(0.0, 0.0, 50.0, 0.0));
+         winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                Welcome.navScreens(new Modes(s), s);
+            }});
 
         winPlayAgainBtn.setMnemonicParsing(false);
         winPlayAgainBtn.setPrefHeight(75.0);
@@ -83,6 +90,12 @@ public class VideoWin extends BorderPane {
         winPlayAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#7949d0"));
         winPlayAgainBtn.setFont(new Font("Cooper Black", 35.0));
         FlowPane.setMargin(winPlayAgainBtn, new Insets(0.0, 0.0, 50.0, 200.0));
+        
+        winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                Welcome.navScreens(new EmptyBoard(s), s);
+            }});
         flowPane.setPadding(new Insets(80.0, 0.0, 0.0, 250.0));
         setBottom(flowPane);
 

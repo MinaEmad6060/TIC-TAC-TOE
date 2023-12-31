@@ -78,8 +78,9 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];  //creat array of buttons
     public EmptyBoard(Stage s) {
-         timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            initBoard();
+         timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+           // initBoard();
+           Welcome.navScreens( new VideoWin(s), s);
         }));
 
         anchorPane = new AnchorPane();
@@ -745,6 +746,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     @Override
                     public void handle(Event event) {
                         //Welcome.navScreens(new EmptyBoard(s), s);
+                        
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
