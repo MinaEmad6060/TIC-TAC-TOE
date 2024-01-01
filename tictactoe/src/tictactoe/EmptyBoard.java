@@ -20,12 +20,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -907,12 +901,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            
-<<<<<<< HEAD
+
             if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()))
-=======
+
             if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
->>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
+
             {
                 result = 2;
                 hilightWin(j , i , j+1 , i , j+2 , i);
