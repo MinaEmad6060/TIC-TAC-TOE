@@ -20,6 +20,12 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -70,11 +76,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static Text scoreX;
     static int xScore=0;
     static int oScore=0;
-    boolean turn=true;
+    static boolean turn=true;
     Timeline timeline;
     Stage stage;
     
-
+    
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];//creat array of buttons
    
@@ -84,9 +90,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         stage = s;
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
-
-
-
         }));
 
         anchorPane = new AnchorPane();
@@ -615,7 +618,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text10.setText("score: ");
         text10.setWrappingWidth(190.3984339237213);
         text10.setFont(new Font("Cooper Black", 40.0));
-
         text11.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text11.setLayoutX(982.0);
         text11.setLayoutY(289.0);
@@ -624,7 +626,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text11.setText("score: ");
         text11.setWrappingWidth(190.3984339237213);
         text11.setFont(new Font("Cooper Black", 40.0));
-
         scoreO.setFill(javafx.scene.paint.Color.valueOf("#f5f5f5"));
         scoreO.setLayoutX(1106.0);
         scoreO.setLayoutY(289.0);
@@ -827,8 +828,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         public void initBoard(){
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
-                    gameBoard[i][j].setText(" ");
-                    
+                   gameBoard[i][j].setText(" "); 
                    gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
                    gameBoard[i][j].setDisable(false);
                 }
@@ -908,7 +908,11 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
             
+<<<<<<< HEAD
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()))
+=======
             if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
+>>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
             {
                 result = 2;
                 hilightWin(j , i , j+1 , i , j+2 , i);
@@ -931,7 +935,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             System.out.println("check daig1");
             return result;
         }
-        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[0][0].getText().equals(" "))
+        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[1][1].getText().equals(" "))
         {
             result = 2;
             hilightWin(0 , 2 , 1 , 1 , 2 , 0);
@@ -985,5 +989,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 			}
 		}
 	}
+        exitButton.setDisable(true);
     }
 }
