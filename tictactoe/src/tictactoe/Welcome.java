@@ -32,7 +32,6 @@ public class Welcome extends BorderPane {
     protected final Text text9;
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
-    protected final AnchorPane anchorPane0;
     protected final Button butStart;
 
     public Welcome(Stage s) {
@@ -52,7 +51,6 @@ public class Welcome extends BorderPane {
         text9 = new Text();
         anchorPane = new AnchorPane();
         imageView = new ImageView();
-        anchorPane0 = new AnchorPane();
         butStart = new Button();
 
         setMaxHeight(USE_PREF_SIZE);
@@ -61,16 +59,15 @@ public class Welcome extends BorderPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
+        setStyle("-fx-background-image: url('tictactoe/images/background.jpg');");
         //setStyle("-fx-background-color: #1D1E3D;");
-          setStyle("-fx-background-image: url('tictactoe/images/background.jpg');");
-
 
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
         flowPane.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         flowPane.setColumnHalignment(javafx.geometry.HPos.CENTER);
         flowPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        flowPane.setPrefHeight(200.0);
-        flowPane.setPrefWidth(200.0);
+        flowPane.setPrefHeight(419.0);
+        flowPane.setPrefWidth(1200.0);
         flowPane.setStyle("-fx-border-radius: 20;");
         flowPane.setVgap(10.0);
 
@@ -130,19 +127,19 @@ public class Welcome extends BorderPane {
         text6.setText("C ");
         text6.setFont(new Font("Cooper Black", 72.0));
 
-        text7.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
+        text7.setFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         text7.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text7.setStrokeWidth(0.0);
         text7.setText("T");
         text7.setFont(new Font("Cooper Black", 72.0));
 
-        text8.setFill(javafx.scene.paint.Color.valueOf("#ffd652"));
+        text8.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text8.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text8.setStrokeWidth(0.0);
         text8.setText("O");
         text8.setFont(new Font("Cooper Black", 72.0));
 
-        text9.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
+        text9.setFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         text9.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text9.setStrokeWidth(0.0);
         text9.setText("E");
@@ -163,41 +160,28 @@ public class Welcome extends BorderPane {
         imageView.setImage(new Image(getClass().getResource("images/xo.png").toExternalForm()));
         setTop(anchorPane);
 
-        BorderPane.setAlignment(anchorPane0, javafx.geometry.Pos.CENTER);
-        anchorPane0.setPrefHeight(200.0);
-        anchorPane0.setPrefWidth(200.0);
-
+        BorderPane.setAlignment(butStart, javafx.geometry.Pos.CENTER);
         butStart.setAlignment(javafx.geometry.Pos.CENTER);
         butStart.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
-        butStart.setLayoutX(439.0);
-        butStart.setLayoutY(-15.0);
         butStart.setMnemonicParsing(false);
         butStart.setPrefHeight(143.0);
         butStart.setPrefWidth(323.0);
         butStart.setStyle("-fx-background-radius: 25;");
         butStart.setText("Start");
+        butStart.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
+        butStart.setFont(new Font("Cooper Black", 80.0));
+        butStart.setOpaqueInsets(new Insets(300.0, 0.0, 0.0, 0.0));
+        BorderPane.setMargin(butStart, new Insets(0.0, 0.0, 150.0, 0.0));
+        setBottom(butStart);
         
         butStart.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-//       
-//        Parent root2 = new Modes(s);
-//  
-//        Scene scene2 = new Scene(root2);
-//        
-//       s.setScene(scene2);
-//        s.show();
 
                 navScreens(new Modes(s), s);
     }
-
-            //}
             
         });
-        butStart.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
-        butStart.setFont(new Font("Cooper Black", 80.0));
-        butStart.setOpaqueInsets(new Insets(300.0, 0.0, 0.0, 0.0));
-        setBottom(anchorPane0);
 
         flowPane.getChildren().add(text);
         flowPane.getChildren().add(text0);
@@ -212,9 +196,9 @@ public class Welcome extends BorderPane {
         flowPane0.getChildren().add(text9);
         flowPane.getChildren().add(flowPane0);
         anchorPane.getChildren().add(imageView);
-        anchorPane0.getChildren().add(butStart);
 
     }
+    
     public static void navScreens(Parent ref,Stage stage){
         
  

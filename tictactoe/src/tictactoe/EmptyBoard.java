@@ -20,7 +20,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -71,18 +70,20 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static Text scoreX;
     static int xScore=0;
     static int oScore=0;
-    boolean turn=true;
+    static boolean turn=true;
     Timeline timeline;
+    Stage stage;
     
-
+    
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];//creat array of buttons
    
     public EmptyBoard(Stage s) {
-        
-         timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            //initBoard();
-            Welcome.navScreens(new VideoWin(s), s);
+
+
+        stage = s;
+         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            Welcome.navScreens(new VideoWin(stage), stage);
         }));
 
         anchorPane = new AnchorPane();
@@ -269,7 +270,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
         exitButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event) {
-                    Welcome.navScreens(new Modes(s), s);
+                exitAlert();
             }
         });
 
@@ -611,7 +612,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text10.setText("score: ");
         text10.setWrappingWidth(190.3984339237213);
         text10.setFont(new Font("Cooper Black", 40.0));
-
         text11.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
         text11.setLayoutX(982.0);
         text11.setLayoutY(289.0);
@@ -620,7 +620,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         text11.setText("score: ");
         text11.setWrappingWidth(190.3984339237213);
         text11.setFont(new Font("Cooper Black", 40.0));
-
         scoreO.setFill(javafx.scene.paint.Color.valueOf("#f5f5f5"));
         scoreO.setLayoutX(1106.0);
         scoreO.setLayoutY(289.0);
@@ -674,8 +673,9 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         getChildren().add(scoreO);
         getChildren().add(scoreX);
     } 
+                             
     @Override
-    public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
+      public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
       if(!turn){
           gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
           gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -741,38 +741,88 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                         + "-fx-background-color: green; -fx-background-radius: 10;"
                         + "-fx-text-fill: white; -fx-pref-height: 50;");
                 yesButton.setTranslateX(-100);
-
-                alert.showAndWait();
                 
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
+
+                        //Welcome.navScreens(new EmptyBoard(s), s);
+                        
+
+                        Welcome.navScreens(new EmptyBoard(stage), stage);
+
                         
                         //Welcome.navScreens(new EmptyBoard(Stage s), s);
+
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                      //  Welcome.navScreens(new Modes(s), s);
+                       Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
+
                     }
                 });
+                 alert.showAndWait();
     }
 
+    public void exitAlert() {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Exit Game");
+                alert.setHeaderText("");
+                alert.setContentText("Do you want to Exit?");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle("-fx-background-color: white;");
+                dialogPane.getStyleClass().remove("alert");
+                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
+                        "-fx-pref-height: 73.0;" +
+                        "-fx-pref-width: 665.0;" +
+                        "-fx-text-fill: #d1a823;" +
+                        "-fx-font-family: \"Cooper Black\";" +
+                        "-fx-font-size: 33.0;" +
+                          "-fx-padding: 10.0;");
+
+                ButtonType noButtonType = new ButtonType("No");
+                ButtonType yesButtonType = new ButtonType("Yes");
+                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+
+                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: red; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+                noButton.setTranslateX(-230);
+
+                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: green; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-pref-height: 50;");
+                yesButton.setTranslateX(-100);
+                
+                yesButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
+                    }
+                });
+                alert.showAndWait();
+    }
     @Override
     public boolean checkDraw(){
-        if(drawCount==9)
+        if(drawCount == 9)
             return true;
         else
-        return false;
+            return false;
     }
 
     //initialize Board
         public void initBoard(){
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
-                    gameBoard[i][j].setText(" ");
-                    
+                   gameBoard[i][j].setText(" "); 
                    gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
                    gameBoard[i][j].setDisable(false);
                 }
@@ -812,15 +862,17 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             timeline.play();
 
         }
-        else{
+
+        else
+        {
             drawCount++;
         }
-        
-         if (checkWinnerRes == 1)
-        { 
-            
+        if (checkWinnerRes == 1)
+        {
             drawAlert();
         }
+        
+       
     }
     
     public short checkRows()
@@ -829,7 +881,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
             
-            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()))
+            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()) &&!gameBoard[i][i].getText().equals(" "))
             {
                 result = 2;
                 hilightWin(i , j , i , j+1 , i , j+2);
@@ -849,12 +901,15 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            
-            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText()))
+
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()))
+
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
+
             {
                 result = 2;
                 hilightWin(j , i , j+1 , i , j+2 , i);
-                  System.out.println("check col");
+                System.out.println("check col");
                 return result;
             }
         }
@@ -865,7 +920,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     {
         short result = 0;
         System.out.println("check daigonal");
-        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()))
+        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) &&!gameBoard[0][0].getText().equals(" "))
         {
             result = 2;
             System.out.println("daigonal Win");
@@ -873,7 +928,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             System.out.println("check daig1");
             return result;
         }
-        if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()))
+        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[1][1].getText().equals(" "))
         {
             result = 2;
             hilightWin(0 , 2 , 1 , 1 , 2 , 0);
@@ -906,7 +961,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         
         if(result != 2)
-        { 
+
+        {
             drawCount++;
             if(checkDraw())
             {
@@ -915,6 +971,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         }
         
         return result;
+    
     }
     
     void disableBoard(){
@@ -925,5 +982,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 			}
 		}
 	}
+        exitButton.setDisable(true);
     }
 }
