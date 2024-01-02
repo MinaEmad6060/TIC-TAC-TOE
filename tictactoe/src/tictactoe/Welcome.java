@@ -177,18 +177,9 @@ public class Welcome extends BorderPane {
         butStart.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-//       
-//        Parent root2 = new Modes(s);
-//  
-//        Scene scene2 = new Scene(root2);
-//        
-//       s.setScene(scene2);
-//        s.show();
 
                 navScreens(new Modes(s), s);
     }
-
-            //}
             
         });
 
