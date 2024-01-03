@@ -4,7 +4,7 @@ package tictactoe;
 import javafx.scene.control.Button;
 
 
-interface BoardInterface {
+abstract interface BoardInterface {
   
   public void initBoard();
   
