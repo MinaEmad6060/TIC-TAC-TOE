@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 
 
 
+
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -907,9 +909,9 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            
 
-           
+
+ 
 
             if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
 

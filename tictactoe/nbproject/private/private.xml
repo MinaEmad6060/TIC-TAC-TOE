@@ -3,8 +3,29 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/Welcome.java</file>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/VideoWin.java</file>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/FXMLDocumentController.java</file>
+        </group>
+=======
+<<<<<<< HEAD
+        <group>
+            <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/DAO/DataAccessObject.java</file>
+        </group>
+=======
+<<<<<<< HEAD
+        <group>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/BoardInterface.java</file>
             <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
         </group>
+<<<<<<< HEAD
+=======
+=======
+        <group/>
+>>>>>>> ca2c0efcf8916fa639f2b65268df182604d646d0
+>>>>>>> 7ee9bce62758f6bfbb2091a6904521e09cc51198
+>>>>>>> 1bb0393ecad0bfd49011509d32b8e36959688e0b
+>>>>>>> 85e650bc3becd766c6ae97c0869525848d4cffcf
     </open-files>
 </project-private>
