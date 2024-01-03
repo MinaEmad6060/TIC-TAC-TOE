@@ -17,7 +17,7 @@ public class Player {
 	boolean available;
 	String record;
 	
-	Player(String playerName, String record){
+	public Player(String playerName, String record){
 		this.playerName=playerName;
 		this.record=record;
 	}
