@@ -23,9 +23,11 @@ public class Modes extends BorderPane {
     protected final Text text;
     protected final ImageView imageView;
     protected final FlowPane flowPane;
+
     protected final Button localButton;
     protected final Button robotButton;
     protected final Button onlineButton;
+
 
     public Modes(Stage stage) {
 
@@ -36,9 +38,12 @@ public class Modes extends BorderPane {
         text = new Text();
         imageView = new ImageView();
         flowPane = new FlowPane();
+
+
         localButton = new Button();
         robotButton = new Button();
         onlineButton = new Button();
+
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -47,6 +52,9 @@ public class Modes extends BorderPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-image: url('tictactoe/images/background.jpg');");
+
+        BorderPane.setAlignment(text, javafx.geometry.Pos.CENTER);
+
         //setStyle("-fx-background-image: url('https://res.cloudinary.com/dingqmolp/image/upload/v1703785854/demjoyl1efqwk1d5lrhm.jpg ');");
 
         BorderPane.setAlignment(anchorPane, javafx.geometry.Pos.CENTER);
@@ -114,11 +122,11 @@ public class Modes extends BorderPane {
         localButton.setFont(new Font("Cooper Black", 80.0));
         localButton.setOpaqueInsets(new Insets(300.0, 0.0, 0.0, 0.0));
         localButton.setOnAction(new EventHandler<ActionEvent>(){
+
             @Override
             public void handle(ActionEvent event) {
                 Welcome.navScreens(new EmptyBoard(stage), stage);
             }});
-
 
         robotButton.setMnemonicParsing(false);
         robotButton.setPrefHeight(147.0);
@@ -144,6 +152,5 @@ public class Modes extends BorderPane {
         flowPane.getChildren().add(localButton);
         flowPane.getChildren().add(robotButton);
         flowPane.getChildren().add(onlineButton);
-
-    }
+}
 }
