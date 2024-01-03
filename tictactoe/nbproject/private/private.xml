@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/DTO/Player.java</file>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/Tictactoe.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/Welcome.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/DAO/DataAccessObject.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/VideoWin.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/FXMLDocumentController.java</file>
         </group>
     </open-files>
 </project-private>
