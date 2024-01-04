@@ -20,6 +20,14 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+
+
+
+
+
+
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -920,7 +928,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         int j = 0;
         for (int i = 0; i < 3; i++) {
 
-            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()))
+
+ 
 
             if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
 
