@@ -72,8 +72,6 @@ public class VideoWin extends BorderPane {
         mediaView = new MediaView(mediaPlayer);
         mediaPlayer.play();
         
-        
-        
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
         flowPane.setPrefHeight(200.0);
         flowPane.setPrefWidth(1200.0);

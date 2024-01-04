@@ -157,7 +157,6 @@ public static List<Player> getRecords(Player player) throws SQLException {
     }
 
 
-
 public static int updateScore(Player player) throws SQLException {
         int result = 0;
         try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
@@ -167,7 +166,7 @@ public static int updateScore(Player player) throws SQLException {
             ps.setString(2, player.getPlayerName());
             result = ps.executeUpdate();
 
-        }catch (SQLException ex) {
+        }catch (SQLException ex){
             Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
@@ -189,5 +188,9 @@ public static int updateScore(Player player) throws SQLException {
         }
         return result;
     }
+
 }
+
+
+
 
