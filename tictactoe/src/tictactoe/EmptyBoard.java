@@ -573,8 +573,8 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button21.setText("x");
                     button21.setDisable(true);
-                    button21.setOpacity(1);
-                    //gameBoard[2][1]=button21;
+                    //button21.setOpacity(1);
+                    gameBoard[2][1]=button21;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -743,6 +743,12 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 
     @Override
     public void drawAlert() {
+        if(turn){
+            turn = false;
+        }
+        else{
+            turn = true;
+        }
         Alert alert = new Alert(Alert.AlertType.NONE);
                 alert.setTitle("Game Tie");
                 alert.setHeaderText("");
