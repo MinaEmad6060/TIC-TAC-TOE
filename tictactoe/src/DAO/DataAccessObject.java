@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import DTO.Player;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -73,4 +74,55 @@ boolean isUserValid(String playerPassword){
         return isValid;
 }
 
+    public static int addUser(Player contact) throws SQLException
+    {
+        int result =0;
+        //load /register to the driver
+        DriverManager.registerDriver(new ClientDriver());
+        //connection
+        
+
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+        //Statment
+        PreparedStatement ps=con.prepareStatement("insert into PhoneIndex (player_Name)"
+                + "values(?)");
+        ps.setString(1,contact.getPlayerName());
+        
+         //process the result
+         result =ps.executeUpdate();
+         ps.close();
+         con.close();
+          return result;
+    }
+      public static int addPassword(Player contact) throws SQLException
+    {
+        int result =0;
+        //load /register to the driver
+        DriverManager.registerDriver(new ClientDriver());
+        //connection
+        
+
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+        //Statment
+        PreparedStatement ps=con.prepareStatement("insert into user_Data (password)"
+                + "values(?)");
+        ps.setString(1,contact.getPassword());
+        
+         //process the result
+         result =ps.executeUpdate();
+         ps.close();
+         con.close();
+          return result;
+    }
+       public static ResultSet getAvailable() throws SQLException{
+       DriverManager.registerDriver(new ClientDriver());
+        //connection
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+          
+    PreparedStatement ps = con.prepareStatement("SELECT player_name from user_Data where available=true and Online=true",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+    ResultSet result =ps.executeQuery();
+    return result;
+           
+     
+ }
 }
