@@ -69,7 +69,8 @@ public class VideoWin extends BorderPane {
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1D1E3D;");
         String path;
-        if(EmptyBoard.win)
+        path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
+        if(RobotMode.win == true)
         {
         path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
         winStatus = "Congratulation!";

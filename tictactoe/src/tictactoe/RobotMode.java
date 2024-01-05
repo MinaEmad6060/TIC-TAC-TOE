@@ -69,6 +69,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
     static boolean turn=true;
     Timeline timeline;
     Stage stage;
+    static boolean win = false;
     
     
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
@@ -886,7 +887,6 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             updateScore();
             disableBoard();
             timeline.play();
-
         }
 
         else

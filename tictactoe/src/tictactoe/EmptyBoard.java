@@ -40,6 +40,8 @@ import javafx.util.Duration;
 //implement interface
 public class EmptyBoard extends AnchorPane implements BoardInterface{
 
+    
+
     protected final AnchorPane anchorPane;
     protected final ImageView imageView;
     protected final Text text;
