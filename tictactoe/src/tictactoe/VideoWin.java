@@ -72,8 +72,8 @@ public class VideoWin extends BorderPane {
         path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
         if(RobotMode.win == true)
         {
-        path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
-        winStatus = "Congratulation!";
+            path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
+            winStatus = "Congratulation!";
         }
         else
         {
