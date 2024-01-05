@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -68,6 +69,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
     static boolean turn=true;
     Timeline timeline;
     Stage stage;
+    static boolean win = false;
     
     
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
@@ -885,7 +887,6 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             updateScore();
             disableBoard();
             timeline.play();
-
         }
 
         else
@@ -1010,4 +1011,16 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 	}
         exitButton.setDisable(true);
     }
+    int getRondomNum(){
+        Random random = new Random();  
+        int randomNumber = random.nextInt(3);
+        return randomNumber;
+    }
+    boolean checkEnable(int row,int col){
+    if(gameBoard[row][col].isDisable())
+        return false;
+
+        else 
+         return true;
+}
 }
