@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.util.Random;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -1009,5 +1010,10 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 		}
 	}
         exitButton.setDisable(true);
+    }
+    int getRondomNum(){
+        Random random = new Random();  
+        int randomNumber = random.nextInt(3);
+        return randomNumber;
     }
 }
