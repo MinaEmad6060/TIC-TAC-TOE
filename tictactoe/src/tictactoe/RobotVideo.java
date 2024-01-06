@@ -73,8 +73,8 @@ public class RobotVideo extends BorderPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
-        //setStyle("-fx-background-color: #1D1E3D;");
-        setStyle("-fx-background-color: #1D1E3D; -fx-background-image: url('tictactoe/images/vid.jpg');");
+        setStyle("-fx-background-color: #1D1E3D;");
+        //setStyle("-fx-background-color: #1D1E3D; -fx-background-image: url('tictactoe/images/vid.jpg');");
         
         Media media = new Media(path); 
         MediaPlayer mediaPlayer = new MediaPlayer(media);  
