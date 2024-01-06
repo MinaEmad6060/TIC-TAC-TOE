@@ -35,7 +35,6 @@ public class VideoWin extends BorderPane {
     protected final ImageView xoImage;
     protected final MediaView mediaView;
     String path;
-    String winStatus;
 
     public VideoWin(Stage s) {
 
@@ -69,16 +68,7 @@ public class VideoWin extends BorderPane {
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1D1E3D;");
         String path;
-        if(EmptyBoard.win)
-        {
         path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
-        winStatus = "Congratulation!";
-        }
-        else
-        {
-         path = getClass().getResource("/tictactoe/videos/looser.mp4").toExternalForm();  
-         winStatus = "Good Luck!";
-        }
         Media media = new Media(path); 
         MediaPlayer mediaPlayer = new MediaPlayer(media);  
         mediaView = new MediaView(mediaPlayer);
@@ -149,7 +139,7 @@ public class VideoWin extends BorderPane {
         GridPane.setColumnIndex(congratsLabel, 1);
         GridPane.setValignment(congratsLabel, javafx.geometry.VPos.CENTER);
         congratsLabel.setAlignment(javafx.geometry.Pos.CENTER);
-        congratsLabel.setText(winStatus);
+        congratsLabel.setText("Congratulations!");
         congratsLabel.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         congratsLabel.setFont(new Font("Cooper Black", 100.0));
         congratsLabel.setPadding(new Insets(25.0, 0.0, 0.0, 130.0));
