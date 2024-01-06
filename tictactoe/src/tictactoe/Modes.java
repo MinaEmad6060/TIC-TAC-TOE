@@ -135,6 +135,13 @@ public class Modes extends BorderPane {
         robotButton.setText("Robot");
         robotButton.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         robotButton.setFont(new Font("Cooper Black", 72.0));
+        
+        robotButton.setOnAction(new EventHandler<ActionEvent>(){
+
+            @Override
+            public void handle(ActionEvent event) {
+                Welcome.navScreens(new RobotMode(stage), stage);
+            }});
 
         onlineButton.setMnemonicParsing(false);
         onlineButton.setPrefHeight(147.0);

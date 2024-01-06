@@ -1,11 +1,5 @@
 package tictactoe;
 
-
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,14 +14,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-
-
-
-
-
-
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.Event;
@@ -81,15 +67,12 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
     static boolean turn=true;
     Timeline timeline;
     Stage stage;
-    
-    
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];//creat array of buttons
    
     public EmptyBoard(Stage s) {
-
-
         stage = s;
+        
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
         }));
@@ -140,9 +123,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         gameBoard[2][1]=button21;
         gameBoard[2][2]=button22;
         initBoard();
-        //fill array of buttons
         
-        //
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -153,7 +134,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
 
         anchorPane.setPrefHeight(200.0);
         anchorPane.setPrefWidth(1200.0);
-
         AnchorPane.setTopAnchor(imageView, 43.0);
         imageView.setFitHeight(150.0);
         imageView.setFitWidth(150.0);
@@ -326,8 +306,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button00.setText("x");
                     button00.setDisable(true);
-                    //button00.setOpacity(1);
-                    gameBoard[0][0]=button00;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -337,8 +315,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button00.setText("o");
                     button00.setDisable(true);
-                    //button00.setOpacity(1);
-                    gameBoard[0][0]=button00;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -360,8 +336,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button01.setText("x");
                     button01.setDisable(true);
-                    //button01.setOpacity(1);
-                    gameBoard[0][1]=button01;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -371,7 +345,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button01.setText("o");
                     button01.setDisable(true);
-                    //button01.setOpacity(1);
                     gameBoard[0][1]=button01;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
@@ -395,7 +368,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button02.setText("x");
                     button02.setDisable(true);
-                    //button02.setOpacity(1);
                     gameBoard[0][2]=button02;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
@@ -406,8 +378,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button02.setText("o");
                     button02.setDisable(true);
-                    //button02.setOpacity(1);
-                    gameBoard[0][2]=button02;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -430,8 +400,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button10.setText("x");
                     button10.setDisable(true);
-                    //button10.setOpacity(1);
-                    gameBoard[1][0]=button10;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -441,8 +409,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button10.setText("o");
                     button10.setDisable(true);
-                    //button10.setOpacity(1);
-                    gameBoard[1][0]=button10;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -466,8 +432,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button11.setText("x");
                     button11.setDisable(true);
-                    //button11.setOpacity(1);
-                    gameBoard[1][1]=button11;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -477,8 +441,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button11.setText("o");
                     button11.setDisable(true);
-                    //button11.setOpacity(1);
-                    gameBoard[1][1]=button11;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -502,8 +464,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button12.setText("x");
                     button12.setDisable(true);
-                    //button12.setOpacity(1);
-                    gameBoard[1][2]=button12;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -513,8 +473,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button12.setText("o");
                     button12.setDisable(true);
-                    //button12.setOpacity(1);
-                    gameBoard[1][2]=button12;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -537,8 +495,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button20.setText("x");
                     button20.setDisable(true);
-                    //button20.setOpacity(1);
-                    gameBoard[2][0]=button20;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -548,8 +504,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button20.setText("o");
                     button20.setDisable(true);
-                    //button20.setOpacity(1);
-                    gameBoard[2][0]=button20;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -573,8 +527,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button21.setText("x");
                     button21.setDisable(true);
-                    //button21.setOpacity(1);
-                    gameBoard[2][1]=button21;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -584,8 +536,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button21.setText("o");
                     button21.setDisable(true);
-                    //button21.setOpacity(1);
-                    gameBoard[2][1]=button21;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -609,8 +559,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=false;
                     button22.setText("x");
                     button22.setDisable(true);
-                    //button22.setOpacity(1);
-                    gameBoard[2][2]=button22;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -620,8 +568,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                     turn=true;
                     button22.setText("o");
                     button22.setDisable(true);
-                    //button22.setOpacity(1);
-                    gameBoard[2][2]=button22;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -709,8 +655,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
           gameBoard[row1][col1].setOpacity(1);
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
-
-
       }
       else{
           gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -720,26 +664,19 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
       }
-      
-
     }
     @Override
       public void updateScore(){
           if(!turn){
               System.out.println("x win");
               xScore++;
-            //global variable 
-              //int score = Integer.parseInt(scoreX.getText());//get score text and convert to int
               scoreX.setText((xScore)+"");//update x score
-              //initBoard();
           }
           else{
-             int score = Integer.parseInt(scoreO.getText());//
              oScore++;
              scoreO.setText(""+oScore);
           }
       }
-
 
     @Override
     public void drawAlert() {
@@ -783,15 +720,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-
-                        //Welcome.navScreens(new EmptyBoard(s), s);
-                        
-
                         Welcome.navScreens(new EmptyBoard(stage), stage);
-
-                        
-                        //Welcome.navScreens(new EmptyBoard(Stage s), s);
-
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
@@ -800,7 +729,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
                        Welcome.navScreens(new Modes(stage), stage);
                         xScore = 0;
                         oScore = 0;
-
                     }
                 });
                  alert.showAndWait();
@@ -898,9 +826,7 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
             updateScore();
             disableBoard();
             timeline.play();
-
         }
-
         else
         {
             drawCount++;
@@ -909,8 +835,6 @@ public class EmptyBoard extends AnchorPane implements BoardInterface{
         {
             drawAlert();
         }
-        
-       
     }
     
     public short checkRows()
