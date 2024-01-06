@@ -82,7 +82,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 
         stage = s;
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Welcome.navScreens(new VideoWin(stage), stage);
+            Welcome.navScreens(new RobotVideo(stage), stage);
         }));
 
         anchorPane = new AnchorPane();
@@ -248,7 +248,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         text9.setLayoutY(237.0);
         text9.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text9.setStrokeWidth(0.0);
-        text9.setText("player 2");
+        text9.setText("  Robot");
         text9.setWrappingWidth(190.3984339237213);
         text9.setFont(new Font("Cooper Black", 40.0));
 
@@ -258,7 +258,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         imageView1.setLayoutY(43.0);
         imageView1.setPickOnBounds(true);
         imageView1.setPreserveRatio(true);
-        imageView1.setImage(new Image(getClass().getResource("images/playero.png").toExternalForm()));
+        imageView1.setImage(new Image(getClass().getResource("images/robot.png").toExternalForm()));
 
         exitButton.setFitHeight(134.0);
         exitButton.setFitWidth(174.0);
@@ -788,8 +788,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
           gameBoard[row1][col1].setOpacity(1);
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
-
-
+          win = true;
       }
       else{
           gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -798,22 +797,19 @@ public class RobotMode extends AnchorPane implements BoardInterface{
           gameBoard[row1][col1].setOpacity(1);
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
+          win = false;
       }
-      
-
+ 
     }
     @Override
       public void updateScore(){
           if(!turn){
               System.out.println("x win");
               xScore++;
-            //global variable 
-              //int score = Integer.parseInt(scoreX.getText());//get score text and convert to int
-              scoreX.setText((xScore)+"");//update x score
-              //initBoard();
+              scoreX.setText((xScore)+"");
           }
           else{
-             int score = Integer.parseInt(scoreO.getText());//
+              System.out.println("ooooo win");
              oScore++;
              scoreO.setText(""+oScore);
           }
@@ -862,15 +858,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-
-                        //Welcome.navScreens(new EmptyBoard(s), s);
-                        
-
-                        Welcome.navScreens(new EmptyBoard(stage), stage);
-
-                        
-                        //Welcome.navScreens(new EmptyBoard(Stage s), s);
-
+                        Welcome.navScreens(new RobotMode(stage), stage);
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
@@ -936,7 +924,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
     }
 
     //initialize Board
-        public void initBoard(){
+    public void initBoard(){
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
                    gameBoard[i][j].setText(" "); 
@@ -946,6 +934,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             }
         }
         //indecates availability of check
+        
         public boolean availableToCheck(){
             boolean avFlag=false;
             int count=0;
@@ -968,16 +957,17 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             }
             return avFlag;
         }
-    public void checkWinner(){
+    
+        public void checkWinner(){
         short checkWinnerRes;
         checkWinnerRes = checkOnGame();
         
         if(checkWinnerRes == 2)
         {
-            turn=true;
             updateScore();
             disableBoard();
             timeline.play();
+            turn=true;
         }
 
         else
@@ -1091,7 +1081,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         return result;
     
     }
-    
+   
     void disableBoard(){
 	for(int i=0; i<3; i++){
 		for(int j=0; j<3; j++){
@@ -1102,11 +1092,13 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 	}
         exitButton.setDisable(true);
     }
+   
     int getRondomNum(){
         Random random = new Random();  
         int randomNumber = random.nextInt(3);
         return randomNumber;
     }
+    
     boolean checkEnable(int row,int col){
     if(gameBoard[row][col].isDisable())
         return false;
