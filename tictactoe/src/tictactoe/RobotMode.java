@@ -1016,4 +1016,11 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         int randomNumber = random.nextInt(3);
         return randomNumber;
     }
+    boolean checkEnable(int row,int col){
+    if(gameBoard[row][col].isDisable())
+        return false;
+
+        else 
+         return true;
+}
 }
