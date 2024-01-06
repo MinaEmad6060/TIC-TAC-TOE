@@ -1016,4 +1016,5 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         int randomNumber = random.nextInt(3);
         return randomNumber;
     }
+    
 }
