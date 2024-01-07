@@ -1,5 +1,6 @@
 package tictactoe;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -170,27 +171,37 @@ public  class SignUp extends AnchorPane {
         username.setPrefHeight(76.0);
         username.setPrefWidth(770.0);
         username.setPromptText("User Name");
-       username.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
+        username.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         username.setFont(new Font("Cooper Black", 50.0));
         username.setCursor(Cursor.NONE);
         username.setFocusTraversable(false);
+        username.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                checkIsEmpty(username);
+            }
+        });
 
         lableUser.setPrefHeight(24.0);
         lableUser.setPrefWidth(713.0);
-        lableUser.setText("Label");
+        lableUser.setText("");
         lableUser.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
         lableUser.setFont(new Font("Cooper Black", 20.0));
 
         password.setPrefHeight(76.0);
         password.setPrefWidth(770.0);
         password.setPromptText("Password");
-         password.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
+        password.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         password.setFont(new Font("Cooper Black", 50.0));
         password.setFocusTraversable(false);
+        password.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                checkIsEmpty(password);
+            }
+        });
 
         lablePass.setPrefHeight(24.0);
         lablePass.setPrefWidth(707.0);
-        lablePass.setText("Label");
+        lablePass.setText("");
         lablePass.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
         lablePass.setFont(new Font("Cooper Black", 20.0));
 
@@ -200,10 +211,15 @@ public  class SignUp extends AnchorPane {
         confPass.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         confPass.setFont(new Font("Cooper Black", 50.0));
         confPass.setFocusTraversable(false);
+        confPass.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                checkIsEmpty(confPass);
+            }
+        });
 
         lableConf.setPrefHeight(24.0);
         lableConf.setPrefWidth(766.0);
-        lableConf.setText("lable");
+        lableConf.setText("tt");
         lableConf.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
         lableConf.setFont(new Font("Cooper Black", 20.0));
         flowPane.setOpaqueInsets(new Insets(0.0));
@@ -217,6 +233,41 @@ public  class SignUp extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setTextFill(javafx.scene.paint.Color.valueOf("#1d1e3d"));
         btnSignUp.setFont(new Font("Cooper Black", 65.0));
+        btnSignUp.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                if(username.getText().equals("")){
+                    lableUser.setText("username is empty");
+                }
+                else if (password.getText().equals("")){
+                    lablePass.setText("password is empty");
+                }
+                else if(confPass.getText().equals(""))
+                {
+                    lableConf.setText("Please Confirm your password");
+                }
+                if(!username.getText().equals("") && !password.getText().equals("") && !confPass.getText().equals("") ){
+                    if(checkUserNameLength(username.getText())){
+                        if(checkPasswordLength(password.getText())){
+                            if(checkPasswords(password.getText() , confPass.getText())){
+                                System.out.println("Successful signup");
+                                // complete sign up process
+                            }
+                            else{
+                                lableConf.setText("Passwords Doesn't Match.");
+                            }
+                        }
+                        else{
+                            lablePass.setText("Password should be at least 6 charchters.");
+                        }
+                    }
+                    else
+                    {
+                        lableUser.setText("Username should be at least 3 charchters.");
+                    }
+                }
+            }
+        });
 
         text8.setFill(javafx.scene.paint.Color.WHITE);
         text8.setLayoutX(364.0);
@@ -248,11 +299,11 @@ public  class SignUp extends AnchorPane {
         btnBack.setPreserveRatio(true);
         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
-         btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
-      public void handle(MouseEvent event) {
-          Welcome.navScreens(new Modes(s), s);
-      }
-  });
+        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent event) {
+                Welcome.navScreens(new Modes(s), s);
+            }
+        });
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(text0);
         anchorPane.getChildren().add(text1);
@@ -277,11 +328,51 @@ public  class SignUp extends AnchorPane {
         getChildren().add(btnBack);
 
     }
-  boolean checkFieldLength(String userData){
-     if((userData.length()<6)) 
-         return false ;
-      else
-          return true;
-                 
-  }
+    
+    boolean checkPasswordLength(String password){
+       if((password.length()<6)) 
+           return false ;
+        else
+            return true;
+    }
+    boolean checkUserNameLength(String userName){
+       if((userName.length()<3)) 
+           return false ;
+        else
+            return true;
+    }
+    public boolean checkPasswords(String password , String confirmPassword){
+
+        if(password.equals(confirmPassword)){
+            return true ;
+        }
+        else{
+            return false;
+        }
+    }
+    private void checkIsEmpty(TextField textField) {
+        if (textField.getText().isEmpty()) {
+            System.out.println(textField.getPromptText() + " is empty");
+            
+            if(textField.getPromptText().equals("User Name")){
+                    lableUser.setText("username is empty");
+            }
+            else if(textField.getPromptText().equals("Password")){
+                    lablePass.setText("password is empty");
+            }  
+            else if(textField.getPromptText().equals("Confirm Password")){
+                    lableConf.setText("Please Confirm your password");
+            }
+        }
+        else {
+        if (textField.getPromptText().equals("User Name")) {
+            lableUser.setText("");
+        } else if (textField.getPromptText().equals("Password")) {
+            lablePass.setText("");
+        }
+        else if (textField.getPromptText().equals("Confirm Password")) {
+            lableConf.setText("");
+        }
+    }
+    }
 }

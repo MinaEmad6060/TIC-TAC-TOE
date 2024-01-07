@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <HBox prefHeight="66.0" prefWidth="596.0" style="-fx-background-radius: 20; -fx-border-color: #ffffff; -fx-border-radius: 20; -fx-border-style: dashed; -fx-border-width: 3; -fx-background-color: #1d1e3d;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tist.list.YourItemController">
-    <Label fx:id="dataLabel" prefHeight="29.0" prefWidth="125.0" textFill="#e10e0e">
-      <font>
-         <Font name="Cooper Black" size="24.0" />
-      </font>
-   </Label>
-   <Label fx:id="dataLabel2" prefHeight="29.0" prefWidth="125.0" textFill="#e10e0e">
-      <font>
-         <Font name="Cooper Black" size="24.0" />
-      </font>
-   </Label>
+   <children>
+      <Label fx:id="dataLabel" prefHeight="29.0" prefWidth="348.0" text="Name" textFill="WHITE">
+         <font>
+            <Font name="Cooper Black" size="24.0" />
+         </font>
+         <HBox.margin>
+            <Insets left="15.0" top="14.0" />
+         </HBox.margin>
+      </Label>
+      <FlowPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" prefWidth="56.0" style="-fx-border-radius: 20; -fx-background-color: #ffd652; -fx-background-radius: 20;">
+         <HBox.margin>
+            <Insets left="150.0" top="7.0" />
+         </HBox.margin>
+         <children>
+            <Label alignment="CENTER" text="25" textFill="WHITE">
+               <font>
+                  <Font name="Cooper Black" size="30.0" />
+               </font>
+               <FlowPane.margin>
+                  <Insets left="10.0" top="2.0" />
+               </FlowPane.margin>
+            </Label>
+         </children>
+      </FlowPane>
+   </children>
 </HBox>

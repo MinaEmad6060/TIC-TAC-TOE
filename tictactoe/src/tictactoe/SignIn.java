@@ -1,6 +1,7 @@
 package tictactoe;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -211,9 +212,6 @@ public class SignIn extends AnchorPane {
         lablePass.setFont(new Font("Cooper Black", 20.0));
         flowPane.setOpaqueInsets(new Insets(0.0));
         
-            
-        
-
         btnSignIn.setLayoutX(425.0);
         btnSignIn.setLayoutY(548.0);
         btnSignIn.setMnemonicParsing(false);
@@ -223,13 +221,20 @@ public class SignIn extends AnchorPane {
         btnSignIn.setText("Sign In");
         btnSignIn.setTextFill(javafx.scene.paint.Color.valueOf("#1d1e3d"));
         btnSignIn.setFont(new Font("Cooper Black", 65.0));
-     btnSignIn.setOnAction(new EventHandler<ActionEvent>(){
+        btnSignIn.setOnAction(new EventHandler() {
             @Override
-            public void handle(ActionEvent event) {
-
-                navScreens(new OnlineHome(s), s);
-    }
-            
+            public void handle(Event event) {
+                if(username.getText().equals("")){
+                    lableUser.setText("username is empty");
+                }
+                else if (password.getText().equals("")){
+                    lablePass.setText("password is empty");
+                }
+                if(!username.getText().equals("") && !password.getText().equals("")){
+                    System.out.println("Successful login");
+                    // complete login process
+                }
+            }
         });
         text8.setFill(javafx.scene.paint.Color.WHITE);
         text8.setLayoutX(364.0);
@@ -248,7 +253,7 @@ public class SignIn extends AnchorPane {
         btnClick.setText(" Click here");
         btnClick.setWrappingWidth(338.5302734375);
         btnClick.setFont(new Font("Cooper Black", 30.0));
-         btnClick.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        btnClick.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event) {
                 Welcome.navScreens(new SignUp(s), s);
             }
@@ -279,15 +284,12 @@ public class SignIn extends AnchorPane {
         if (textField.getText().isEmpty()) {
             System.out.println(textField.getPromptText() + " is empty");
             
-            
-            
             if(textField.getPromptText().equals("User Name")){
-                lableUser.setText("username is empty");
+                    lableUser.setText("username is empty");
             }
             else if(textField.getPromptText().equals("Password")){
-                lablePass.setText("password is empty");
-            }
-            
+                    lablePass.setText("password is empty");
+            }  
         }
         else {
         if (textField.getPromptText().equals("User Name")) {
