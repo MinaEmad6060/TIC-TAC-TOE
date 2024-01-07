@@ -233,41 +233,6 @@ public  class SignUp extends AnchorPane {
         btnSignUp.setText("Sign Up");
         btnSignUp.setTextFill(javafx.scene.paint.Color.valueOf("#1d1e3d"));
         btnSignUp.setFont(new Font("Cooper Black", 65.0));
-        btnSignUp.setOnAction(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                if(username.getText().equals("")){
-                    lableUser.setText("username is empty");
-                }
-                else if (password.getText().equals("")){
-                    lablePass.setText("password is empty");
-                }
-                else if(confPass.getText().equals(""))
-                {
-                    lableConf.setText("Please Confirm your password");
-                }
-                if(!username.getText().equals("") && !password.getText().equals("") && !confPass.getText().equals("") ){
-                    if(checkUserNameLength(username.getText())){
-                        if(checkPasswordLength(password.getText())){
-                            if(checkPasswords(password.getText() , confPass.getText())){
-                                System.out.println("Successful signup");
-                                // complete sign up process
-                            }
-                            else{
-                                lableConf.setText("Passwords Doesn't Match.");
-                            }
-                        }
-                        else{
-                            lablePass.setText("Password should be at least 6 charchters.");
-                        }
-                    }
-                    else
-                    {
-                        lableUser.setText("Username should be at least 3 charchters.");
-                    }
-                }
-            }
-        });
 
         text8.setFill(javafx.scene.paint.Color.WHITE);
         text8.setLayoutX(364.0);
