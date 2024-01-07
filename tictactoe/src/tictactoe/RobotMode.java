@@ -235,11 +235,11 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         imageView0.setImage(new Image(getClass().getResource("images/xo.png").toExternalForm()));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
-        text8.setLayoutX(88.0);
+        text8.setLayoutX(120.0);
         text8.setLayoutY(237.0);
         text8.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text8.setStrokeWidth(0.0);
-        text8.setText("player 1");
+        text8.setText("You");
         text8.setWrappingWidth(190.3984339237213);
         text8.setFont(new Font("Cooper Black", 40.0));
 

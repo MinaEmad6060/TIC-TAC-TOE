@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="784.0" prefWidth="1200.0" style="-fx-background-color: #1D1E3D;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="1200.0">
+         <children>
+            <Text fill="#00d6ff" layoutX="331.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="371.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="258.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#00d6ff" layoutX="473.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="539.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#00d6ff" layoutX="626.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="725.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#00d6ff" layoutX="798.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="882.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="53.0" fitWidth="102.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/xo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="btnBack" fitHeight="68.0" fitWidth="107.0" layoutX="35.0" layoutY="667.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/back.png" />
+         </image>
+      </ImageView>
+      <FlowPane alignment="CENTER" layoutX="112.0" layoutY="200.0" orientation="VERTICAL" prefHeight="260.0" prefWidth="977.0" vgap="25.0">
+         <children>
+            <TextField fx:id="username" prefHeight="76.0" prefWidth="770.0" style="-fx-background-radius: 25;" text="User name">
+               <font>
+                  <Font name="Cooper Black" size="50.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="password" prefHeight="76.0" prefWidth="770.0" style="-fx-background-radius: 25;" text="Password">
+               <font>
+                  <Font name="Cooper Black" size="50.0" />
+               </font>
+            </TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </FlowPane>
+      <Button fx:id="btnSignIn" layoutX="450.0" layoutY="514.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="Sign In" textFill="#1d1e3d">
+         <font>
+            <Font name="Cooper Black" size="65.0" />
+         </font>
+      </Button>
+      <Text fill="WHITE" layoutX="391.0" layoutY="711.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create new account, " wrappingWidth="338.5302734375">
+         <font>
+            <Font name="Cooper Black" size="30.0" />
+         </font>
+      </Text>
+      <Text fx:id="btnClick" fill="#d7b33e" layoutX="703.0" layoutY="711.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Click here" wrappingWidth="338.5302734375">
+         <font>
+            <Font name="Cooper Black" size="30.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
