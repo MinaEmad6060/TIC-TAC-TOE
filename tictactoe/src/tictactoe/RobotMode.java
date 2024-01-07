@@ -1106,5 +1106,6 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         else 
          return true;
 }
+    
 
 }
