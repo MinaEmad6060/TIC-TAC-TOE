@@ -180,6 +180,9 @@ public  class SignIn extends AnchorPane {
         password.setFont(new Font("Cooper Black", 50.0));
         password.setFocusTraversable(false);
         flowPane.setOpaqueInsets(new Insets(0.0));
+        
+            
+        
 
         btnSignIn.setLayoutX(426.0);
         btnSignIn.setLayoutY(507.0);
@@ -233,4 +236,6 @@ public  class SignIn extends AnchorPane {
         getChildren().add(btnClick);
 
     }
+    
+  
 }
