@@ -69,7 +69,10 @@ public class RobotMode extends AnchorPane implements BoardInterface{
     static boolean turn=true;
     Timeline timeline;
     Stage stage;
-    
+    static boolean win = false;
+    int row;
+    int col;
+    boolean enable;
     
     int drawCount=0;   //counter for checkDraw  if checkwinner return false this counter increased by 1
     Button[][] gameBoard = new Button[3][3];//creat array of buttons
@@ -79,7 +82,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 
         stage = s;
          timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Welcome.navScreens(new VideoWin(stage), stage);
+            Welcome.navScreens(new RobotVideo(stage), stage);
         }));
 
         anchorPane = new AnchorPane();
@@ -245,7 +248,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         text9.setLayoutY(237.0);
         text9.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text9.setStrokeWidth(0.0);
-        text9.setText("player 2");
+        text9.setText("  Robot");
         text9.setWrappingWidth(190.3984339237213);
         text9.setFont(new Font("Cooper Black", 40.0));
 
@@ -255,7 +258,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         imageView1.setLayoutY(43.0);
         imageView1.setPickOnBounds(true);
         imageView1.setPreserveRatio(true);
-        imageView1.setImage(new Image(getClass().getResource("images/playero.png").toExternalForm()));
+        imageView1.setImage(new Image(getClass().getResource("images/robot.png").toExternalForm()));
 
         exitButton.setFitHeight(134.0);
         exitButton.setFitWidth(174.0);
@@ -309,29 +312,38 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button00.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
-                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
-                    button00.setText("x");
-                    button00.setDisable(true);
-                    //button00.setOpacity(1);
-                    gameBoard[0][0]=button00;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
-                    }
-                }else{
-                    button00.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button00.setText("o");
-                    button00.setDisable(true);
-                    //button00.setOpacity(1);
-                    gameBoard[0][0]=button00;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                button00.setText("x");
+                turn=false;
+                button00.setDisable(true);
+                gameBoard[0][0]=button00;
+                if(availableToCheck()){
+                    System.out.println("avaliable to");
+                    checkWinner();
+                }
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
+   
             }
         });
         GridPane.setColumnIndex(button01, 1);
@@ -343,27 +355,36 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button01.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
-                    button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
-                    button01.setText("x");
-                    button01.setDisable(true);
-                    //button01.setOpacity(1);
-                    gameBoard[0][1]=button01;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
-                    }
-                }else{
-                    button01.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button01.setText("o");
-                    button01.setDisable(true);
-                    //button01.setOpacity(1);
-                    gameBoard[0][1]=button01;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                button01.setText("x");
+                turn=false;
+                button01.setDisable(true);
+                gameBoard[0][1]=button01;
+                if(availableToCheck()){
+                    System.out.println("avaliaple to");
+                    checkWinner();
+                }
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -378,27 +399,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button02.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+               
                     button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button02.setText("x");
+                    turn=false;
                     button02.setDisable(true);
-                    //button02.setOpacity(1);
                     gameBoard[0][2]=button02;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button02.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button02.setText("o");
-                    button02.setDisable(true);
-                    //button02.setOpacity(1);
-                    gameBoard[0][2]=button02;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -413,27 +444,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button10.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+                
                     button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button10.setText("x");
+                    turn=false;
                     button10.setDisable(true);
-                    //button10.setOpacity(1);
                     gameBoard[1][0]=button10;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button10.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button10.setText("o");
-                    button10.setDisable(true);
-                    //button10.setOpacity(1);
-                    gameBoard[1][0]=button10;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -449,27 +490,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button11.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+               
                     button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button11.setText("x");
+                    turn=false;
                     button11.setDisable(true);
-                    //button11.setOpacity(1);
                     gameBoard[1][1]=button11;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button11.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button11.setText("o");
-                    button11.setDisable(true);
-                    //button11.setOpacity(1);
-                    gameBoard[1][1]=button11;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -485,27 +536,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button12.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+                
                     button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button12.setText("x");
+                    turn=false;
                     button12.setDisable(true);
-                    //button12.setOpacity(1);
                     gameBoard[1][2]=button12;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button12.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button12.setText("o");
-                    button12.setDisable(true);
-                    //button12.setOpacity(1);
-                    gameBoard[1][2]=button12;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -520,27 +581,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button20.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+                
                     button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button20.setText("x");
+                    turn=false;
                     button20.setDisable(true);
-                    //button20.setOpacity(1);
                     gameBoard[2][0]=button20;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
+                        
                     }
-                }else{
-                    button20.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button20.setText("o");
-                    button20.setDisable(true);
-                    //button20.setOpacity(1);
-                    gameBoard[2][0]=button20;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -556,27 +627,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button21.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+                
                     button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button21.setText("x");
+                    turn=false;
                     button21.setDisable(true);
-                    //button21.setOpacity(1);
                     gameBoard[2][1]=button21;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button21.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button21.setText("o");
-                    button21.setDisable(true);
-                    //button21.setOpacity(1);
-                    gameBoard[2][1]=button21;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -592,27 +673,37 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         button22.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(turn){
+                
                     button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                    turn=false;
                     button22.setText("x");
+                    turn=false;
                     button22.setDisable(true);
-                    //button22.setOpacity(1);
                     gameBoard[2][2]=button22;
                     if(availableToCheck()){
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }else{
-                    button22.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-                    turn=true;
-                    button22.setText("o");
-                    button22.setDisable(true);
-                    //button22.setOpacity(1);
-                    gameBoard[2][2]=button22;
-                    if(availableToCheck()){
-                        System.out.println("avaliaple to");
-                        checkWinner();
+                
+                
+                row=getRondomNum();
+                col=getRondomNum();
+                enable=checkEnable(row, col);
+                
+                while(!turn){
+                    if(enable){
+                        gameBoard[row][col].setText("o");
+                        gameBoard[row][col].setDisable(true);
+                        turn=true;
+                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                        if(availableToCheck()){
+                            System.out.println("avaliable to");
+                            checkWinner();
+                        }
+                        break;
+                    }else{ 
+                         row=getRondomNum();
+                         col=getRondomNum();
+                         enable=checkEnable(row, col); 
                     }
                 }
             }
@@ -697,8 +788,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
           gameBoard[row1][col1].setOpacity(1);
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
-
-
+          win = true;
       }
       else{
           gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -707,22 +797,19 @@ public class RobotMode extends AnchorPane implements BoardInterface{
           gameBoard[row1][col1].setOpacity(1);
           gameBoard[row2][col2].setOpacity(1);
           gameBoard[row3][col3].setOpacity(1);
+          win = false;
       }
-      
-
+ 
     }
     @Override
       public void updateScore(){
           if(!turn){
               System.out.println("x win");
               xScore++;
-            //global variable 
-              //int score = Integer.parseInt(scoreX.getText());//get score text and convert to int
-              scoreX.setText((xScore)+"");//update x score
-              //initBoard();
+              scoreX.setText((xScore)+"");
           }
           else{
-             int score = Integer.parseInt(scoreO.getText());//
+              System.out.println("ooooo win");
              oScore++;
              scoreO.setText(""+oScore);
           }
@@ -771,15 +858,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-
-                        //Welcome.navScreens(new EmptyBoard(s), s);
-                        
-
-                        Welcome.navScreens(new EmptyBoard(stage), stage);
-
-                        
-                        //Welcome.navScreens(new EmptyBoard(Stage s), s);
-
+                        Welcome.navScreens(new RobotMode(stage), stage);
                     }
                 });
                 noButton.setOnAction(new EventHandler() {
@@ -845,7 +924,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
     }
 
     //initialize Board
-        public void initBoard(){
+    public void initBoard(){
             for(int i=0; i<3; i++){
                 for(int j=0; j<3; j++){
                    gameBoard[i][j].setText(" "); 
@@ -855,6 +934,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             }
         }
         //indecates availability of check
+        
         public boolean availableToCheck(){
             boolean avFlag=false;
             int count=0;
@@ -877,7 +957,8 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             }
             return avFlag;
         }
-    public void checkWinner(){
+    
+        public void checkWinner(){
         short checkWinnerRes;
         checkWinnerRes = checkOnGame();
         
@@ -886,7 +967,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
             updateScore();
             disableBoard();
             timeline.play();
-
+            turn=true;
         }
 
         else
@@ -1000,7 +1081,7 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         return result;
     
     }
-    
+   
     void disableBoard(){
 	for(int i=0; i<3; i++){
 		for(int j=0; j<3; j++){
@@ -1011,11 +1092,13 @@ public class RobotMode extends AnchorPane implements BoardInterface{
 	}
         exitButton.setDisable(true);
     }
+   
     int getRondomNum(){
         Random random = new Random();  
         int randomNumber = random.nextInt(3);
         return randomNumber;
     }
+    
     boolean checkEnable(int row,int col){
     if(gameBoard[row][col].isDisable())
         return false;
@@ -1023,4 +1106,5 @@ public class RobotMode extends AnchorPane implements BoardInterface{
         else 
          return true;
 }
+
 }
