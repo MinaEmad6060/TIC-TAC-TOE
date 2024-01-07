@@ -17,7 +17,7 @@
          <children>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="88.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="43.0">
                <image>
-                  <Image url="@../../../../icon/playerx.png" />
+                  <Image url="@images/playerx.png" />
                </image>
             </ImageView>
             <Text fill="#00d6ff" layoutX="400.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H">
@@ -62,7 +62,7 @@
             </Text>
             <ImageView fitHeight="53.0" fitWidth="102.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../icon/xoIcon.png" />
+                  <Image url="@images/xoTopIcon.png" />
                </image>
             </ImageView>
             <Text fill="#fcfcfc" layoutX="102.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
@@ -77,14 +77,19 @@
             </Text>
             <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="977.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../icon/playero.png" />
+                  <Image url="@images/playero.png" />
                </image>
             </ImageView>
+            <Text fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
+               <font>
+                  <Font name="Berlin Sans FB" size="30.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
       <ImageView fx:id="exitButton" fitHeight="134.0" fitWidth="174.0" layoutX="93.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../icon/exit.png" />
+            <Image url="@images/exit.png" />
          </image>
       </ImageView>
       <GridPane layoutX="300.0" layoutY="238.0" prefHeight="508.0" prefWidth="600.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="238.0">
