@@ -277,5 +277,11 @@ public  class SignUp extends AnchorPane {
         getChildren().add(btnBack);
 
     }
-    
+  boolean checkFieldLength(String userData){
+     if((userData.length()<6)) 
+         return false ;
+      else
+          return true;
+                 
+  }
 }
