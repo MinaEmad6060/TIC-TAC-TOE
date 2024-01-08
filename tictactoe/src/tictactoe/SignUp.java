@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -15,7 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class SignUp extends AnchorPane {
+public  class SignUp extends AnchorPane {
 
     protected final AnchorPane anchorPane;
     protected final Text text;
@@ -30,8 +31,11 @@ public class SignUp extends AnchorPane {
     protected final ImageView imageView;
     protected final FlowPane flowPane;
     protected final TextField username;
+    protected final Label lableUser;
     protected final PasswordField password;
+    protected final Label lablePass;
     protected final PasswordField confPass;
+    protected final Label lableConf;
     protected final Button btnSignUp;
     protected final Text text8;
     protected final Text textSignIn;
@@ -52,8 +56,11 @@ public class SignUp extends AnchorPane {
         imageView = new ImageView();
         flowPane = new FlowPane();
         username = new TextField();
+        lableUser = new Label();
         password = new PasswordField();
+        lablePass = new Label();
         confPass = new PasswordField();
+        lableConf = new Label();
         btnSignUp = new Button();
         text8 = new Text();
         textSignIn = new Text();
@@ -156,33 +163,53 @@ public class SignUp extends AnchorPane {
         flowPane.setLayoutX(113.0);
         flowPane.setLayoutY(156.0);
         flowPane.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        flowPane.setPrefHeight(360.0);
+        flowPane.setPrefHeight(414.0);
         flowPane.setPrefWidth(977.0);
-        flowPane.setVgap(20.0);
+        flowPane.setVgap(10.0);
 
         username.setPrefHeight(76.0);
         username.setPrefWidth(770.0);
         username.setPromptText("User Name");
-        username.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
+       username.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         username.setFont(new Font("Cooper Black", 50.0));
         username.setCursor(Cursor.NONE);
         username.setFocusTraversable(false);
+
+        lableUser.setPrefHeight(24.0);
+        lableUser.setPrefWidth(713.0);
+        lableUser.setText("Label");
+        lableUser.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
+        lableUser.setFont(new Font("Cooper Black", 20.0));
+
         password.setPrefHeight(76.0);
         password.setPrefWidth(770.0);
         password.setPromptText("Password");
-        password.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
+         password.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         password.setFont(new Font("Cooper Black", 50.0));
         password.setFocusTraversable(false);
+
+        lablePass.setPrefHeight(24.0);
+        lablePass.setPrefWidth(707.0);
+        lablePass.setText("Label");
+        lablePass.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
+        lablePass.setFont(new Font("Cooper Black", 20.0));
+
         confPass.setPrefHeight(76.0);
         confPass.setPrefWidth(770.0);
         confPass.setPromptText("Confirm Password");
         confPass.setStyle("-fx-background-radius: 25;-fx-text-fill: #d7b33e;");
         confPass.setFont(new Font("Cooper Black", 50.0));
         confPass.setFocusTraversable(false);
+
+        lableConf.setPrefHeight(24.0);
+        lableConf.setPrefWidth(766.0);
+        lableConf.setText("lable");
+        lableConf.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
+        lableConf.setFont(new Font("Cooper Black", 20.0));
         flowPane.setOpaqueInsets(new Insets(0.0));
 
         btnSignUp.setLayoutX(423.0);
-        btnSignUp.setLayoutY(542.0);
+        btnSignUp.setLayoutY(590.0);
         btnSignUp.setMnemonicParsing(false);
         btnSignUp.setPrefHeight(119.0);
         btnSignUp.setPrefWidth(358.0);
@@ -193,7 +220,7 @@ public class SignUp extends AnchorPane {
 
         text8.setFill(javafx.scene.paint.Color.WHITE);
         text8.setLayoutX(364.0);
-        text8.setLayoutY(729.0);
+        text8.setLayoutY(753.0);
         text8.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text8.setStrokeWidth(0.0);
         text8.setText("Already have an account?");
@@ -202,7 +229,7 @@ public class SignUp extends AnchorPane {
 
         textSignIn.setFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         textSignIn.setLayoutX(766.0);
-        textSignIn.setLayoutY(729.0);
+        textSignIn.setLayoutY(753.0);
         textSignIn.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         textSignIn.setStrokeWidth(0.0);
         textSignIn.setText("Sign In");
@@ -215,17 +242,17 @@ public class SignUp extends AnchorPane {
         });
         btnBack.setFitHeight(68.0);
         btnBack.setFitWidth(107.0);
-        btnBack.setLayoutX(33.0);
-        btnBack.setLayoutY(685.0);
+        btnBack.setLayoutX(22.0);
+        btnBack.setLayoutY(691.0);
         btnBack.setPickOnBounds(true);
         btnBack.setPreserveRatio(true);
         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
-         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
-               btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            public void handle(MouseEvent event) {
-                Welcome.navScreens(new Modes(s), s);
-            }
-        });
+        btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
+         btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+      public void handle(MouseEvent event) {
+          Welcome.navScreens(new Modes(s), s);
+      }
+  });
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(text0);
         anchorPane.getChildren().add(text1);
@@ -238,8 +265,11 @@ public class SignUp extends AnchorPane {
         anchorPane.getChildren().add(imageView);
         getChildren().add(anchorPane);
         flowPane.getChildren().add(username);
+        flowPane.getChildren().add(lableUser);
         flowPane.getChildren().add(password);
+        flowPane.getChildren().add(lablePass);
         flowPane.getChildren().add(confPass);
+        flowPane.getChildren().add(lableConf);
         getChildren().add(flowPane);
         getChildren().add(btnSignUp);
         getChildren().add(text8);
@@ -247,4 +277,5 @@ public class SignUp extends AnchorPane {
         getChildren().add(btnBack);
 
     }
+    
 }
