@@ -68,12 +68,12 @@
             <Image url="@images/back.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnSignIn" layoutX="425.0" layoutY="279.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="Play" textFill="#d7b33e">
+      <Button fx:id="btnPlay" layoutX="425.0" layoutY="279.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="Play" textFill="#d7b33e">
          <font>
             <Font name="Cooper Black" size="70.0" />
          </font>
       </Button>
-      <Button fx:id="btnSignIn1" layoutX="425.0" layoutY="477.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="History" textFill="#d7b33e">
+      <Button fx:id="btnHistory" layoutX="425.0" layoutY="477.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="350.0" style="-fx-background-radius: 25;" text="History" textFill="#d7b33e">
          <font>
             <Font name="Cooper Black" size="65.0" />
          </font>
