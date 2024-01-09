@@ -104,12 +104,12 @@
          <children>
             <AnchorPane layoutX="61.0" layoutY="31.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
                <children>
-                  <Text fill="#5319bd" layoutX="28.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" wrappingWidth="173.00000596046448">
+                  <Text fill="#5319bd" layoutX="24.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" textAlignment="CENTER" wrappingWidth="173.00000596046448">
                      <font>
                         <Font name="MT Extra" size="40.0" />
                      </font>
                   </Text>
-                  <Text fill="#5319bd" layoutX="64.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="94.66474056243896">
+                  <Text fill="#5319bd" layoutX="64.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="94.66474056243896">
                      <font>
                         <Font name="MT Extra" size="40.0" />
                      </font>
@@ -120,12 +120,12 @@
       </AnchorPane>
       <AnchorPane layoutX="489.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
          <children>
-            <Text fill="#5319bd" layoutX="42.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" wrappingWidth="137.00000596046448">
+            <Text fill="#5319bd" layoutX="42.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" textAlignment="CENTER" wrappingWidth="137.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
             </Text>
-            <Text fill="#5319bd" layoutX="74.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80" wrappingWidth="88.00000596046448">
+            <Text fill="#5319bd" layoutX="67.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80" textAlignment="CENTER" wrappingWidth="88.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
@@ -134,7 +134,7 @@
       </AnchorPane>
       <AnchorPane layoutX="847.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
          <children>
-            <Text fill="#5319bd" layoutX="32.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" wrappingWidth="157.00000596046448">
+            <Text fill="#5319bd" layoutX="32.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" wrappingWidth="157.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
