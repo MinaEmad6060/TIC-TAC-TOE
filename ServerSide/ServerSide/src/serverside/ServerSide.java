@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package serverside;
 
 import DAO.DataAccessObject;
@@ -11,20 +6,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.lang.Thread;
+import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.Thread;
-import java.util.Vector;
 
-/**
- *
- * @author minae
- */
 public class ServerSide {
 
-    /**
-     * @param args the command line arguments
-     */
     
     static ServerSocket serverSocket;
     DataInputStream listenFromClient;
@@ -48,6 +37,13 @@ public class ServerSide {
                         String password = parts[2];
                         
                         if(request.equals("login")){
+                            boolean isExist = DataAccessObject.isUserExist(username);
+                            if(isExist){
+                                boolean isValid = DataAccessObject.isUserValid(username, password);
+                                if(isValid){
+                                    
+                                }
+                            }
                         }
                     }
                     
@@ -57,7 +53,9 @@ public class ServerSide {
                 }
             } catch (IOException ex) {
                 System.out.println("not accepted");
-            }finally {
+            } catch (SQLException ex) {
+            Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
                 try {
                     serverSocket.close();
                 } catch (IOException ex) {

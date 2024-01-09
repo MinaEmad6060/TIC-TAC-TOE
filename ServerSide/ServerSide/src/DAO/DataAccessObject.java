@@ -1,4 +1,3 @@
-
 package DAO;
 
 import DTO.Player;
@@ -17,15 +16,13 @@ public class DataAccessObject {
     public static boolean isUserExist(String playerName){
 	String str="name";
         boolean isExist = false;
-        try {
-           
-            
+        try { 
             DriverManager.registerDriver(new ClientDriver());
             Connection connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
             PreparedStatement sqlStatement = connectToDB.prepareStatement (
-                    "SELECT PNAME FROM user", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            
+                    "SELECT PNAME FROM player where name = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            sqlStatement.setString(1, playerName);
             ResultSet resSet = sqlStatement.executeQuery();
             
             while(resSet.next()){
@@ -40,30 +37,29 @@ public class DataAccessObject {
         return isExist;
 }
 
-
-boolean isUserValid(String playerPassword){
+public static boolean isUserValid(String playerName , String playerPassword) throws SQLException{
 	String str="password";
         boolean isValid = false;
+        Connection connectToDB = null;
+        PreparedStatement sqlStatement = null;
         try {
-            
             DriverManager.registerDriver(new ClientDriver());
-            Connection connectToDB = DriverManager.getConnection(
+            connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
-            PreparedStatement sqlStatement = connectToDB.prepareStatement (
-                    "SELECT PPASS FROM user", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            sqlStatement = connectToDB.prepareStatement (
+                    "SELECT password from player where name = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             
             ResultSet resSet = sqlStatement.executeQuery();
-            
-            while(resSet.next()){
-                if(resSet.getString(str).equals(playerPassword)){
+            sqlStatement.setString(1, playerName);
+            if(resSet.getString(str).equals(playerPassword)){
                     isValid=true;
-                }
             }
-            
             
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
         }
+        sqlStatement.close();
+        connectToDB.close();
         return isValid;
 }
 
