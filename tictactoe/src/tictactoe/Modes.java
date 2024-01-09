@@ -150,6 +150,14 @@ public class Modes extends BorderPane {
         onlineButton.setText("Online");
         onlineButton.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         onlineButton.setFont(new Font("Cooper Black", 72.0));
+         onlineButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+
+                Welcome.navScreens(new SignIn(stage), stage);
+    }
+            
+        });
         setRight(flowPane);
 
         anchorPane.getChildren().add(anchorPane0);
