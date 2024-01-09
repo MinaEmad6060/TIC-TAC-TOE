@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
 public class DataAccessObject {
-    boolean isUserExist(String playerName){
+    public static boolean isUserExist(String playerName){
 	String str="name";
         boolean isExist = false;
         try {

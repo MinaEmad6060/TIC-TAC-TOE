@@ -5,6 +5,7 @@
  */
 package serverside;
 
+import DAO.DataAccessObject;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -26,6 +27,8 @@ public class ServerSide {
      */
     
     static ServerSocket serverSocket;
+    DataInputStream listenFromClient;
+    PrintStream printedMessageToClient;
     
     public ServerSide(){
    
@@ -33,6 +36,23 @@ public class ServerSide {
                 serverSocket = new ServerSocket(2000);
                 while(true){
                     Socket clientSocket = serverSocket.accept();
+                    
+                    listenFromClient = new DataInputStream(clientSocket.getInputStream());
+                    printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+
+                    String msg = listenFromClient.readLine();
+                    String[] parts = msg.split(" ", 3);
+                    if (parts.length == 3) {
+                        String request = parts[0];
+                        String username = parts[1];
+                        String password = parts[2];
+                        
+                        if(request.equals("login")){
+                        }
+                    }
+                    
+                    
+                    
                     new ChatHandler(clientSocket);
                 }
             } catch (IOException ex) {
@@ -69,7 +89,6 @@ class ChatHandler extends Thread{
                 
                 
                 ChatHandler.clientsVector.add(this);
-                System.out.println(clientsVector.size());
                 start();
             } catch (IOException ex) {
                 System.out.println("Erorr handle!");          
@@ -82,7 +101,6 @@ class ChatHandler extends Thread{
                     printedMessageToClient.println("confirm data");
                     String message = listenFromClient.readLine();
                     System.out.println(message);
-                    //this.test=1;
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
@@ -91,22 +109,11 @@ class ChatHandler extends Thread{
                         }
                         break;
                     }else{
-                        sendMessageToAll(message);
+                        //sendMessageToAll(message);
                     }
                 } catch (IOException ex) {
                      break;
                 } 
             }
-        }
-        
-        void sendMessageToAll(String msg)
-        {
-            for(int i=0 ; i<clientsVector.size() ; i++)
-            {
-                //if(clientsVector.get(i).test==1){
-                    clientsVector.get(i).printedMessageToClient.println(msg);
-                //}
-            }
-        }
-        
+        } 
 }
