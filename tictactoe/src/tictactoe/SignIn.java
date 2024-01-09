@@ -292,7 +292,9 @@ public class SignIn extends AnchorPane {
         else {
         if (textField.getPromptText().equals("User Name")) {
             lableUser.setText("");
-        } else if (textField.getPromptText().equals("Password")) {
+        } 
+        
+        else if (textField.getPromptText().equals("Password")) {
             lablePass.setText("");
         }
     }
