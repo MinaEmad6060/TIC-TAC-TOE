@@ -1,6 +1,7 @@
 package serverside;
 
 import DAO.DataAccessObject;
+import DTO.Player;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -56,6 +57,24 @@ public class ServerSide {
                                 printedMessageToClient.println("username " + username);
                             }
                         }
+                        else if(request.equals("sinUp")){
+                            boolean isExist = DataAccessObject.isUserExist(username);
+                            if(isExist){
+                                System.out.println("user Exist");
+                                printedMessageToClient.println("Existing " + username);
+                            }
+                            else{
+                                DataAccessObject.addUser(username,password);
+                                System.out.println("user added");
+//                              DataAccessObject.addPassword(password);
+//                              System.out.println("password added");
+                                printedMessageToClient.println("confirm");
+
+                                
+                                
+                                
+                            }
+                        }
                         
                     }
                 }
@@ -74,7 +93,7 @@ public class ServerSide {
     
     
     public static void main(String[] args) {
-        
+      new ServerSide();  
     }
 }
 

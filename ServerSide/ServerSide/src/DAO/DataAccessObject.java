@@ -65,46 +65,44 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
         return isValid;
 }
 
-    public static int addUser(Player contact) throws SQLException
+    public static int addUser(String playerName,String password) throws SQLException
     {
         int result =0;
-        //load /register to the driver
+        
         DriverManager.registerDriver(new ClientDriver());
-        //connection
-        
-
-        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
-        //Statment
-        PreparedStatement ps=con.prepareStatement("insert into PhoneIndex (player_Name)"
-                + "values(?)");
-        ps.setString(1,contact.getPlayerName());
-        
-         //process the result
-         result =ps.executeUpdate();
-         ps.close();
-         con.close();
-          return result;
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+        PreparedStatement ps=con.prepareStatement("INSERT INTO player (name, password) VALUES (?, ?)");
+        ps.setString(1,playerName);
+        ps.setString(2, password);
+        result =ps.executeUpdate();
+        ps.close();
+        con.close();
+        return result;
     }
-      public static int addPassword(Player contact) throws SQLException
-    {
-        int result =0;
-        //load /register to the driver
-        DriverManager.registerDriver(new ClientDriver());
-        //connection
-        
-
-        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
-        //Statment
-        PreparedStatement ps=con.prepareStatement("insert into user_Data (password)"
-                + "values(?)");
-        ps.setString(1,contact.getPassword());
-        
-         //process the result
-         result =ps.executeUpdate();
-         ps.close();
-         con.close();
-          return result;
-    }
+    
+    
+//      public static int addPassword(String password) throws SQLException
+//    {
+//        int result =0;
+//        
+//        DriverManager.registerDriver(new ClientDriver());
+//        
+//
+//        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+//        //Statment
+//        PreparedStatement ps=con.prepareStatement("insert into Player (password)"
+//                + "values(?)");
+//        ps.setString(1,password);
+//        
+//         //process the result
+//         result =ps.executeUpdate();
+//         System.out.println("password inserted successfully");
+//
+//         ps.close();
+//         con.close();
+//          return result;
+//    }
+    
        public static ResultSet getAvailable() throws SQLException{
        DriverManager.registerDriver(new ClientDriver());
         //connection
