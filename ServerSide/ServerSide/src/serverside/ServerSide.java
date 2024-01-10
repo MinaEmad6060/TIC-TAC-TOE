@@ -18,12 +18,13 @@ public class ServerSide {
     static ServerSocket serverSocket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
+    boolean isRunning = true;
     
     public ServerSide(){
    
             try {
                 serverSocket = new ServerSocket(2000);
-                while(true){
+                while(isRunning){
                     Socket clientSocket = serverSocket.accept();
                     
                     listenFromClient = new DataInputStream(clientSocket.getInputStream());
@@ -71,6 +72,17 @@ public class ServerSide {
                 }
             }
           }
+    
+    public void closeServer() {
+        isRunning = false;
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     
     public static void main(String[] args) {

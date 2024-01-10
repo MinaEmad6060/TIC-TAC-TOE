@@ -1,6 +1,10 @@
 package serverside;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -38,6 +42,7 @@ public class StartServer extends AnchorPane {
     protected final AnchorPane anchorPane2;
     protected final Text text14;
     protected final Text text15;
+    static boolean isStart = false;
 
     public StartServer() {
 
@@ -206,7 +211,9 @@ public class StartServer extends AnchorPane {
         startBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                if(!isStart){
+                    new Thread(new ServerRunner()).start();
+                }
             }
         });
 
@@ -222,6 +229,13 @@ public class StartServer extends AnchorPane {
         stopBtn.setTextFill(javafx.scene.paint.Color.WHITE);
         stopBtn.setFont(new Font("Cooper Black", 50.0));
         stopBtn.setOpaqueInsets(new Insets(300.0, 0.0, 0.0, 0.0));
+        stopBtn.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                ServerSide server = new ServerSide();
+                server.closeServer();
+            }
+        });
 
         anchorPane0.setLayoutX(121.0);
         anchorPane0.setLayoutY(292.0);
@@ -329,3 +343,11 @@ public class StartServer extends AnchorPane {
 
     }
 }
+
+class ServerRunner implements Runnable {
+        @Override
+        public void run() {
+            StartServer.isStart = true;
+            new ServerSide();
+        }
+    }
