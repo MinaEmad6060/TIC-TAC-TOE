@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.derby.jdbc.ClientDriver;
 
+
 public class DataAccessObject {
     public static boolean isUserExist(String playerName){
 	String str="name";
