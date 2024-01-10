@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+<<<<<<< HEAD
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/ServerSide/ServerSide/src/serverside/ServerSide.java</file>
+=======
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/ServerSide/ServerSide/src/serverside/ServerScreen.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/ServerSide/ServerSide/src/serverside/ServerSide.java</file>
+>>>>>>> f1cd0feeb4dbc50bb92f8d051333fb8262238e98
+        </group>
+>>>>>>> online
     </open-files>
 </project-private>
