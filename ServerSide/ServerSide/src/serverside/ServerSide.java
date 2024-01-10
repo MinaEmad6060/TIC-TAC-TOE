@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package serverside;
 
 import DAO.DataAccessObject;
@@ -11,20 +6,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.lang.Thread;
+import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.Thread;
-import java.util.Vector;
 
-/**
- *
- * @author minae
- */
 public class ServerSide {
 
-    /**
-     * @param args the command line arguments
-     */
     
     static ServerSocket serverSocket;
     DataInputStream listenFromClient;
@@ -42,22 +31,39 @@ public class ServerSide {
 
                     String msg = listenFromClient.readLine();
                     String[] parts = msg.split(" ", 3);
+                    String username;
+                    String request;
+                    String password;
                     if (parts.length == 3) {
-                        String request = parts[0];
-                        String username = parts[1];
-                        String password = parts[2];
+                        request = parts[0];
+                        username = parts[1];
+                        password = parts[2];
                         
                         if(request.equals("login")){
+                            boolean isExist = DataAccessObject.isUserExist(username);
+                            if(isExist){
+                                boolean isValid = DataAccessObject.isUserValid(username, password);
+                                if(isValid){
+                                    printedMessageToClient.println("confirm " + username);
+                                    System.out.println("con");
+                                    new ClientHandler(clientSocket , username);
+                                }
+                                else{
+                                    printedMessageToClient.println("password " + username);
+                                }
+                            }
+                            else{
+                                printedMessageToClient.println("username " + username);
+                            }
                         }
+                        
                     }
-                    
-                    
-                    
-                    new ChatHandler(clientSocket);
                 }
             } catch (IOException ex) {
                 System.out.println("not accepted");
-            }finally {
+            } catch (SQLException ex) {
+            Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
                 try {
                     serverSocket.close();
                 } catch (IOException ex) {
@@ -68,27 +74,30 @@ public class ServerSide {
     
     
     public static void main(String[] args) {
-        // TODO code application logic here
-        new ServerSide();
+        
     }
 }
 
 
-class ChatHandler extends Thread{
+class ClientHandler extends Thread{
         DataInputStream listenFromClient;
         PrintStream printedMessageToClient;
-        static Vector<ChatHandler> clientsVector =new Vector<ChatHandler>(); 
-        
-        public ChatHandler(Socket s){
+        static Vector<ClientHandler> clientsVector =new Vector<ClientHandler>(); 
+        String name;
+        Socket socket;
+
+        public ClientHandler(Socket clientSocket , String userName){
+            name = userName;
+            socket = clientSocket;
             try {
-                listenFromClient = new DataInputStream(s.getInputStream());
-                printedMessageToClient = new PrintStream(s.getOutputStream());
+                listenFromClient = new DataInputStream(clientSocket.getInputStream());
+                printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
                 
                 String msg = listenFromClient.readLine();
                 String[] parts = msg.split(" ", 3);
                 
                 
-                ChatHandler.clientsVector.add(this);
+                ClientHandler.clientsVector.add(this);
                 start();
             } catch (IOException ex) {
                 System.out.println("Erorr handle!");          
@@ -98,7 +107,7 @@ class ChatHandler extends Thread{
         public void run(){
             while(true){
                 try {
-                    printedMessageToClient.println("confirm data");
+                    //printedMessageToClient.println("confirm " + name);
                     String message = listenFromClient.readLine();
                     System.out.println(message);
                     if(message.equalsIgnoreCase("Close")){
@@ -109,11 +118,11 @@ class ChatHandler extends Thread{
                         }
                         break;
                     }else{
-                        //sendMessageToAll(message);
+                        //
                     }
                 } catch (IOException ex) {
                      break;
                 } 
             }
-        } 
+        }
 }

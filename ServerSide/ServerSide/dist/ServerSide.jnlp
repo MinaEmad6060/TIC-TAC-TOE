@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="tictactoe.jnlp">
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ServerSide.jnlp">
   <information>
-    <title>tictactoe</title>
+    <title>ServerSide</title>
     <vendor>minae</vendor>
     <description>null</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="ServerSide.jar" size="15532" download="eager" />
     <jar href="lib\derby.jar" size="2766479" download="eager" />
     <jar href="lib\derbyclient.jar" size="576624" download="eager" />
     <jar href="lib\derbynet.jar" size="248898" download="eager" />
-<<<<<<< HEAD
-    <jar href="tictactoe.jar" size="18075705" download="eager" />
-=======
-    <jar href="tictactoe.jar" size="18077815" download="eager" />
->>>>>>> f1cd0feeb4dbc50bb92f8d051333fb8262238e98
   </resources>
-  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="tictactoe" >
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ServerSide" >
     <param name="requiredFXVersion" value="8.0+"/>
   </applet-desc>
-  <jfx:javafx-desc  width="800" height="600" main-class="tictactoe.Tictactoe"  name="tictactoe" />
+  <jfx:javafx-desc  width="800" height="600" main-class="serverside.ServerScreen"  name="ServerSide" />
   <update check="always"/>
 </jnlp>

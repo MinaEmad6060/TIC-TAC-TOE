@@ -84,7 +84,7 @@
             </Text>
          </children>
       </AnchorPane>
-      <Button fx:id="butStart" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="607.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="253.0" style="-fx-background-radius: 25; -fx-background-color: #0EB21F;" text="Start" textFill="WHITE">
+      <Button fx:id="startBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="607.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="253.0" style="-fx-background-radius: 25; -fx-background-color: #0EB21F;" text="Start" textFill="WHITE">
          <font>
             <Font name="Cooper Black" size="50.0" />
          </font>
@@ -92,7 +92,7 @@
             <Insets top="300.0" />
          </opaqueInsets>
       </Button>
-      <Button fx:id="butStart1" alignment="CENTER" contentDisplay="CENTER" layoutX="738.0" layoutY="607.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="253.0" style="-fx-background-radius: 25; -fx-background-color: #BD1919;" text="Stop" textFill="WHITE">
+      <Button fx:id="stopBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="738.0" layoutY="607.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="253.0" style="-fx-background-radius: 25; -fx-background-color: #BD1919;" text="Stop" textFill="WHITE">
          <font>
             <Font name="Cooper Black" size="50.0" />
          </font>
@@ -100,46 +100,42 @@
             <Insets top="300.0" />
          </opaqueInsets>
       </Button>
-      <AnchorPane layoutX="45.0" layoutY="259.0" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane layoutX="121.0" layoutY="292.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
          <children>
-            <AnchorPane layoutX="61.0" layoutY="31.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
-               <children>
-                  <Text fill="#5319bd" layoutX="24.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" textAlignment="CENTER" wrappingWidth="173.00000596046448">
-                     <font>
-                        <Font name="MT Extra" size="40.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#5319bd" layoutX="64.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="94.66474056243896">
-                     <font>
-                        <Font name="MT Extra" size="40.0" />
-                     </font>
-                  </Text>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="489.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
-         <children>
-            <Text fill="#5319bd" layoutX="42.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" textAlignment="CENTER" wrappingWidth="137.00000596046448">
+            <Text fx:id="allUsersLabel" fill="#5319bd" layoutX="63.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="94.66474056243896">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
             </Text>
-            <Text fill="#5319bd" layoutX="67.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80" textAlignment="CENTER" wrappingWidth="88.00000596046448">
+            <Text fill="#5319bd" layoutX="24.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" textAlignment="CENTER" wrappingWidth="173.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
             </Text>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="847.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
+      <AnchorPane layoutX="489.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
          <children>
-            <Text fill="#5319bd" layoutX="32.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" wrappingWidth="157.00000596046448">
+            <Text fx:id="onlineUsersLabel" fill="#5319bd" layoutX="67.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80" textAlignment="CENTER" wrappingWidth="88.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
             </Text>
-            <Text fill="#5319bd" layoutX="94.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="53.02733927965164">
+            <Text fill="#5319bd" layoutX="40.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" textAlignment="CENTER" wrappingWidth="137.00000596046448">
+               <font>
+                  <Font name="MT Extra" size="40.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="865.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
+         <children>
+            <Text fill="#5319bd" layoutX="32.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" wrappingWidth="157.00000596046448">
+               <font>
+                  <Font name="MT Extra" size="40.0" />
+               </font>
+            </Text>
+            <Text fill="#5319bd" layoutX="84.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" textAlignment="CENTER" wrappingWidth="53.02733927965164">
                <font>
                   <Font name="MT Extra" size="40.0" />
                </font>
