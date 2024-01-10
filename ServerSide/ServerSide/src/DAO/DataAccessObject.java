@@ -21,7 +21,7 @@ public class DataAccessObject {
             Connection connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
             PreparedStatement sqlStatement = connectToDB.prepareStatement (
-                    "SELECT PNAME FROM player where name = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    "SELECT * FROM PLAYER where NAME = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             sqlStatement.setString(1, playerName);
             ResultSet resSet = sqlStatement.executeQuery();
             
@@ -48,11 +48,12 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
                     "jdbc:derby://localhost:1527/Player", "root", "root");
             sqlStatement = connectToDB.prepareStatement (
                     "SELECT password from player where name = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            
-            ResultSet resSet = sqlStatement.executeQuery();
             sqlStatement.setString(1, playerName);
-            if(resSet.getString(str).equals(playerPassword)){
+            ResultSet resSet = sqlStatement.executeQuery();
+            while(resSet.next()){
+                if(resSet.getString(str).equals(playerPassword)){
                     isValid=true;
+                }
             }
             
         } catch (SQLException ex) {
