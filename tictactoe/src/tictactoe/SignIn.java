@@ -282,7 +282,27 @@ public class SignIn extends AnchorPane {
                                             });
                                             break;
                                         }
-                                        else{System.out.println("false");}
+                                        else if(parts[0].equals("username")){
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lableUser.setText("Username not exist please sign up first");
+                                                }
+                                            });
+                                            break;
+                                    
+                                    }
+                                        else if(parts[0].equals("password")){
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lablePass.setText("Password incorrect");
+                                                }
+                                            });
+                                            break;
+                                        
+                                    }
+                                        else{
+                                            System.out.println("false");
+                                        }
                                     } catch (IOException ex) {
                                         break;
                                     }
