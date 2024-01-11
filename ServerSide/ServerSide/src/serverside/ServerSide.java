@@ -11,92 +11,44 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 
 public class ServerSide {
 
     
     static ServerSocket serverSocket;
+    Socket socket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
     boolean isRunning = true;
     
     public ServerSide(){
    
-            try {
-                serverSocket = new ServerSocket(2000);
-                while(isRunning){
-                    Socket clientSocket = serverSocket.accept();
-                    
-                    listenFromClient = new DataInputStream(clientSocket.getInputStream());
-                    printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+        try {
+            serverSocket = new ServerSocket(2000);
 
-                    String msg = listenFromClient.readLine();
-                    if(msg.equals("information")){
-                        new Thread(){
-                            @Override
-                            public void run(){
-
-                                while(true)
-                                {
-                                    try {
-                                        String info = "";
-                                        int allUsers = DataAccessObject.getAllUsers();
-                                        int onlineUsers = DataAccessObject.getOnlineUsers();
-                                        int availableUsers = DataAccessObject.getAvailableUsers();
-                                        info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers) 
-                                                + " " + String.valueOf(availableUsers);
-                                        printedMessageToClient.println(info);
-                                        
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                } 
-                            }
-                        }.start();
-                    }
-                    else{
-                    String[] parts = msg.split(" ", 3);
-                    String username;
-                    String request;
-                    String password;
-                    if (parts.length == 3) {
-                        request = parts[0];
-                        username = parts[1];
-                        password = parts[2];
-                        
-                        if(request.equals("login")){
-                            boolean isExist = DataAccessObject.isUserExist(username);
-                            if(isExist){
-                                boolean isValid = DataAccessObject.isUserValid(username, password);
-                                if(isValid){
-                                    printedMessageToClient.println("confirm " + username);
-                                    System.out.println("con");
-                                    new ClientHandler(clientSocket , username);
-                                }
-                                else{
-                                    printedMessageToClient.println("password " + username);
-                                }
-                            }
-                            else{
-                                printedMessageToClient.println("username " + username);
-                            }
+            new Thread(){
+                public void run(){
+                    while (true) {
+                        try {
+                            socket = serverSocket.accept();
+                            new ClientHandler(socket , "");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
-                        
                     }
                 }
-                }
-            } catch (IOException ex) {
-                System.out.println("not accepted");
-            } catch (SQLException ex) {
-            Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
+            }.start();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*finally {
                 try {
                     serverSocket.close();
                 } catch (IOException ex) {
                     System.out.println("not closed");
                 }
-            }
+            }*/
           }
     
     public void closeServer() {
@@ -112,7 +64,7 @@ public class ServerSide {
     
     
     public static void main(String[] args) {
-        
+        //new ServerSide();
     }
 }
 
@@ -128,14 +80,9 @@ class ClientHandler extends Thread{
             name = userName;
             socket = clientSocket;
             try {
-                listenFromClient = new DataInputStream(clientSocket.getInputStream());
-                printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+                listenFromClient = new DataInputStream(socket.getInputStream());
+                printedMessageToClient = new PrintStream(socket.getOutputStream());
                 
-                String msg = listenFromClient.readLine();
-                String[] parts = msg.split(" ", 3);
-                
-                
-                ClientHandler.clientsVector.add(this);
                 start();
             } catch (IOException ex) {
                 System.out.println("Erorr handle!");          
@@ -145,9 +92,21 @@ class ClientHandler extends Thread{
         public void run(){
             while(true){
                 try {
-                    //printedMessageToClient.println("confirm " + name);
                     String message = listenFromClient.readLine();
-                    System.out.println(message);
+                    String[] parts = message.split(" ");
+                    String username = null;
+                    String password = null;
+                    if(parts[0].equals("information"))
+                    {
+                        //getStatistics();
+                        
+                    }
+                    else if(parts[0].equals("login"))
+                    {
+                        username = parts[1];
+                        password = parts[2];  
+                        validateLogin(username , password);
+                    }
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
@@ -155,12 +114,32 @@ class ClientHandler extends Thread{
                             ServerSide.serverSocket.close();
                         }
                         break;
-                    }else{
-                        //
                     }
                 } catch (IOException ex) {
-                     break;
-                } 
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+        
+       public void validateLogin(String username , String password){
+        boolean isExist = DataAccessObject.isUserExist(username);
+        if(isExist){
+            try {
+                boolean isValid = DataAccessObject.isUserValid(username, password);
+                if(isValid){
+                    printedMessageToClient.println("confirm " + username);
+                    System.out.println("con");
+                    ClientHandler.clientsVector.add(this);
+                }
+                else{
+                    printedMessageToClient.println("password " + username);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            printedMessageToClient.println("username " + username);
+        }
+    }
 }
