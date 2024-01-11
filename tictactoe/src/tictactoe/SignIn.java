@@ -54,6 +54,8 @@ public class SignIn extends AnchorPane {
     PrintStream sendMessageToServer;
     boolean test=false;
 
+    //mina
+    public static String currentUser="";
 
     public SignIn(Stage s) {
 
@@ -249,7 +251,6 @@ public class SignIn extends AnchorPane {
                     System.out.println("Successful login");
                     loginRequest="login " + username.getText() + " " + password.getText();
                     System.out.println(loginRequest);
-                    
                     
                     try {
                         serverSide = new Socket("127.0.0.1", 2000);
