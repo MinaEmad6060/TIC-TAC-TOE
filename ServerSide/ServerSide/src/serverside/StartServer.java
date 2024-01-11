@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -322,7 +321,7 @@ public class StartServer extends AnchorPane {
         allUsersLabel.setLayoutY(132.0);
         allUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         allUsersLabel.setStrokeWidth(0.0);
-        allUsersLabel.setText("100");
+        allUsersLabel.setText("0");
         allUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         allUsersLabel.setWrappingWidth(94.66474056243896);
         allUsersLabel.setFont(new Font("Cooper Black", 52.0));
@@ -338,7 +337,7 @@ public class StartServer extends AnchorPane {
         onlineUsersLabel.setLayoutY(132.0);
         onlineUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         onlineUsersLabel.setStrokeWidth(0.0);
-        onlineUsersLabel.setText("80");
+        onlineUsersLabel.setText("0");
         onlineUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         onlineUsersLabel.setWrappingWidth(88.00000596046448);
         onlineUsersLabel.setFont(new Font("Cooper Black", 52.0));
@@ -384,7 +383,7 @@ public class StartServer extends AnchorPane {
         availableUsersLabel.setLayoutY(132.0);
         availableUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         availableUsersLabel.setStrokeWidth(0.0);
-        availableUsersLabel.setText("6");
+        availableUsersLabel.setText("0");
         availableUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         availableUsersLabel.setWrappingWidth(53.02733927965164);
         availableUsersLabel.setFont(new Font("Cooper Black", 52.0));
