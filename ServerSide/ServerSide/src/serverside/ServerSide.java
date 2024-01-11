@@ -93,6 +93,7 @@ class ClientHandler extends Thread{
             while(true){
                 try {
                     String message = listenFromClient.readLine();
+                    System.out.println("listen");
                     String[] parts = message.split(" ");
                     String username = null;
                     String password = null;
@@ -106,9 +107,14 @@ class ClientHandler extends Thread{
                         username = parts[1];
                         password = parts[2];  
                         validateLogin(username , password);
-                    }else if(parts[0].equals("Available")){
-                        
-                        
+                    }else if(parts[0].equals("Logout")){
+                        username = parts[1];
+                        DataAccessObject.updateOnlineState(username,false);
+                        //DataAccessObject.updateAvailability(username,false);
+                    }
+                    else if(parts[0].equals("Available")){
+                        username = parts[1];
+                        DataAccessObject.updateAvailability(username,true);
                     }
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
@@ -119,7 +125,10 @@ class ClientHandler extends Thread{
                         break;
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.getStackTrace();
+                } catch (SQLException ex) {
+                    ex.getErrorCode();
+                    ex.getMessage();
                 }
             }
         }
@@ -131,6 +140,8 @@ class ClientHandler extends Thread{
                 boolean isValid = DataAccessObject.isUserValid(username, password);
                 if(isValid){
                     printedMessageToClient.println("confirm " + username);
+                    //mina
+                    DataAccessObject.updateOnlineState(username,true);
                     System.out.println("con");
                     ClientHandler.clientsVector.add(this);
                 }
@@ -138,7 +149,8 @@ class ClientHandler extends Thread{
                     printedMessageToClient.println("password " + username);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+                ex.getErrorCode();
+                ex.getMessage();
             }
         }
         else{

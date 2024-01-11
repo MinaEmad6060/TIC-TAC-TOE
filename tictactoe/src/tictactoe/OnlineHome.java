@@ -45,6 +45,7 @@ public  class OnlineHome extends AnchorPane {
     DataInputStream listenFromServer;
     PrintStream sendMessageToServer;
     String availableRequest;
+    String logoutRequest;
     boolean test=false;
 
 
@@ -298,44 +299,11 @@ public  class OnlineHome extends AnchorPane {
                     @Override
                     public void handle(Event event) {
                         try {
-                            availableRequest="Logout " + SignIn.currentUser;
+                            logoutRequest="Logout " + SignIn.currentUser;
                             serverSide = new Socket("127.0.0.1", 2000);
                             listenFromServer = new DataInputStream(serverSide.getInputStream());
                             sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-                            sendMessageToServer.println(availableRequest);
-                            
-                            /*new Thread(){
-                                @Override
-                                public void run(){
-                                    
-                                    while(true)
-                                    {
-                                        try {
-                                            String msg = listenFromServer.readLine();
-                                            String[] parts = msg.split(" ", 2);
-                                            System.out.println(parts[0]);
-                                            if(parts[0].equals("confirm")){
-                                                System.out.println("true");
-                                                test=true;
-                                                Platform.runLater(new Runnable() {
-                                                    @Override public void run() {
-                                                        if(test==true){
-                                                            System.out.println("test is mina");
-                                                            Welcome.navScreens(new OnlineHome(s), s);
-                                                        }else{
-                                                            System.out.println("test is false");
-                                                        }
-                                                    }
-                                                });
-                                                break;
-                                            }
-                                            
-                                        } catch (IOException ex) {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }.start();*/
+                            sendMessageToServer.println(logoutRequest);
                             Welcome.navScreens(new SignIn(stage), stage);
                         } catch (IOException ex) {
                             ex.printStackTrace();

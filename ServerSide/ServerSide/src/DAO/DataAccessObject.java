@@ -203,12 +203,33 @@ public static int updateScore(Player player) throws SQLException {
         result = ps.executeUpdate();
         
         ps.close();
-        con.close();
+        //con.close();
 
         return result;
     }
 
-}
+
+
+    public static int updateOnlineState(String playerName, boolean state) throws SQLException {
+            int result = 0;
+
+            DriverManager.registerDriver(new ClientDriver());
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player",
+                                                         "root", "root");
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE PLAYER SET ONLINE = ? WHERE NAME = ?");
+
+            ps.setBoolean(1, state);
+            ps.setString(2, playerName);
+            result = ps.executeUpdate();
+
+            ps.close();
+            //con.close();
+
+            return result;
+        }
+
+    }
 
 
 
