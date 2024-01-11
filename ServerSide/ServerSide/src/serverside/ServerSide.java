@@ -31,6 +31,17 @@ public class ServerSide {
                     printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
 
                     String msg = listenFromClient.readLine();
+                    if(msg.equals("information")){
+                        String info = "";
+                        int allUsers = DataAccessObject.getAllUsers();
+                        int onlineUsers = DataAccessObject.getOnlineUsers();
+                        int availableUsers = DataAccessObject.getAvailableUsers();
+                        info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers) 
+                                + " " + String.valueOf(availableUsers);
+                        printedMessageToClient.println(info);
+                        
+                    }
+                    else{
                     String[] parts = msg.split(" ", 3);
                     String username;
                     String request;
@@ -59,6 +70,7 @@ public class ServerSide {
                         }
                         
                     }
+                }
                 }
             } catch (IOException ex) {
                 System.out.println("not accepted");

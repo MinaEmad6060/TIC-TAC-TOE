@@ -186,6 +186,53 @@ public static int updateScore(Player player) throws SQLException {
         }
         return result;
     }
+    
+    
+    public static int getAllUsers() throws SQLException {
+      
+        ResultSet resultSet;
+        int count = 0;
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player" , "root" , "root");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM PLAYER" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
+        resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            count++;
+        }
+        ps.close();
+        con.close();
+        return count;
+    }
+    public static int getOnlineUsers() throws SQLException {
+      
+        ResultSet resultSet;
+        int count = 0;
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player" , "root" , "root");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM PLAYER where online = ?" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
+        ps.setBoolean(1, true);
+        resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            count++;
+        }
+        ps.close();
+        con.close();
+        return count;
+    }
+
+    public static int getAvailableUsers() throws SQLException {
+      
+        ResultSet resultSet;
+        int count = 0;
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player" , "root" , "root");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM PLAYER where available = ?" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
+        ps.setBoolean(1, true);
+        resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            count++;
+        }
+        ps.close();
+        con.close();
+        return count;
+    }
 
 }
 
