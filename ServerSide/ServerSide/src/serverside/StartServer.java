@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -47,10 +50,11 @@ public class StartServer extends AnchorPane {
     protected final Text text14;
     protected final Text availableUsersLabel;
     static boolean isStart = false;
-    Socket serverSide;
+    Socket serverSocket;
     DataInputStream listenFromServer;
     PrintStream sendMessageToServer;
     boolean test=false;
+    static ServerSide serverSide;
 
     public StartServer(Stage s) {
 
@@ -223,11 +227,23 @@ public class StartServer extends AnchorPane {
                     new Thread(new ServerRunner()).start();
                 }
                 try {
-                        serverSide = new Socket("127.0.0.1", 2000);
-                        listenFromServer = new DataInputStream(serverSide.getInputStream());
-                        sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-                        sendMessageToServer.println("information");
+                        serverSocket = new Socket("127.0.0.1", 2000);
+                        listenFromServer = new DataInputStream(serverSocket.getInputStream());
+                        sendMessageToServer = new PrintStream(serverSocket.getOutputStream());
 
+                        new Thread(){
+                            @Override
+                            public void run(){
+                                while(true){
+                                    try {
+                                        sendMessageToServer.println("information");
+                                        Thread.sleep(20000);
+                                    } catch (InterruptedException ex) {
+                                        Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                        }.start();
                         new Thread(){
                             @Override
                             public void run(){
@@ -263,7 +279,7 @@ public class StartServer extends AnchorPane {
                                 try {
                                     sendMessageToServer.close();
                                     listenFromServer.close();
-                                    serverSide.close();                        
+                                    serverSocket.close();                        
                                 } catch (IOException ex) {
                                     System.out.println("Erorr");
                                 }
@@ -291,8 +307,7 @@ public class StartServer extends AnchorPane {
         stopBtn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                ServerSide server = new ServerSide();
-                server.closeServer();
+               StartServer.serverSide.closeServer();
             }
         });
 
@@ -408,6 +423,6 @@ class ServerRunner implements Runnable {
         @Override
         public void run() {
             StartServer.isStart = true;
-            new ServerSide();
+            StartServer.serverSide = new ServerSide();
         }
 }

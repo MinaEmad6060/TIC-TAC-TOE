@@ -14,14 +14,16 @@ import org.apache.derby.jdbc.ClientDriver;
 
 
 public class DataAccessObject {
-    public static boolean isUserExist(String playerName){
+    public static boolean isUserExist(String playerName) throws SQLException{
 	String str="name";
         boolean isExist = false;
+        PreparedStatement sqlStatement = null;
+        Connection connectToDB = null;
         try { 
             DriverManager.registerDriver(new ClientDriver());
-            Connection connectToDB = DriverManager.getConnection(
+            connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
-            PreparedStatement sqlStatement = connectToDB.prepareStatement (
+            sqlStatement = connectToDB.prepareStatement (
                     "SELECT * FROM PLAYER where NAME = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             sqlStatement.setString(1, playerName);
             ResultSet resSet = sqlStatement.executeQuery();
@@ -35,6 +37,8 @@ public class DataAccessObject {
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
         }
+        sqlStatement.close();
+        connectToDB.close();
         return isExist;
 }
 
@@ -144,10 +148,9 @@ public static List<Player> getRecords(Player player) throws SQLException {
         
         List<Player> recordsList = new ArrayList<>();
         while (resultSet.next()) {
-        Player playerRecord = new Player(resultSet.getString("playerName") , resultSet.getString("record"));
-        recordsList.add(playerRecord);
-    }
-      
+            Player playerRecord = new Player(resultSet.getString("playerName") , resultSet.getString("record"));
+            recordsList.add(playerRecord);
+    } 
         ps.close();
         con.close();
         

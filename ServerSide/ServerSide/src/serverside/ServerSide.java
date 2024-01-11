@@ -15,11 +15,11 @@ import java.util.logging.Logger;
 public class ServerSide {
 
     
-    static ServerSocket serverSocket;
+    ServerSocket serverSocket;
     Socket socket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
-    boolean isRunning = true;
+    static boolean isRunning = true;
     
     public ServerSide(){
    
@@ -42,17 +42,10 @@ public class ServerSide {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*finally {
-                try {
-                    serverSocket.close();
-                } catch (IOException ex) {
-                    System.out.println("not closed");
-                }
-            }*/
           }
     
     public void closeServer() {
-        isRunning = false;
+        ServerSide.isRunning = false;
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
@@ -98,23 +91,25 @@ class ClientHandler extends Thread{
                     String password = null;
                     if(parts[0].equals("information"))
                     {
-                        //getStatistics();
-                        
+                        getStatistics();
                     }
                     else if(parts[0].equals("login"))
                     {
                         username = parts[1];
                         password = parts[2];  
                         validateLogin(username , password);
-                    }
+                    }/*
                     if(message.equalsIgnoreCase("Close")){
-                        clientsVector.remove(clientsVector.size()-1);
-                        System.out.println(clientsVector.size());
-                        if(clientsVector.size()==0){
-                            ServerSide.serverSocket.close();
+                        for(int i = 0 ; i < clientsVector.size(); i++)
+                        {
+                            clientsVector.remove(i);
                         }
-                        break;
-                    }
+                        if(clientsVector.size()==0){
+                            serverSocket.close();
+                            System.out.println(clientsVector.size());
+                        }
+                        
+                    }*/
                 } catch (IOException ex) {
                     Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -122,24 +117,43 @@ class ClientHandler extends Thread{
         }
         
        public void validateLogin(String username , String password){
-        boolean isExist = DataAccessObject.isUserExist(username);
-        if(isExist){
             try {
-                boolean isValid = DataAccessObject.isUserValid(username, password);
-                if(isValid){
-                    printedMessageToClient.println("confirm " + username);
-                    System.out.println("con");
-                    ClientHandler.clientsVector.add(this);
+                boolean isExist = DataAccessObject.isUserExist(username);
+                if(isExist){
+                    try {
+                        boolean isValid = DataAccessObject.isUserValid(username, password);
+                        if(isValid){
+                            printedMessageToClient.println("confirm " + username);
+                            System.out.println("con");
+                            ClientHandler.clientsVector.add(this);
+                        }
+                        else{
+                            printedMessageToClient.println("password " + username);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 else{
-                    printedMessageToClient.println("password " + username);
-                }
+                    printedMessageToClient.println("username " + username);
+                }   } catch (SQLException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+       public void getStatistics(){
+           if(ServerSide.isRunning){
+           try {
+                String info = "";
+                int allUsers = DataAccessObject.getAllUsers();
+                int onlineUsers = DataAccessObject.getOnlineUsers();
+                int availableUsers = DataAccessObject.getAvailableUsers();
+                info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers) 
+                        + " " + String.valueOf(availableUsers);
+                printedMessageToClient.println(info);
+
             } catch (SQLException ex) {
                 Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
-            printedMessageToClient.println("username " + username);
-        }
-    }
+           }
+       }
 }
