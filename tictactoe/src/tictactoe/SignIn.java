@@ -249,6 +249,8 @@ public class SignIn extends AnchorPane {
                 }
                 if(!username.getText().equals("") && !password.getText().equals("")){
                     System.out.println("Successful login");
+                    //mina
+                    currentUser=username.getText();
                     loginRequest="login " + username.getText() + " " + password.getText();
                     System.out.println(loginRequest);
                     

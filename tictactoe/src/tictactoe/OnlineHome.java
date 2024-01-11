@@ -1,6 +1,13 @@
 package tictactoe;
 
 import com.sun.java.swing.plaf.windows.resources.windows;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -15,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import static tictactoe.EmptyBoard.xScore;
+import static tictactoe.SignIn.currentUser;
 
 public  class OnlineHome extends AnchorPane {
 
@@ -33,6 +41,12 @@ public  class OnlineHome extends AnchorPane {
     protected final Button btnPlay;
     protected final Button btnHistory;
     Stage stage;
+    Socket serverSide;
+    DataInputStream listenFromServer;
+    PrintStream sendMessageToServer;
+    String availableRequest;
+    boolean test=false;
+
 
     public OnlineHome(Stage s) {
         stage=s;
@@ -166,11 +180,54 @@ public  class OnlineHome extends AnchorPane {
         btnPlay.setText("Play");
         btnPlay.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         btnPlay.setFont(new Font("Cooper Black", 70.0));
-        btnPlay.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            public void handle(MouseEvent event) {
-                //Welcome.navScreens(new , stage);
-            }
-        });
+        btnPlay.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        try {
+                            availableRequest="Available " + SignIn.currentUser;
+                            serverSide = new Socket("127.0.0.1", 2000);
+                            listenFromServer = new DataInputStream(serverSide.getInputStream());
+                            sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                            sendMessageToServer.println(availableRequest);
+                            
+                            /*new Thread(){
+                                @Override
+                                public void run(){
+                                    
+                                    while(true)
+                                    {
+                                        try {
+                                            String msg = listenFromServer.readLine();
+                                            String[] parts = msg.split(" ", 2);
+                                            System.out.println(parts[0]);
+                                            if(parts[0].equals("confirm")){
+                                                System.out.println("true");
+                                                test=true;
+                                                Platform.runLater(new Runnable() {
+                                                    @Override public void run() {
+                                                        if(test==true){
+                                                            System.out.println("test is mina");
+                                                            Welcome.navScreens(new OnlineHome(s), s);
+                                                        }else{
+                                                            System.out.println("test is false");
+                                                        }
+                                                    }
+                                                });
+                                                break;
+                                            }
+                                            
+                                        } catch (IOException ex) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }.start();*/
+                            //Welcome.navScreens(new (stage), stage);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                });
 
         btnHistory.setLayoutX(425.0);
         btnHistory.setLayoutY(456.0);
@@ -240,7 +297,49 @@ public  class OnlineHome extends AnchorPane {
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        Welcome.navScreens(new SignIn(stage), stage);
+                        try {
+                            availableRequest="Logout " + SignIn.currentUser;
+                            serverSide = new Socket("127.0.0.1", 2000);
+                            listenFromServer = new DataInputStream(serverSide.getInputStream());
+                            sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                            sendMessageToServer.println(availableRequest);
+                            
+                            /*new Thread(){
+                                @Override
+                                public void run(){
+                                    
+                                    while(true)
+                                    {
+                                        try {
+                                            String msg = listenFromServer.readLine();
+                                            String[] parts = msg.split(" ", 2);
+                                            System.out.println(parts[0]);
+                                            if(parts[0].equals("confirm")){
+                                                System.out.println("true");
+                                                test=true;
+                                                Platform.runLater(new Runnable() {
+                                                    @Override public void run() {
+                                                        if(test==true){
+                                                            System.out.println("test is mina");
+                                                            Welcome.navScreens(new OnlineHome(s), s);
+                                                        }else{
+                                                            System.out.println("test is false");
+                                                        }
+                                                    }
+                                                });
+                                                break;
+                                            }
+                                            
+                                        } catch (IOException ex) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }.start();*/
+                            Welcome.navScreens(new SignIn(stage), stage);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 });
                 alert.showAndWait();
