@@ -24,7 +24,7 @@
    <center>
       <ScrollPane style="-fx-background-color: #1d1e3d;" BorderPane.alignment="CENTER">
          <content>
-            <ListView prefHeight="784.0" prefWidth="1181.0" style="-fx-background-color: #1d1e3d;" />
+            <ListView fx:id="listView" prefHeight="784.0" prefWidth="1181.0" style="-fx-background-color: #1d1e3d;" />
          </content>
       </ScrollPane>
    </center>

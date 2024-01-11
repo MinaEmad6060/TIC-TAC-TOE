@@ -262,7 +262,7 @@ public  class SignUp extends AnchorPane {
                             if(checkPasswords(password.getText() , confPass.getText())){
                                 System.out.println("Successful signup");
                                 // complete sign up process
-                                  signUpRequest="sinUp " + username.getText() + " " + password.getText();
+                                  signUpRequest="signUp " + username.getText() + " " + password.getText();
                                   System.out.println( signUpRequest);
                                  try {
                         serverSide = new Socket("127.0.0.1", 2000);

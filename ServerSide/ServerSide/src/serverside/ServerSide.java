@@ -1,7 +1,6 @@
 package serverside;
 
 import DAO.DataAccessObject;
-import DTO.Player;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,83 +16,55 @@ public class ServerSide {
 
     
     static ServerSocket serverSocket;
+    Socket socket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
+    boolean isRunning = true;
     
     public ServerSide(){
    
-            try {
-                serverSocket = new ServerSocket(2000);
-                while(true){
-                    Socket clientSocket = serverSocket.accept();
-                    
-                    listenFromClient = new DataInputStream(clientSocket.getInputStream());
-                    printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+        try {
+            serverSocket = new ServerSocket(2000);
 
-                    String msg = listenFromClient.readLine();
-                    String[] parts = msg.split(" ", 3);
-                    String username;
-                    String request;
-                    String password;
-                    if (parts.length == 3) {
-                        request = parts[0];
-                        username = parts[1];
-                        password = parts[2];
-                        
-                        if(request.equals("login")){
-                            boolean isExist = DataAccessObject.isUserExist(username);
-                            if(isExist){
-                                boolean isValid = DataAccessObject.isUserValid(username, password);
-                                if(isValid){
-                                    printedMessageToClient.println("confirm " + username);
-                                    System.out.println("con");
-                                    new ClientHandler(clientSocket , username);
-                                }
-                                else{
-                                    printedMessageToClient.println("password " + username);
-                                }
-                            }
-                            else{
-                                printedMessageToClient.println("username " + username);
-                            }
+            new Thread(){
+                public void run(){
+                    while (true) {
+                        try {
+                            socket = serverSocket.accept();
+                            new ClientHandler(socket , "");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
-                        else if(request.equals("sinUp")){
-                            boolean isExist = DataAccessObject.isUserExist(username);
-                            if(isExist){
-                                System.out.println("user Exist");
-                                printedMessageToClient.println("Existing " + username);
-                            }
-                            else{
-                                DataAccessObject.addUser(username,password);
-                                System.out.println("user added");
-//                              DataAccessObject.addPassword(password);
-//                              System.out.println("password added");
-                                printedMessageToClient.println("confirm");
-
-                                
-                                
-                                
-                            }
-                        }
-                        
                     }
                 }
-            } catch (IOException ex) {
-                System.out.println("not accepted");
-            } catch (SQLException ex) {
-            Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
+            }.start();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*finally {
                 try {
                     serverSocket.close();
                 } catch (IOException ex) {
                     System.out.println("not closed");
                 }
-            }
+            }*/
           }
+    
+    public void closeServer() {
+        isRunning = false;
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     
     public static void main(String[] args) {
-      new ServerSide();  
+        new ServerSide();
     }
 }
 
@@ -109,14 +80,9 @@ class ClientHandler extends Thread{
             name = userName;
             socket = clientSocket;
             try {
-                listenFromClient = new DataInputStream(clientSocket.getInputStream());
-                printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+                listenFromClient = new DataInputStream(socket.getInputStream());
+                printedMessageToClient = new PrintStream(socket.getOutputStream());
                 
-                String msg = listenFromClient.readLine();
-                String[] parts = msg.split(" ", 3);
-                
-                
-                ClientHandler.clientsVector.add(this);
                 start();
             } catch (IOException ex) {
                 System.out.println("Erorr handle!");          
@@ -126,9 +92,34 @@ class ClientHandler extends Thread{
         public void run(){
             while(true){
                 try {
-                    //printedMessageToClient.println("confirm " + name);
                     String message = listenFromClient.readLine();
-                    System.out.println(message);
+                    String[] parts = message.split(" ");
+                    String username = null;
+                    String password = null;
+                    if(parts[0].equals("information"))
+                    {
+                        //getStatistics();
+                        
+                    }
+                    else if(parts[0].equals("login"))
+                    {
+                        username = parts[1];
+                        password = parts[2];  
+                        validateLogin(username , password);
+                    }
+                    else if(parts[0].equals("signUp")){
+                        username = parts[1];
+                        password = parts[2];
+                        boolean isExist = DataAccessObject.isUserExist(username);
+                        if(isExist){
+                                System.out.println("user Exist");
+                                printedMessageToClient.println("Existing " + username);
+                            }
+                        else{
+                           signUp(username , password); 
+                        }  
+                    }
+                    
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
@@ -136,12 +127,44 @@ class ClientHandler extends Thread{
                             ServerSide.serverSocket.close();
                         }
                         break;
-                    }else{
-                        //
                     }
                 } catch (IOException ex) {
-                     break;
-                } 
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+        
+       public void validateLogin(String username , String password){
+        boolean isExist = DataAccessObject.isUserExist(username);
+        if(isExist){
+            try {
+                boolean isValid = DataAccessObject.isUserValid(username, password);
+                if(isValid){
+                    printedMessageToClient.println("confirm " + username);
+                    System.out.println("con");
+                    ClientHandler.clientsVector.add(this);
+                }
+                else{
+                    printedMessageToClient.println("password " + username);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            printedMessageToClient.println("username " + username);
+        }
+    }
+       //method to add user in DB
+       public void signUp(String userName,String password){
+            try {
+                DataAccessObject.addUser(userName,password);
+            } catch (SQLException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("user added");
+            // DataAccessObject.addPassword(password);
+            //System.out.println("password added");
+            printedMessageToClient.println("confirm");
+       }
 }

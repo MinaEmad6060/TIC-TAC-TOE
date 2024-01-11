@@ -64,7 +64,7 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
         connectToDB.close();
         return isValid;
 }
-
+    //edit m 
     public static int addUser(String playerName,String password) throws SQLException
     {
         int result =0;
@@ -131,7 +131,7 @@ public static int addRecord(Player player) throws SQLException{
         return result;
     }
 
-public static List<Player> getRecords(Player player) throws SQLException {
+    public static List<Player> getRecords(Player player) throws SQLException {
       
         ResultSet resultSet;
         String pName = player.getPlayerName();
