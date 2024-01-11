@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 public class ServerSide {
 
@@ -32,14 +33,27 @@ public class ServerSide {
 
                     String msg = listenFromClient.readLine();
                     if(msg.equals("information")){
-                        String info = "";
-                        int allUsers = DataAccessObject.getAllUsers();
-                        int onlineUsers = DataAccessObject.getOnlineUsers();
-                        int availableUsers = DataAccessObject.getAvailableUsers();
-                        info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers) 
-                                + " " + String.valueOf(availableUsers);
-                        printedMessageToClient.println(info);
-                        
+                        new Thread(){
+                            @Override
+                            public void run(){
+
+                                while(true)
+                                {
+                                    try {
+                                        String info = "";
+                                        int allUsers = DataAccessObject.getAllUsers();
+                                        int onlineUsers = DataAccessObject.getOnlineUsers();
+                                        int availableUsers = DataAccessObject.getAvailableUsers();
+                                        info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers) 
+                                                + " " + String.valueOf(availableUsers);
+                                        printedMessageToClient.println(info);
+                                        
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } 
+                            }
+                        }.start();
                     }
                     else{
                     String[] parts = msg.split(" ", 3);
