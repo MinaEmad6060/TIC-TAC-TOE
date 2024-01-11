@@ -1,8 +1,12 @@
 package serverside;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class StartServer extends AnchorPane {
 
@@ -41,10 +47,14 @@ public class StartServer extends AnchorPane {
     protected final Text text13;
     protected final AnchorPane anchorPane2;
     protected final Text text14;
-    protected final Text text15;
+    protected final Text availableUsersLabel;
     static boolean isStart = false;
+    Socket serverSide;
+    DataInputStream listenFromServer;
+    PrintStream sendMessageToServer;
+    boolean test=false;
 
-    public StartServer() {
+    public StartServer(Stage s) {
 
         anchorPane = new AnchorPane();
         text = new Text();
@@ -71,7 +81,7 @@ public class StartServer extends AnchorPane {
         text13 = new Text();
         anchorPane2 = new AnchorPane();
         text14 = new Text();
-        text15 = new Text();
+        availableUsersLabel = new Text();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -214,6 +224,57 @@ public class StartServer extends AnchorPane {
                 if(!isStart){
                     new Thread(new ServerRunner()).start();
                 }
+                try {
+                        serverSide = new Socket("127.0.0.1", 2000);
+                        listenFromServer = new DataInputStream(serverSide.getInputStream());
+                        sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                        sendMessageToServer.println("information");
+
+                        new Thread(){
+                            @Override
+                            public void run(){
+
+                                while(true)
+                                {
+                                    try {
+                                        String msg = listenFromServer.readLine();
+                                        String[] parts = msg.split(" ", 3);
+                                        String allUsers = parts[0];
+                                        String onlineUsers = parts[1];
+                                        String availableUsers = parts[2];
+                                        Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    allUsersLabel.setText(allUsers);
+                                                    onlineUsersLabel.setText(onlineUsers);
+                                                    availableUsersLabel.setText(availableUsers);   
+                                                }
+                                            });
+                                        
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } 
+                            }
+                        }.start();
+                        
+                                                
+                        s.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                            @Override
+                            public void handle(WindowEvent event) {
+                                sendMessageToServer.println("Close");
+                                try {
+                                    sendMessageToServer.close();
+                                    listenFromServer.close();
+                                    serverSide.close();                        
+                                } catch (IOException ex) {
+                                    System.out.println("Erorr");
+                                }
+                            }
+                        }); 
+
+                }   catch (IOException ex) {
+                        System.out.println("error in creating socket");                    
+                }
             }
         });
 
@@ -304,15 +365,15 @@ public class StartServer extends AnchorPane {
         text14.setWrappingWidth(157.00000596046448);
         text14.setFont(new Font("MT Extra", 40.0));
 
-        text15.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
-        text15.setLayoutX(84.0);
-        text15.setLayoutY(132.0);
-        text15.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        text15.setStrokeWidth(0.0);
-        text15.setText("6");
-        text15.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        text15.setWrappingWidth(53.02733927965164);
-        text15.setFont(new Font("MT Extra", 40.0));
+        availableUsersLabel.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
+        availableUsersLabel.setLayoutX(84.0);
+        availableUsersLabel.setLayoutY(132.0);
+        availableUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        availableUsersLabel.setStrokeWidth(0.0);
+        availableUsersLabel.setText("6");
+        availableUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        availableUsersLabel.setWrappingWidth(53.02733927965164);
+        availableUsersLabel.setFont(new Font("MT Extra", 40.0));
 
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(text0);
@@ -338,7 +399,7 @@ public class StartServer extends AnchorPane {
         anchorPane1.getChildren().add(text13);
         getChildren().add(anchorPane1);
         anchorPane2.getChildren().add(text14);
-        anchorPane2.getChildren().add(text15);
+        anchorPane2.getChildren().add(availableUsersLabel);
         getChildren().add(anchorPane2);
 
     }
