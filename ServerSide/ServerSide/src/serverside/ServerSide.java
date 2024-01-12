@@ -6,6 +6,7 @@
 package serverside;
 
 import DAO.DataAccessObject;
+import DTO.Player;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -13,6 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.lang.Thread;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,6 +72,7 @@ public class ServerSide {
     
     public static void main(String[] args) {
         //new ServerSide();
+      
     }
 }
 
@@ -81,6 +84,7 @@ class ClientHandler extends Thread{
         String name;
         Socket socket;
 
+       
         public ClientHandler(Socket clientSocket , String userName){
             name = userName;
             socket = clientSocket;
@@ -102,6 +106,7 @@ class ClientHandler extends Thread{
                     String[] parts = message.split(" ");
                     String username = null;
                     String password = null;
+                    //String score=null;
                     if(parts[0].equals("information"))
                     {
                         //getStatistics();
@@ -111,7 +116,13 @@ class ClientHandler extends Thread{
                     {
                         username = parts[1];
                         password = parts[2];  
-                       // validateLogin(username , password);
+                      //  validateLogin(username , password);
+                    }   else if(parts[0].equals("available")){
+                        username = parts[1];
+                    
+                        String available = displayAvailableList(username);
+                        System.out.println(available);
+                        printedMessageToClient.println(available);
                     }
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
@@ -130,17 +141,20 @@ class ClientHandler extends Thread{
 //       public void validateLogin(String username , String password){
 //        boolean isExist = DataAccessObject.isUserExist(username);
 //        if(isExist){
-//            try {
+//            try 
+//            {
 //                boolean isValid = DataAccessObject.isUserValid(username, password);
 //                if(isValid){
 //                    printedMessageToClient.println("confirm " + username);
 //                    System.out.println("con");
 //                    ClientHandler.clientsVector.add(this);
 //                }
-//                else{
+//                else
+//                {
 //                    printedMessageToClient.println("password " + username);
 //                }
-//            } catch (SQLException ex) {
+//            } 
+//            catch (SQLException ex) {
 //                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 //        }
@@ -148,4 +162,22 @@ class ClientHandler extends Thread{
 //            printedMessageToClient.println("username " + username);
 //        }
 //    }
+        
+      public  String displayAvailableList( String username){
+     Player player=new Player();   String available="";
+            try { 
+                List<String> availableList=DataAccessObject.getAvailableList();
+//     
+   for (int i = 0; i < availableList.size(); i++) {
+       available= availableList.get(i)+",";
+       System.out.println(available);
+      
+        
+   }
+            } catch (SQLException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return available;
+        }
+     
 }

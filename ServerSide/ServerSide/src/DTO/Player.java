@@ -30,6 +30,10 @@ public class Player {
 		this.available=available;
 	}
 
+    public Player() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getPlayerName() {
         return playerName;
     }

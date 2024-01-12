@@ -42,7 +42,7 @@ public class DataAccessObject {
 }
 
 
-static boolean isUserValid(String playerPassword){
+boolean isUserValid(String playerPassword){
 	String str="password";
         boolean isValid = false;
         try {
@@ -98,7 +98,7 @@ static boolean isUserValid(String playerPassword){
 
         Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player","root","root");
         //Statment
-        PreparedStatement ps=con.prepareStatement("insert into Player (password)"
+        PreparedStatement ps=con.prepareStatement("insert into user_Data (password)"
                 + "values(?)");
         ps.setString(1,contact.getPassword());
         
@@ -108,18 +108,36 @@ static boolean isUserValid(String playerPassword){
          con.close();
           return result;
     }
-       public static ResultSet getAvailable() throws SQLException{
-       DriverManager.registerDriver(new ClientDriver());
-        //connection
-        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
-          
-    PreparedStatement ps = con.prepareStatement("SELECT player_name from user_Data where available=true and Online=true",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
-    ResultSet result =ps.executeQuery();
-    return result;
-           
-     
- }
+//       public static ResultSet getAvailable() throws SQLException{
+//       DriverManager.registerDriver(new ClientDriver());
+//        //connection
+//        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+//          
+//    PreparedStatement ps = con.prepareStatement("SELECT player_name from user_Data where available=true and Online=true",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+//    ResultSet result =ps.executeQuery();
+//    return result;
+//           
+//     
+// }
 
+
+ public static List<String> getAvailableList() throws SQLException {
+   ResultSet resultSet;
+    Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player" , "root" , "root");
+ PreparedStatement ps = con.prepareStatement("SELECT * FROM Player where  available=true" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
+   resultSet = ps.executeQuery();
+   List<String> availableList =new ArrayList<>();
+   while (resultSet.next()) {
+
+     String availablePlayers = resultSet.getString("playerName")+":"+resultSet.getString("score");
+       availableList.add(availablePlayers);
+   }
+   ps.close();
+   con.close();
+   return availableList;
+}
+           
+           
 
 public static int addRecord(Player player) throws SQLException{
         int result = 0;
