@@ -131,7 +131,7 @@ public static int addRecord(Player player) throws SQLException{
         return result;
     }
 
-    public static List<Player> getRecords(Player player) throws SQLException {
+    /*public static List<Player> getRecords(Player player) throws SQLException {
       
         ResultSet resultSet;
         String pName = player.getPlayerName();
@@ -150,7 +150,24 @@ public static int addRecord(Player player) throws SQLException{
         con.close();
         
         return recordsList;
+    }*/
+    //method to get all records
+    public static List<String> getRecords(String playerName) throws SQLException {
+        ResultSet resultSet;
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM PLAYERRECORD WHERE NAME = ?  ", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ps.setString(1, playerName);
+        resultSet = ps.executeQuery();
+        List<String> recordsList =new ArrayList<>();
+        while (resultSet.next()) {
+        String record = resultSet.getString("RECORD");
+            recordsList.add(record);
+        }
+        ps.close();
+        con.close();
+        return recordsList;
     }
+
 
 
 public static int updateScore(Player player) throws SQLException {
@@ -180,7 +197,7 @@ public static int updateScore(Player player) throws SQLException {
 
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex; 
+            throw ex;  
         }
         return result;
     }

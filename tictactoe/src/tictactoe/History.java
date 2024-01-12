@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 
+
 public abstract class History extends BorderPane {
 
     protected final Label label;
@@ -58,14 +59,13 @@ public abstract class History extends BorderPane {
                 setGraphic(null);
             } else {
                 ItemLayoutForHistory itemLayout = new ItemLayoutForHistory() {};
-                // Customize itemLayout based on the content of 'item'
+                
                 itemLayout.dataLabelHistory.setText(item.getText());
                 itemLayout.dataLabelHistory1.setText("Additional Text"); // You can customize this as needed
                 setGraphic(itemLayout);
             }
         }
     }
-
     public class MyData {
         private String text;
 
@@ -82,12 +82,9 @@ public abstract class History extends BorderPane {
         }
     }
 
-    // Method to update data in the ListView
     public void updateDataInListView() {
-        listView.refresh(); // Refresh the ListView to update the displayed items
+        listView.refresh();
     }
-
-    // Method to add new data to the ListView
     public void addDataToListView(MyData newData) {
         listView.getItems().add(newData);
         listView.scrollTo(newData); // Scroll to the newly added item

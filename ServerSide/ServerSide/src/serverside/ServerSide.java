@@ -1,6 +1,7 @@
 package serverside;
 
 import DAO.DataAccessObject;
+import DTO.Player;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -8,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.lang.Thread;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,7 +109,7 @@ class ClientHandler extends Thread{
                         password = parts[2];  
                         validateLogin(username , password);
                     }
-                    else if(parts[0].equals("signUp")){
+                    /*else if(parts[0].equals("signUp")){
                         username = parts[1];
                         password = parts[2];
                         boolean isExist = DataAccessObject.isUserExist(username);
@@ -118,8 +120,14 @@ class ClientHandler extends Thread{
                         else{
                            signUp(username , password); 
                         }  
-                    }
+                    }*/
                     
+                    else if(parts[0].equals("signUp")){
+                        username = parts[1];
+                        password = parts[2];
+                        String newString = getHistory("mahmoud");
+                        System.out.println(newString);
+                    }
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
@@ -167,4 +175,24 @@ class ClientHandler extends Thread{
             //System.out.println("password added");
             printedMessageToClient.println("confirm");
        }
+       
+        public String getHistory(String userName){
+            String newString="";
+            try {
+                
+                List<String> playerRecords=DataAccessObject.getRecords(userName);
+
+                for (int i = 0; i < playerRecords.size(); i++) {
+                    String record = playerRecords.get(i);
+                    System.out.println(record);
+                    newString=newString+record+",";
+                }
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return newString;
+            
+        }      
 }
