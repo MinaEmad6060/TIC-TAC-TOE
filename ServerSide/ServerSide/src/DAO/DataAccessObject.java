@@ -68,12 +68,15 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
     public static int addUser(String playerName,String password) throws SQLException
     {
         int result =0;
-        
+        int score=0;
         DriverManager.registerDriver(new ClientDriver());
         Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
-        PreparedStatement ps=con.prepareStatement("INSERT INTO player (name, password) VALUES (?, ?)");
+        PreparedStatement ps=con.prepareStatement("INSERT INTO player (name, password,score,available,online) VALUES (?,?,?,?,?)");
         ps.setString(1,playerName);
         ps.setString(2, password);
+        ps.setInt(3,score);
+        ps.setBoolean(4,false);
+        ps.setBoolean(5,false);
         result =ps.executeUpdate();
         ps.close();
         con.close();
