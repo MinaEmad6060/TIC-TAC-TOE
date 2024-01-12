@@ -42,7 +42,7 @@ public class DataAccessObject {
 }
 
 
-boolean isUserValid(String playerPassword){
+static boolean isUserValid(String playerPassword){
 	String str="password";
         boolean isValid = false;
         try {
@@ -76,9 +76,9 @@ boolean isUserValid(String playerPassword){
         //connection
         
 
-        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player","root","root");
         //Statment
-        PreparedStatement ps=con.prepareStatement("insert into PhoneIndex (player_Name)"
+        PreparedStatement ps=con.prepareStatement("insert into Player (player_Name)"
                 + "values(?)");
         ps.setString(1,contact.getPlayerName());
         
@@ -96,9 +96,9 @@ boolean isUserValid(String playerPassword){
         //connection
         
 
-        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+        Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/Player","root","root");
         //Statment
-        PreparedStatement ps=con.prepareStatement("insert into user_Data (password)"
+        PreparedStatement ps=con.prepareStatement("insert into Player (password)"
                 + "values(?)");
         ps.setString(1,contact.getPassword());
         

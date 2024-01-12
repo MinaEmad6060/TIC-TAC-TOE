@@ -11,84 +11,83 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.lang.Thread;
+import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.Thread;
-import java.util.Vector;
 
-/**
- *
- * @author minae
- */
 public class ServerSide {
 
-    /**
-     * @param args the command line arguments
-     */
     
     static ServerSocket serverSocket;
+    Socket socket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
+    boolean isRunning = true;
     
     public ServerSide(){
    
-            try {
-                serverSocket = new ServerSocket(2000);
-                while(true){
-                    Socket clientSocket = serverSocket.accept();
-                    
-                    listenFromClient = new DataInputStream(clientSocket.getInputStream());
-                    printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
+        try {
+            serverSocket = new ServerSocket(2000);
 
-                    String msg = listenFromClient.readLine();
-                    String[] parts = msg.split(" ", 3);
-                    if (parts.length == 3) {
-                        String request = parts[0];
-                        String username = parts[1];
-                        String password = parts[2];
-                        
-                        if(request.equals("login")){
+            new Thread(){
+                public void run(){
+                    while (true) {
+                        try {
+                            socket = serverSocket.accept();
+                            new ClientHandler(socket , "");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
                     }
-                    
-                    
-                    
-                    new ChatHandler(clientSocket);
                 }
-            } catch (IOException ex) {
-                System.out.println("not accepted");
-            }finally {
+            }.start();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*finally {
                 try {
                     serverSocket.close();
                 } catch (IOException ex) {
                     System.out.println("not closed");
                 }
-            }
+            }*/
           }
+    
+    public void closeServer() {
+        isRunning = false;
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     
     
     public static void main(String[] args) {
-        // TODO code application logic here
-        new ServerSide();
+        //new ServerSide();
     }
 }
 
 
-class ChatHandler extends Thread{
+class ClientHandler extends Thread{
         DataInputStream listenFromClient;
         PrintStream printedMessageToClient;
-        static Vector<ChatHandler> clientsVector =new Vector<ChatHandler>(); 
-        
-        public ChatHandler(Socket s){
+        static Vector<ClientHandler> clientsVector =new Vector<ClientHandler>(); 
+        String name;
+        Socket socket;
+
+        public ClientHandler(Socket clientSocket , String userName){
+            name = userName;
+            socket = clientSocket;
             try {
-                listenFromClient = new DataInputStream(s.getInputStream());
-                printedMessageToClient = new PrintStream(s.getOutputStream());
+                listenFromClient = new DataInputStream(socket.getInputStream());
+                printedMessageToClient = new PrintStream(socket.getOutputStream());
                 
-                String msg = listenFromClient.readLine();
-                String[] parts = msg.split(" ", 3);
-                
-                
-                ChatHandler.clientsVector.add(this);
                 start();
             } catch (IOException ex) {
                 System.out.println("Erorr handle!");          
@@ -97,10 +96,23 @@ class ChatHandler extends Thread{
 
         public void run(){
             while(true){
-                try {
-                    printedMessageToClient.println("confirm data");
+                try 
+                {
                     String message = listenFromClient.readLine();
-                    System.out.println(message);
+                    String[] parts = message.split(" ");
+                    String username = null;
+                    String password = null;
+                    if(parts[0].equals("information"))
+                    {
+                        //getStatistics();
+                        
+                    }
+                    else if(parts[0].equals("login"))
+                    {
+                        username = parts[1];
+                        password = parts[2];  
+                       // validateLogin(username , password);
+                    }
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
@@ -108,12 +120,32 @@ class ChatHandler extends Thread{
                             ServerSide.serverSocket.close();
                         }
                         break;
-                    }else{
-                        //sendMessageToAll(message);
                     }
                 } catch (IOException ex) {
-                     break;
-                } 
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } 
+        }
+        
+//       public void validateLogin(String username , String password){
+//        boolean isExist = DataAccessObject.isUserExist(username);
+//        if(isExist){
+//            try {
+//                boolean isValid = DataAccessObject.isUserValid(username, password);
+//                if(isValid){
+//                    printedMessageToClient.println("confirm " + username);
+//                    System.out.println("con");
+//                    ClientHandler.clientsVector.add(this);
+//                }
+//                else{
+//                    printedMessageToClient.println("password " + username);
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        else{
+//            printedMessageToClient.println("username " + username);
+//        }
+//    }
 }
