@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public abstract class ItemLayoutForHistory extends HBox {
+public class ItemLayoutForHistory extends HBox {
 
     protected final Label dataLabelHistory;
     protected final Label dataLabelHistory1;

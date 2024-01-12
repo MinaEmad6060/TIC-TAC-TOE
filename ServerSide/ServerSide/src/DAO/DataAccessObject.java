@@ -131,6 +131,7 @@ public static int addRecord(Player player) throws SQLException{
         return result;
     }
 
+
     /*public static List<Player> getRecords(Player player) throws SQLException {
       
         ResultSet resultSet;
@@ -151,6 +152,9 @@ public static int addRecord(Player player) throws SQLException{
         
         return recordsList;
     }*/
+
+
+
     //method to get all records
     public static List<String> getRecords(String playerName) throws SQLException {
         ResultSet resultSet;

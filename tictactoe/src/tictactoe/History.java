@@ -6,15 +6,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 
-public abstract class History extends BorderPane {
+public class History extends BorderPane {
 
     protected final Label label;
     protected final ScrollPane scrollPane;
     protected final ListView<MyData> listView;
 
-    public History() {
+    public History(Stage s) {
 
         label = new Label();
         scrollPane = new ScrollPane();
@@ -49,6 +50,8 @@ public abstract class History extends BorderPane {
 
     }
 
+    
+
     private static class ItemLayoutForHistoryCell extends javafx.scene.control.ListCell<MyData> {
         @Override
         protected void updateItem(MyData item, boolean empty) {
@@ -61,7 +64,7 @@ public abstract class History extends BorderPane {
                 ItemLayoutForHistory itemLayout = new ItemLayoutForHistory() {};
                 
                 itemLayout.dataLabelHistory.setText(item.getText());
-                itemLayout.dataLabelHistory1.setText("Additional Text"); // You can customize this as needed
+                itemLayout.dataLabelHistory1.setText("Additional Text"); 
                 setGraphic(itemLayout);
             }
         }
@@ -87,7 +90,7 @@ public abstract class History extends BorderPane {
     }
     public void addDataToListView(MyData newData) {
         listView.getItems().add(newData);
-        listView.scrollTo(newData); // Scroll to the newly added item
+        listView.scrollTo(newData);
         updateDataInListView();
     }
 }

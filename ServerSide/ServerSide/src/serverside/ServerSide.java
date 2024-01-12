@@ -109,7 +109,7 @@ class ClientHandler extends Thread{
                         password = parts[2];  
                         validateLogin(username , password);
                     }
-                    /*else if(parts[0].equals("signUp")){
+                    else if(parts[0].equals("signUp")){
                         username = parts[1];
                         password = parts[2];
                         boolean isExist = DataAccessObject.isUserExist(username);
@@ -120,14 +120,18 @@ class ClientHandler extends Thread{
                         else{
                            signUp(username , password); 
                         }  
-                    }*/
+                    }
                     
-                    else if(parts[0].equals("signUp")){
+                    else if(parts[0].equals("history")){
                         username = parts[1];
-                        password = parts[2];
+                        //send username to next line
                         String newString = getHistory("mahmoud");
                         System.out.println(newString);
+                        printedMessageToClient.println(newString);
                     }
+                    
+                    
+                    
                     if(message.equalsIgnoreCase("Close")){
                         clientsVector.remove(clientsVector.size()-1);
                         System.out.println(clientsVector.size());
