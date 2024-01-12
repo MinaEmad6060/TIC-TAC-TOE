@@ -257,7 +257,7 @@ public class SignIn extends AnchorPane {
                         sendMessageToServer = new PrintStream(serverSide.getOutputStream());
                         sendMessageToServer.println(loginRequest);
 
-                        new Thread(){
+                        Thread testThread = new Thread(){
                             @Override
                             public void run(){
 
@@ -305,7 +305,9 @@ public class SignIn extends AnchorPane {
                                     }
                                         else{
                                             System.out.println("false");
+                                            break;
                                         }
+                                        
                                     } catch (IOException ex) {
                                         break;
                                     }
@@ -313,9 +315,13 @@ public class SignIn extends AnchorPane {
                                 
                                 
                             }
-                        }.start();
+                        };
+                        testThread.start();
+                        System.out.println("Thread Break");
+                        //testThread.stop();
+                        System.out.println("Thread stop");
                         
-                                                
+                          /*                      
                         s.setOnCloseRequest(new EventHandler<WindowEvent>(){
                             @Override
                             public void handle(WindowEvent event) {
@@ -328,7 +334,8 @@ public class SignIn extends AnchorPane {
                                     System.out.println("Erorr");
                                 }
                             }
-                        }); 
+                        });
+                        */
 
                 }   catch (IOException ex) {
                         System.out.println("error in creating socket");                    

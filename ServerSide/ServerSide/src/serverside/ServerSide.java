@@ -93,6 +93,8 @@ class ClientHandler extends Thread{
                     String password = null;
                     String playerName = null;
                     String playerTargetName = null;
+                    String step = null;
+                    
                     if(parts[0].equals("information"))
                     {
                         getStatistics();
@@ -140,6 +142,12 @@ class ClientHandler extends Thread{
                         {
                             System.out.println("can't update");
                         }
+                    }
+                    else if(parts[0].equals("step"))
+                    {
+                        playerTargetName = parts[1];
+                        step = parts[2];
+                        sendStepToClient(playerTargetName , "step" , step);
                     }
                     else{
                         System.out.println("nonee");
@@ -223,4 +231,27 @@ class ClientHandler extends Thread{
             }
         }
     }
+       private void sendStepToClient(String targetUsername , String message , String step) {
+           System.out.println("call stepppp");
+        for (ClientHandler client : clientsVector) {
+            System.out.println("loop");
+            System.out.println(client.name);
+            System.out.println("aftername");
+            if (client.name.equals(targetUsername)) {
+                System.out.println("found");
+                client.printedMessageToClient.println(message + " " + step);
+                System.out.println(message + " " + step);
+                return;
+            }
+            else{
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
 }
+
+
+
+
+
+

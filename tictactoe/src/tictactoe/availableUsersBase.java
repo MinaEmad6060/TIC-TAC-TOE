@@ -27,6 +27,8 @@ import javafx.stage.Stage;
 
 public class availableUsersBase extends BorderPane {
 
+    
+
     protected final Label label;
     protected final ScrollPane scroll;
     protected final ListView<String> listView;
@@ -39,6 +41,8 @@ public class availableUsersBase extends BorderPane {
     Alert waitingAlert;
     Alert invitationAlert;
     Stage stage;
+    static int turn; 
+    static String player2Name;
     
    
     public void ShowWaitingAlert(String nameee) {
@@ -114,7 +118,9 @@ public class availableUsersBase extends BorderPane {
             public void handle(Event event) {
                 String acceptRequest = "accept " + "sls " + opponentPlayer;
                 SignIn.sendMessageToServer.println(acceptRequest);
-                Welcome.navScreens(new EmptyBoard(stage), stage);
+                player2Name = opponentPlayer;
+                turn = 2;
+                Welcome.navScreens(new BoardOnline(stage), stage);
             }
         });
         noButton.setOnAction(new EventHandler() {
@@ -191,8 +197,9 @@ public class availableUsersBase extends BorderPane {
                     String msg;
                     System.out.println("string");
                     try {
-                        System.out.println("msg");
+                        System.out.println("msg available");
                         msg = SignIn.listenFromServer.readLine();
+                        
                         System.out.println("message");
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
@@ -204,6 +211,7 @@ public class availableUsersBase extends BorderPane {
                                   ShowInvitationAlert(opponentPlayer);
                                 }
                             });
+                            break;
                         }
                         if(parts[0].equals("accept")){
                             String opponentPlayer = parts[1];
@@ -211,9 +219,12 @@ public class availableUsersBase extends BorderPane {
                             Platform.runLater(new Runnable() {
                                 @Override public void run() {
                                   waitingAlert.close();
-                                  Welcome.navScreens(new EmptyBoard(s), s);
+                                  turn = 1;
+                                  Welcome.navScreens(new BoardOnline(s), s);
+                                  
                                 }
                             });
+                            break;
                         }
                         if(parts[0].equals("refuse")){
                             String opponentPlayer = parts[1];
@@ -223,6 +234,7 @@ public class availableUsersBase extends BorderPane {
                                   waitingAlert.close();
                                 }
                             });
+                            break;
                             
                         }
                         if(parts[0].equals("cancel")){
@@ -243,9 +255,11 @@ public class availableUsersBase extends BorderPane {
                                     }
                                 }
                             });
+                            break;
                         }
                         else{
                             System.out.println("false");
+                            break;
                         }
                     } catch (IOException ex) {
                         break;
@@ -253,5 +267,6 @@ public class availableUsersBase extends BorderPane {
                 }
             }
         }.start();
+        
     }
 }
