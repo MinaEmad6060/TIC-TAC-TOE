@@ -58,16 +58,16 @@ public class availableUsersBase extends BorderPane {
                   "-fx-padding: 10.0;");
 
 
-        ButtonType canselButtonType = new ButtonType("Cansel");
-        waitingAlert.getButtonTypes().addAll(canselButtonType);
+        ButtonType cancelButtonType = new ButtonType("Cansel");
+        waitingAlert.getButtonTypes().addAll(cancelButtonType);
 
-        Button canselButton = (Button) waitingAlert.getDialogPane().lookupButton(canselButtonType);
-        canselButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+        Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: red; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-pref-height: 50;");
-        canselButton.setTranslateX(-150);
+        cancelButton.setTranslateX(-150);
 
-        canselButton.setOnAction(new EventHandler() {
+        cancelButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 String canselRequest = "cansel " + "slsabel " + "sls";
@@ -176,7 +176,8 @@ public class availableUsersBase extends BorderPane {
             targetPlayer = listView.getSelectionModel().getSelectedItem();
             String playRequest = "play " + "slsabel " + targetPlayer;
             SignIn.sendMessageToServer.println(playRequest);
-            ShowWaitingAlert(targetPlayer);                                    
+            ShowWaitingAlert(targetPlayer);   
+                                             
         } 
     });
     
@@ -224,13 +225,22 @@ public class availableUsersBase extends BorderPane {
                             });
                             
                         }
-                        if(parts[0].equals("cansel")){
+                        if(parts[0].equals("cancel")){
                             String opponentPlayer = parts[1];
                             System.out.println(opponentPlayer);
                             
                             Platform.runLater(new Runnable() {
                                 @Override public void run() {
-                                  invitationAlert.close();  
+                                  
+                                    //System.out.println("close invitation");
+                                    //invitationAlert.close();
+                                    //System.out.println("close invitation222");
+                                    if (invitationAlert.isShowing()) {
+                                        invitationAlert.close();
+                                        System.out.println("invitationAlert closed");
+                                    } else {
+                                        System.out.println("invitationAlert is not currently showing");
+                                    }
                                 }
                             });
                         }

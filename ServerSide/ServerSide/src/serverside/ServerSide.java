@@ -122,7 +122,7 @@ class ClientHandler extends Thread{
                         playerTargetName = parts[2];
                         sendMessageToClient(playerName , playerTargetName , "refuse");
                     }
-                    else if(parts[0].equals("cansel"))
+                    else if(parts[0].equals("cancel"))
                     {
                         playerName = parts[1];
                         playerTargetName = parts[2];
