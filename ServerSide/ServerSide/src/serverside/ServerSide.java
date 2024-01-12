@@ -20,6 +20,7 @@ public class ServerSide {
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
     static boolean isRunning = true;
+    static ClientHandler clientHandler;
     
     public ServerSide(){
    
@@ -31,7 +32,7 @@ public class ServerSide {
                     while (true) {
                         try {
                             socket = serverSocket.accept();
-                            new ClientHandler(socket , "");
+                            clientHandler = new ClientHandler(socket , "");
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -70,8 +71,9 @@ class ClientHandler extends Thread{
         Socket socket;
 
         public ClientHandler(Socket clientSocket , String userName){
-            name = userName;
+            //name = userName;
             socket = clientSocket;
+            ServerSide.clientHandler = this;
             try {
                 listenFromClient = new DataInputStream(socket.getInputStream());
                 printedMessageToClient = new PrintStream(socket.getOutputStream());
@@ -89,6 +91,8 @@ class ClientHandler extends Thread{
                     String[] parts = message.split(" ");
                     String username = null;
                     String password = null;
+                    String playerName = null;
+                    String playerTargetName = null;
                     if(parts[0].equals("information"))
                     {
                         getStatistics();
@@ -98,7 +102,51 @@ class ClientHandler extends Thread{
                         username = parts[1];
                         password = parts[2];  
                         validateLogin(username , password);
-                    }/*
+                    }
+                    else if(parts[0].equals("play"))
+                    {
+                        System.out.println("play moode");
+                        playerName = parts[1];
+                        playerTargetName = parts[2];
+                        sendMessageToClient(playerName , playerTargetName , "play");
+                    }
+                    else if(parts[0].equals("accept"))
+                    {
+                        playerName = parts[1];
+                        playerTargetName = parts[2];
+                        sendMessageToClient(playerName ,playerTargetName , "accept");
+                    }
+                    else if(parts[0].equals("refuse"))
+                    {
+                        playerName = parts[1];
+                        playerTargetName = parts[2];
+                        sendMessageToClient(playerName , playerTargetName , "refuse");
+                    }
+                    else if(parts[0].equals("cansel"))
+                    {
+                        playerName = parts[1];
+                        playerTargetName = parts[2];
+                        sendMessageToClient(playerName , playerTargetName , "cansel");
+                    }
+                    else if(parts[0].equals("update"))
+                    {
+                        System.out.println("updateee");
+                        String testUpdate = parts[1];
+                        int test = DataAccessObject.updateOnlineState(testUpdate , true);
+                        if(test > 0){
+                            System.out.println("updated");
+                        }
+                        else
+                        {
+                            System.out.println("can't update");
+                        }
+                    }
+                    else{
+                        System.out.println("nonee");
+                    }
+                    
+                    
+                    /*
                     if(message.equalsIgnoreCase("Close")){
                         for(int i = 0 ; i < clientsVector.size(); i++)
                         {
@@ -111,6 +159,8 @@ class ClientHandler extends Thread{
                         
                     }*/
                 } catch (IOException ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
                     Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -125,7 +175,8 @@ class ClientHandler extends Thread{
                         if(isValid){
                             printedMessageToClient.println("confirm " + username);
                             System.out.println("con");
-                            ClientHandler.clientsVector.add(this);
+                            name = username;
+                            ClientHandler.clientsVector.add(ServerSide.clientHandler);
                         }
                         else{
                             printedMessageToClient.println("password " + username);
@@ -156,4 +207,20 @@ class ClientHandler extends Thread{
             }
            }
        }
+       private void sendMessageToClient(String username , String targetUsername , String message) {
+           System.out.println("call");
+        for (ClientHandler client : clientsVector) {
+            System.out.println("loop");
+            System.out.println(client.name);
+            System.out.println("aftername");
+            if (client.name.equals(targetUsername)) {
+                System.out.println("found");
+                client.printedMessageToClient.println(message + " " + username + " " + targetUsername);
+                return;
+            }
+            else{
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
 }

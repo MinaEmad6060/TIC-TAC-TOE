@@ -49,9 +49,9 @@ public class SignIn extends AnchorPane {
     protected final Text text8;
     protected final Text btnClick;
     String loginRequest;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
+    static Socket serverSide;
+    static DataInputStream listenFromServer;
+    static PrintStream sendMessageToServer;
     boolean test=false;
 
 
@@ -274,7 +274,10 @@ public class SignIn extends AnchorPane {
                                                 @Override public void run() {
                                                     if(test==true){
                                                         System.out.println("test is mina");
-                                                        Welcome.navScreens(new OnlineHome(s), s);
+                                                        String updateonline = "update " + "slsa";
+                                                        System.out.println(updateonline);
+                                                        sendMessageToServer.println(updateonline);
+                                                        Welcome.navScreens(new availableUsersBase(s), s);
                                                     }else{
                                                         System.out.println("test is false");
                                                     }
