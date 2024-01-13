@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+<<<<<<< HEAD
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/Welcome.java</file>
+=======
+            <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/RobotMode.java</file>
+            <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/SignIn.java</file>
+            <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/HistoryScreen.java</file>
+            <file>file:/H:/ITI/Java/java%20project/TIC-TAC-TOE/tictactoe/src/tictactoe/SignUp.java</file>
+>>>>>>> signUp-online
+        </group>
+>>>>>>> a79bfcf2fe59ec8fb1afc918223b1e87007e8212
     </open-files>
 </project-private>
