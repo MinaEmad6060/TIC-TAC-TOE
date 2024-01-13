@@ -1,10 +1,7 @@
 package tictactoe;
-import java.io.DataInputStream;
+
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.Socket;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -12,7 +9,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class HistoryScreen extends AnchorPane {
 
@@ -21,29 +17,22 @@ public class HistoryScreen extends AnchorPane {
     
     protected final ListView<HistoryScreen.TextData> listView;
     String hestoryRequest;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
 
     public HistoryScreen(Stage s) {
 
         anchorPane = new AnchorPane();
         label = new Label();
         listView = new ListView<>();
-        hestoryRequest="history " + "mahmoud";
+        hestoryRequest="history " + SignIn.currentUser;
         System.out.println(hestoryRequest);
-            try {
-                serverSide = new Socket("127.0.0.1", 2000);
-                listenFromServer = new DataInputStream(serverSide.getInputStream());
-                sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-                sendMessageToServer.println(hestoryRequest);
+                SignIn.sendMessageToServer.println(hestoryRequest);
                     new Thread(){
                         @Override
                         public void run(){
                             while(true)
                             {
                                 try {
-                                    String msg = listenFromServer.readLine();
+                                    String msg = SignIn.listenFromServer.readLine();
                                     System.out.println(msg);
                                     String[] allRecords = msg.split("\\*");
                                     // mahmoud-mina 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22*
@@ -74,6 +63,7 @@ public class HistoryScreen extends AnchorPane {
                                         });
                                     }
                                 
+                                
                                 }catch (IOException ex) {
                                     break;
                                 }
@@ -82,24 +72,8 @@ public class HistoryScreen extends AnchorPane {
 
                         }
                     }.start();
-                                         
-                        s.setOnCloseRequest(new EventHandler<WindowEvent>(){
-                            @Override
-                            public void handle(WindowEvent event) {
-                                sendMessageToServer.println("Close");
-                                try {
-                                    sendMessageToServer.close();
-                                    listenFromServer.close();
-                                    serverSide.close();                        
-                                } catch (IOException ex) {
-                                    System.out.println("Erorr");
-                                }
-                            }
-                        }); 
 
-                }catch (IOException ex) {
-                        System.out.println("error in creating socket");                    
-                }
+                
           listView.setOnMouseClicked(event -> {
               if (event.getButton() == MouseButton.PRIMARY) {
                   TextData selectedItem = listView.getSelectionModel().getSelectedItem();

@@ -189,6 +189,7 @@ public  class OnlineHome extends AnchorPane {
                             sendMessageToServer.println(availableRequest);
                             
                             //Welcome.navScreens(new (stage), stage);
+                            Welcome.navScreens(new availableUsers(stage), stage);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -206,7 +207,7 @@ public  class OnlineHome extends AnchorPane {
         btnHistory.setFont(new Font("Cooper Black", 65.0));
         btnHistory.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event) {
-                //Welcome.navScreens(new , stage);
+                Welcome.navScreens(new HistoryScreen(stage), stage);
             }
         });
 

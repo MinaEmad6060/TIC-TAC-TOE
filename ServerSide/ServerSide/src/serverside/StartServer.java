@@ -1,8 +1,12 @@
 package serverside;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class StartServer extends AnchorPane {
 
@@ -35,16 +41,21 @@ public class StartServer extends AnchorPane {
     protected final Button stopBtn;
     protected final AnchorPane anchorPane0;
     protected final Text allUsersLabel;
-    protected final Text text12;
     protected final AnchorPane anchorPane1;
     protected final Text onlineUsersLabel;
+    protected final Text text12;
     protected final Text text13;
     protected final AnchorPane anchorPane2;
     protected final Text text14;
-    protected final Text text15;
+    protected final Text availableUsersLabel;
     static boolean isStart = false;
+    Socket serverSocket;
+    DataInputStream listenFromServer;
+    PrintStream sendMessageToServer;
+    boolean test=false;
+    static ServerSide serverSide;
 
-    public StartServer() {
+    public StartServer(Stage s) {
 
         anchorPane = new AnchorPane();
         text = new Text();
@@ -65,13 +76,13 @@ public class StartServer extends AnchorPane {
         stopBtn = new Button();
         anchorPane0 = new AnchorPane();
         allUsersLabel = new Text();
-        text12 = new Text();
         anchorPane1 = new AnchorPane();
         onlineUsersLabel = new Text();
+        text12 = new Text();
         text13 = new Text();
         anchorPane2 = new AnchorPane();
         text14 = new Text();
-        text15 = new Text();
+        availableUsersLabel = new Text();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -162,7 +173,7 @@ public class StartServer extends AnchorPane {
         imageView.setLayoutY(14.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-        //imageView.setImage(new Image(getClass().getResource("xoIcon.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("/images/xo.png").toExternalForm()));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text8.setLayoutX(796.0);
@@ -214,6 +225,69 @@ public class StartServer extends AnchorPane {
                 if(!isStart){
                     new Thread(new ServerRunner()).start();
                 }
+                try {
+                        serverSocket = new Socket("127.0.0.1", 2000);
+                        listenFromServer = new DataInputStream(serverSocket.getInputStream());
+                        sendMessageToServer = new PrintStream(serverSocket.getOutputStream());
+
+                        new Thread(){
+                            @Override
+                            public void run(){
+                                while(true){
+                                    try {
+                                        sendMessageToServer.println("information");
+                                        Thread.sleep(20000);
+                                    } catch (InterruptedException ex) {
+                                        Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                        }.start();
+                        new Thread(){
+                            @Override
+                            public void run(){
+
+                                while(true)
+                                {
+                                    try {
+                                        String msg = listenFromServer.readLine();
+                                        String[] parts = msg.split(" ", 3);
+                                        String allUsers = parts[0];
+                                        String onlineUsers = parts[1];
+                                        String availableUsers = parts[2];
+                                        Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    allUsersLabel.setText(allUsers);
+                                                    onlineUsersLabel.setText(onlineUsers);
+                                                    availableUsersLabel.setText(availableUsers);   
+                                                }
+                                            });
+                                        
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                } 
+                            }
+                        }.start();
+                        
+                                                
+                        s.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                            @Override
+                            public void handle(WindowEvent event) {
+                                sendMessageToServer.println("Close");
+                                try {
+                                    sendMessageToServer.close();
+                                    listenFromServer.close();
+                                    serverSocket.close();                        
+                                } catch (IOException ex) {
+                                    System.out.println("Erorr");
+                                }
+                            }
+                        }); 
+
+                }   catch (IOException ex) {
+                        System.out.println("error in creating socket");                    
+                }
             }
         });
 
@@ -232,8 +306,7 @@ public class StartServer extends AnchorPane {
         stopBtn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                ServerSide server = new ServerSide();
-//                server.closeServer();
+               StartServer.serverSide.closeServer();
             }
         });
 
@@ -248,20 +321,10 @@ public class StartServer extends AnchorPane {
         allUsersLabel.setLayoutY(132.0);
         allUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         allUsersLabel.setStrokeWidth(0.0);
-        allUsersLabel.setText("100");
+        allUsersLabel.setText("0");
         allUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         allUsersLabel.setWrappingWidth(94.66474056243896);
-        allUsersLabel.setFont(new Font("MT Extra", 40.0));
-
-        text12.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
-        text12.setLayoutX(24.0);
-        text12.setLayoutY(63.0);
-        text12.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        text12.setStrokeWidth(0.0);
-        text12.setText("All Users");
-        text12.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        text12.setWrappingWidth(173.00000596046448);
-        text12.setFont(new Font("MT Extra", 40.0));
+        allUsersLabel.setFont(new Font("Cooper Black", 52.0));
 
         anchorPane1.setLayoutX(489.0);
         anchorPane1.setLayoutY(290.0);
@@ -274,20 +337,30 @@ public class StartServer extends AnchorPane {
         onlineUsersLabel.setLayoutY(132.0);
         onlineUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         onlineUsersLabel.setStrokeWidth(0.0);
-        onlineUsersLabel.setText("80");
+        onlineUsersLabel.setText("0");
         onlineUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         onlineUsersLabel.setWrappingWidth(88.00000596046448);
-        onlineUsersLabel.setFont(new Font("MT Extra", 40.0));
+        onlineUsersLabel.setFont(new Font("Cooper Black", 52.0));
+
+        text12.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
+        text12.setLayoutX(40.0);
+        text12.setLayoutY(64.0);
+        text12.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        text12.setStrokeWidth(0.0);
+        text12.setText("Online");
+        text12.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text12.setWrappingWidth(137.00000596046448);
+        text12.setFont(new Font("Cooper Black", 40.0));
 
         text13.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
-        text13.setLayoutX(40.0);
-        text13.setLayoutY(64.0);
+        text13.setLayoutX(-364.0);
+        text13.setLayoutY(62.0);
         text13.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text13.setStrokeWidth(0.0);
-        text13.setText("Online");
+        text13.setText("All Users");
         text13.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        text13.setWrappingWidth(137.00000596046448);
-        text13.setFont(new Font("MT Extra", 40.0));
+        text13.setWrappingWidth(214.00000596046448);
+        text13.setFont(new Font("Cooper Black", 40.0));
 
         anchorPane2.setLayoutX(865.0);
         anchorPane2.setLayoutY(290.0);
@@ -296,23 +369,24 @@ public class StartServer extends AnchorPane {
         anchorPane2.setStyle("-fx-background-color: #FFD652; -fx-background-radius: 30;");
 
         text14.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
-        text14.setLayoutX(32.0);
-        text14.setLayoutY(66.0);
+        text14.setLayoutX(12.0);
+        text14.setLayoutY(59.0);
         text14.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         text14.setStrokeWidth(0.0);
         text14.setText("Avaliable");
-        text14.setWrappingWidth(157.00000596046448);
-        text14.setFont(new Font("MT Extra", 40.0));
+        text14.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        text14.setWrappingWidth(198.00000596046448);
+        text14.setFont(new Font("Cooper Black", 40.0));
 
-        text15.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
-        text15.setLayoutX(84.0);
-        text15.setLayoutY(132.0);
-        text15.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-        text15.setStrokeWidth(0.0);
-        text15.setText("6");
-        text15.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        text15.setWrappingWidth(53.02733927965164);
-        text15.setFont(new Font("MT Extra", 40.0));
+        availableUsersLabel.setFill(javafx.scene.paint.Color.valueOf("#5319bd"));
+        availableUsersLabel.setLayoutX(84.0);
+        availableUsersLabel.setLayoutY(132.0);
+        availableUsersLabel.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
+        availableUsersLabel.setStrokeWidth(0.0);
+        availableUsersLabel.setText("0");
+        availableUsersLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        availableUsersLabel.setWrappingWidth(53.02733927965164);
+        availableUsersLabel.setFont(new Font("Cooper Black", 52.0));
 
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(text0);
@@ -332,13 +406,13 @@ public class StartServer extends AnchorPane {
         getChildren().add(startBtn);
         getChildren().add(stopBtn);
         anchorPane0.getChildren().add(allUsersLabel);
-        anchorPane0.getChildren().add(text12);
         getChildren().add(anchorPane0);
         anchorPane1.getChildren().add(onlineUsersLabel);
+        anchorPane1.getChildren().add(text12);
         anchorPane1.getChildren().add(text13);
         getChildren().add(anchorPane1);
         anchorPane2.getChildren().add(text14);
-        anchorPane2.getChildren().add(text15);
+        anchorPane2.getChildren().add(availableUsersLabel);
         getChildren().add(anchorPane2);
 
     }
@@ -348,6 +422,6 @@ class ServerRunner implements Runnable {
         @Override
         public void run() {
             StartServer.isStart = true;
-            new ServerSide();
+            StartServer.serverSide = new ServerSide();
         }
-    }
+}

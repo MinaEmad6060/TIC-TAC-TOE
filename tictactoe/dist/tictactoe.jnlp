@@ -11,23 +11,7 @@
     <jar href="lib\derby.jar" size="2766479" download="eager" />
     <jar href="lib\derbyclient.jar" size="576624" download="eager" />
     <jar href="lib\derbynet.jar" size="248898" download="eager" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <jar href="tictactoe.jar" size="18079224" download="eager" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <jar href="tictactoe.jar" size="18079228" download="eager" />
-=======
-    <jar href="tictactoe.jar" size="18086459" download="eager" />
->>>>>>> login_online
-=======
-    <jar href="tictactoe.jar" size="18099119" download="eager" />
->>>>>>> signUp-online
->>>>>>> a79bfcf2fe59ec8fb1afc918223b1e87007e8212
-=======
-    <jar href="tictactoe.jar" size="18084058" download="eager" />
->>>>>>> init-online
+    <jar href="tictactoe.jar" size="18128623" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="tictactoe" >
     <param name="requiredFXVersion" value="8.0+"/>

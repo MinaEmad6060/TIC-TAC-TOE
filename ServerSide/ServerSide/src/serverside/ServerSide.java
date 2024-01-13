@@ -16,11 +16,12 @@ import java.util.logging.Logger;
 
 public class ServerSide {
 
-    static ServerSocket serverSocket;
+    ServerSocket serverSocket;
     Socket socket;
     DataInputStream listenFromClient;
     PrintStream printedMessageToClient;
-    boolean isRunning = true;
+    static boolean isRunning = true;
+    static ClientHandler clientHandler;
 
     public ServerSide() {
 
@@ -32,7 +33,7 @@ public class ServerSide {
                     while (true) {
                         try {
                             socket = serverSocket.accept();
-                            new ClientHandler(socket, "");
+                            clientHandler = new ClientHandler(socket, "");
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -45,8 +46,21 @@ public class ServerSide {
         }
     }
 
+    public void closeServer() {
+        ServerSide.isRunning = false;
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+        }
+    }
+
     public static void main(String[] args) {
-        new ServerSide();
+
+        //new ServerSide();
     }
 }
 
@@ -61,19 +75,8 @@ class ClientHandler extends Thread {
     public ClientHandler(Socket clientSocket, String userName) {
         name = userName;
         socket = clientSocket;
+        ServerSide.clientHandler = this;
         try {
-
-            listenFromClient = new DataInputStream(clientSocket.getInputStream());
-            printedMessageToClient = new PrintStream(clientSocket.getOutputStream());
-
-            String msg = listenFromClient.readLine();
-            String[] parts = msg.split(" ", 3);
-
-            ClientHandler.clientsVector.add(this);
-
-            listenFromClient = new DataInputStream(socket.getInputStream());
-            printedMessageToClient = new PrintStream(socket.getOutputStream());
-
             listenFromClient = new DataInputStream(socket.getInputStream());
             printedMessageToClient = new PrintStream(socket.getOutputStream());
 
@@ -85,22 +88,22 @@ class ClientHandler extends Thread {
 
     public void run() {
         while (true) {
-
             try {
                 String message = listenFromClient.readLine();
                 String[] parts = message.split(" ");
                 String username = null;
                 String password = null;
+                String playerName = null;
+                String playerTargetName = null;
+                String step = null;
 
-                //String score=null;
                 if (parts[0].equals("information")) {
-                    //getStatistics();
-
+                    getStatistics();
                 } else if (parts[0].equals("login")) {
                     username = parts[1];
                     password = parts[2];
 
-                    //  validateLogin(username , password);
+                    validateLogin(username, password);
                 } else if (parts[0].equals("available")) {
                     System.out.println("fffffffffff");
                     username = parts[1];
@@ -108,7 +111,7 @@ class ClientHandler extends Thread {
                     String available = displayAvailableList(username);
                     System.out.println(available);
                     printedMessageToClient.println(available);
-                } //                    validateLogin(username, password);
+                }
                 else if (parts[0].equals("signUp")) {
                     username = parts[1];
                     password = parts[2];
@@ -132,9 +135,30 @@ class ClientHandler extends Thread {
                 } else if (parts[0].equals("Available")) {
                     username = parts[1];
                     DataAccessObject.updateAvailability(username, true);
+                } else if (parts[0].equals("play")) {
+                    System.out.println("play moode");
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, "play");
+                } else if (parts[0].equals("accept")) {
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, "accept");
+                } else if (parts[0].equals("refuse")) {
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, "refuse");
+                } else if (parts[0].equals("cancel")) {
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, "cansel");
+                } else if (parts[0].equals("step")) {
+                    playerTargetName = parts[1];
+                    step = parts[2];
+                    sendStepToClient(playerTargetName, "step", step);
                 }
 
-                if (message.equalsIgnoreCase("Close")) {
+                /*if (message.equalsIgnoreCase("Close")) {
                     clientsVector.remove(clientsVector.size() - 1);
                     System.out.println(clientsVector.size());
                     if (clientsVector.size() == 0) {
@@ -145,7 +169,7 @@ class ClientHandler extends Thread {
                         }
                     }
 
-                }
+                }*/
             } catch (IOException ex) {
                 ex.getStackTrace();
             } catch (SQLException ex) {
@@ -155,8 +179,6 @@ class ClientHandler extends Thread {
         }
     }
 
-    
-    
     public String displayAvailableList(String username) {
         Player player = new Player();
         String available = "";
@@ -229,4 +251,53 @@ class ClientHandler extends Thread {
 
     }
 
+    public void getStatistics() {
+        if (ServerSide.isRunning) {
+            try {
+                String info = "";
+                int allUsers = DataAccessObject.getAllUsers();
+                int onlineUsers = DataAccessObject.getOnlineUsers();
+                int availableUsers = DataAccessObject.getAvailableUsers();
+                info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers)
+                        + " " + String.valueOf(availableUsers);
+                printedMessageToClient.println(info);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void sendMessageToClient(String username, String targetUsername, String message) {
+        System.out.println("call");
+        for (ClientHandler client : clientsVector) {
+            System.out.println("loop");
+            System.out.println(client.name);
+            System.out.println("aftername");
+            if (client.name.equals(targetUsername)) {
+                System.out.println("found");
+                client.printedMessageToClient.println(message + " " + username + " " + targetUsername);
+                return;
+            } else {
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
+
+    private void sendStepToClient(String targetUsername, String message, String step) {
+        System.out.println("call stepppp");
+        for (ClientHandler client : clientsVector) {
+            System.out.println("loop");
+            System.out.println(client.name);
+            System.out.println("aftername");
+            if (client.name.equals(targetUsername)) {
+                System.out.println("found");
+                client.printedMessageToClient.println(message + " " + step);
+                System.out.println(message + " " + step);
+                return;
+            } else {
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
 }

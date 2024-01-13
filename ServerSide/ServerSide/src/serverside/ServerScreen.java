@@ -9,7 +9,7 @@ public class ServerScreen extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new StartServer();
+        Parent root = new StartServer(stage);
         
         Scene scene = new Scene(root);
         
