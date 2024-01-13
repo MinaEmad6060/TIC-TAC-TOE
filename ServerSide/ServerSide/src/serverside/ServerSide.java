@@ -26,39 +26,26 @@ public class ServerSide {
 
         try {
             serverSocket = new ServerSocket(2000);
-        } catch (IOException ex) {
-            Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+
+            new Thread() {
+                public void run() {
+                    while (true) {
+                        try {
+                            socket = serverSocket.accept();
+                            new ClientHandler(socket, "");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        new Thread() {
-            public void run() {
-                while (true) {
-                    try {
-                        socket = serverSocket.accept();
-                        new ClientHandler(socket, "");
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-
-            public void closeServer() {
-                isRunning = false;
-                try {
-                    if (serverSocket != null && !serverSocket.isClosed()) {
-                        serverSocket.close();
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-        }.start();
-
     }
 
     public static void main(String[] args) {
-
         new ServerSide();
     }
 }
@@ -138,6 +125,13 @@ class ClientHandler extends Thread {
                     String newString = getHistory(username);
                     System.out.println(newString);
                     printedMessageToClient.println(newString);
+                } else if (parts[0].equals("Logout")) {
+                    username = parts[1];
+                    DataAccessObject.updateOnlineState(username, false);
+                    //DataAccessObject.updateAvailability(username,false);
+                } else if (parts[0].equals("Available")) {
+                    username = parts[1];
+                    DataAccessObject.updateAvailability(username, true);
                 }
 
                 if (message.equalsIgnoreCase("Close")) {
@@ -153,41 +147,22 @@ class ClientHandler extends Thread {
 
                 }
             } catch (IOException ex) {
-                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                ex.getStackTrace();
+            } catch (SQLException ex) {
+                ex.getErrorCode();
+                ex.getMessage();
             }
         }
     }
 
-//       public void validateLogin(String username , String password){
-//        boolean isExist = DataAccessObject.isUserExist(username);
-//        if(isExist){
-//            try 
-//            {
-//                boolean isValid = DataAccessObject.isUserValid(username, password);
-//                if(isValid){
-//                    printedMessageToClient.println("confirm " + username);
-//                    System.out.println("con");
-//                    ClientHandler.clientsVector.add(this);
-//                }
-//                else
-//                {
-//                    printedMessageToClient.println("password " + username);
-//                }
-//            } 
-//            catch (SQLException ex) {
-//                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        else{
-//            printedMessageToClient.println("username " + username);
-//        }
-//    }
+    
+    
     public String displayAvailableList(String username) {
         Player player = new Player();
         String available = "";
         try {
             List<String> availableList = DataAccessObject.getAvailableList();
-//     
+
             for (int i = 0; i < availableList.size(); i++) {
                 available = availableList.get(i) + ",";
                 System.out.println(available);
@@ -199,20 +174,23 @@ class ClientHandler extends Thread {
         return available;
     }
 
-    public void validateLogin(String username, String password) {
+    public void validateLogin(String username, String password) throws SQLException {
         boolean isExist = DataAccessObject.isUserExist(username);
         if (isExist) {
             try {
                 boolean isValid = DataAccessObject.isUserValid(username, password);
                 if (isValid) {
                     printedMessageToClient.println("confirm " + username);
+                    //mina
+                    DataAccessObject.updateOnlineState(username, true);
                     System.out.println("con");
                     ClientHandler.clientsVector.add(this);
                 } else {
                     printedMessageToClient.println("password " + username);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
+                ex.getErrorCode();
+                ex.getMessage();
             }
         } else {
             printedMessageToClient.println("username " + username);

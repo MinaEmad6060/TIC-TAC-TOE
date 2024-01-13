@@ -49,11 +49,13 @@ public class SignIn extends AnchorPane {
     protected final Text text8;
     protected final Text btnClick;
     String loginRequest;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
+    public static Socket serverSide;
+    public static DataInputStream listenFromServer;
+    public static PrintStream sendMessageToServer;
     boolean test=false;
 
+    //mina
+    public static String currentUser="";
 
     public SignIn(Stage s) {
 
@@ -247,9 +249,10 @@ public class SignIn extends AnchorPane {
                 }
                 if(!username.getText().equals("") && !password.getText().equals("")){
                     System.out.println("Successful login");
+                    //mina
+                    currentUser=username.getText();
                     loginRequest="login " + username.getText() + " " + password.getText();
                     System.out.println(loginRequest);
-                    
                     
                     try {
                         serverSide = new Socket("127.0.0.1", 2000);

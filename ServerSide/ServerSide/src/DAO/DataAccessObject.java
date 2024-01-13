@@ -14,15 +14,17 @@ import org.apache.derby.jdbc.ClientDriver;
 
 public class DataAccessObject {
 
-    public static boolean isUserExist(String playerName) {
-        String str = "name";
+    
+    public static boolean isUserExist(String playerName) throws SQLException{
+  String str="name";
         boolean isExist = false;
-        try {
+       
             DriverManager.registerDriver(new ClientDriver());
             Connection connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
-            PreparedStatement sqlStatement = connectToDB.prepareStatement(
-                    "SELECT * FROM PLAYER where NAME = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement sqlStatement;
+            sqlStatement = connectToDB.prepareStatement (
+            "SELECT * FROM PLAYER where NAME = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             sqlStatement.setString(1, playerName);
             ResultSet resSet = sqlStatement.executeQuery();
 
@@ -31,19 +33,20 @@ public class DataAccessObject {
                     isExist = true;
                 }
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        sqlStatement.close();
+        connectToDB.close();
         return isExist;
     }
 
-    public static boolean isUserValid(String playerName, String playerPassword) throws SQLException {
-        String str = "password";
+    
+    
+    
+    
+public static boolean isUserValid(String playerName , String playerPassword) throws SQLException{
+  String str="password";
         boolean isValid = false;
         Connection connectToDB = null;
         PreparedStatement sqlStatement = null;
-        try {
             DriverManager.registerDriver(new ClientDriver());
             connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
@@ -56,10 +59,6 @@ public class DataAccessObject {
                     isValid = true;
                 }
             }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
         sqlStatement.close();
         connectToDB.close();
         return isValid;
@@ -83,16 +82,9 @@ public class DataAccessObject {
         return result;
     }
 
-    public static ResultSet getAvailable() throws SQLException {
-        DriverManager.registerDriver(new ClientDriver());
-        //connection
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex", "root", "root");
 
-        PreparedStatement ps = con.prepareStatement("SELECT player_name from user_Data where available=true and Online=true", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        ResultSet result = ps.executeQuery();
-        return result;
 
-    }
+    
 
     public static List<String> getAvailableList() throws SQLException {
         ResultSet resultSet;
@@ -110,6 +102,22 @@ public class DataAccessObject {
         con.close();
         return availableList;
     }
+      
+      
+      
+      
+      
+    public static ResultSet getAvailable() throws SQLException{
+    DriverManager.registerDriver(new ClientDriver());
+     //connection
+     Connection con=DriverManager.getConnection("jdbc:derby://localhost:1527/phoneIndex","root","root");
+
+    PreparedStatement ps = con.prepareStatement("SELECT player_name from user_Data where available=true and Online=true",ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+    ResultSet result =ps.executeQuery();
+    return result;
+           
+     
+ }
 
     public static int addRecord(Player player) throws SQLException {
         int result = 0;
@@ -180,20 +188,50 @@ public class DataAccessObject {
         return result;
     }
 
-    public static int updateUserState(Player player) throws SQLException {
+
+    //mina
+    public static int updateAvailability(String playerName, boolean state) throws SQLException {
         int result = 0;
-        try (Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
-                PreparedStatement ps = con.prepareStatement("UPDATE user SET available = ? WHERE username = ?")) {
 
-            ps.setBoolean(1, player.isAvailable());
-            ps.setString(2, player.getPlayerName());
-            result = ps.executeUpdate();
+        DriverManager.registerDriver(new ClientDriver());
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player",
+                                                     "root", "root");
+        PreparedStatement ps = con.prepareStatement(
+                "UPDATE PLAYER SET AVAILABLE = ? WHERE NAME = ?");
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
-        }
+        ps.setBoolean(1, state);
+        ps.setString(2, playerName);
+        result = ps.executeUpdate();
+        
+        ps.close();
+        con.close();
+
         return result;
     }
 
-}
+
+
+    public static int updateOnlineState(String playerName, boolean state) throws SQLException {
+            int result = 0;
+
+            DriverManager.registerDriver(new ClientDriver());
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player",
+                                                         "root", "root");
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE PLAYER SET ONLINE = ? WHERE NAME = ?");
+
+            ps.setBoolean(1, state);
+            ps.setString(2, playerName);
+            result = ps.executeUpdate();
+
+            ps.close();
+            //con.close();
+
+            return result;
+        }
+
+    }
+
+
+
+
