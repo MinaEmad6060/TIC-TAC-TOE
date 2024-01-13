@@ -5,9 +5,8 @@
         <group>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/SignIn.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/OnlineHome.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/availableUsers.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
-            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/HistoryScreen.java</file>
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/AvailableUsers.java</file>
         </group>
     </open-files>
 </project-private>
