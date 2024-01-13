@@ -188,38 +188,6 @@ public  class OnlineHome extends AnchorPane {
                             sendMessageToServer = new PrintStream(serverSide.getOutputStream());
                             sendMessageToServer.println(availableRequest);
                             
-                            /*new Thread(){
-                                @Override
-                                public void run(){
-                                    
-                                    while(true)
-                                    {
-                                        try {
-                                            String msg = listenFromServer.readLine();
-                                            String[] parts = msg.split(" ", 2);
-                                            System.out.println(parts[0]);
-                                            if(parts[0].equals("confirm")){
-                                                System.out.println("true");
-                                                test=true;
-                                                Platform.runLater(new Runnable() {
-                                                    @Override public void run() {
-                                                        if(test==true){
-                                                            System.out.println("test is mina");
-                                                            Welcome.navScreens(new OnlineHome(s), s);
-                                                        }else{
-                                                            System.out.println("test is false");
-                                                        }
-                                                    }
-                                                });
-                                                break;
-                                            }
-                                            
-                                        } catch (IOException ex) {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }.start();*/
                             //Welcome.navScreens(new (stage), stage);
                         } catch (IOException ex) {
                             ex.printStackTrace();
