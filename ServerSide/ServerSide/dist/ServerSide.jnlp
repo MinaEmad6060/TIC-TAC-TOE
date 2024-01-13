@@ -9,10 +9,14 @@
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <jar href="ServerSide.jar" size="11718" download="eager" />
 =======
     <jar href="ServerSide.jar" size="16871" download="eager" />
 >>>>>>> 7850e25326ea25d3043ec480f32cdd7b64fbf36d
+=======
+    <jar href="ServerSide.jar" size="16455" download="eager" />
+>>>>>>> signUp-online
     <jar href="lib\derby.jar" size="2766479" download="eager" />
     <jar href="lib\derbyclient.jar" size="576624" download="eager" />
     <jar href="lib\derbynet.jar" size="248898" download="eager" />

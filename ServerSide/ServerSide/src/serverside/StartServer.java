@@ -233,7 +233,7 @@ public class StartServer extends AnchorPane {
             @Override
             public void handle(Event event) {
                 ServerSide server = new ServerSide();
-                server.closeServer();
+//                server.closeServer();
             }
         });
 
