@@ -187,40 +187,7 @@ public  class OnlineHome extends AnchorPane {
                             listenFromServer = new DataInputStream(serverSide.getInputStream());
                             sendMessageToServer = new PrintStream(serverSide.getOutputStream());
                             sendMessageToServer.println(availableRequest);
-                            
-                            /*new Thread(){
-                                @Override
-                                public void run(){
-                                    
-                                    while(true)
-                                    {
-                                        try {
-                                            String msg = listenFromServer.readLine();
-                                            String[] parts = msg.split(" ", 2);
-                                            System.out.println(parts[0]);
-                                            if(parts[0].equals("confirm")){
-                                                System.out.println("true");
-                                                test=true;
-                                                Platform.runLater(new Runnable() {
-                                                    @Override public void run() {
-                                                        if(test==true){
-                                                            System.out.println("test is mina");
-                                                            Welcome.navScreens(new OnlineHome(s), s);
-                                                        }else{
-                                                            System.out.println("test is false");
-                                                        }
-                                                    }
-                                                });
-                                                break;
-                                            }
-                                            
-                                        } catch (IOException ex) {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }.start();*/
-                            //Welcome.navScreens(new (stage), stage);
+                            Welcome.navScreens(new availableUsers(stage), stage);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -238,7 +205,7 @@ public  class OnlineHome extends AnchorPane {
         btnHistory.setFont(new Font("Cooper Black", 65.0));
         btnHistory.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent event) {
-                //Welcome.navScreens(new , stage);
+                Welcome.navScreens(new HistoryScreen(stage), stage);
             }
         });
 
