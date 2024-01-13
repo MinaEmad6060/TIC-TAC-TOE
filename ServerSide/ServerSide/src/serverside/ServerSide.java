@@ -133,7 +133,7 @@ class ClientHandler extends Thread{
             }
         }
         
-       public void validateLogin(String username , String password){
+       public void validateLogin(String username , String password) throws SQLException{
         boolean isExist = DataAccessObject.isUserExist(username);
         if(isExist){
             try {

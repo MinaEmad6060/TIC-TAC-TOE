@@ -49,9 +49,9 @@ public class SignIn extends AnchorPane {
     protected final Text text8;
     protected final Text btnClick;
     String loginRequest;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
+    public static Socket serverSide;
+    public static DataInputStream listenFromServer;
+    public static PrintStream sendMessageToServer;
     boolean test=false;
 
     //mina

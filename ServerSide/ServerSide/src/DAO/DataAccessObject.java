@@ -14,14 +14,15 @@ import org.apache.derby.jdbc.ClientDriver;
 
 
 public class DataAccessObject {
-    public static boolean isUserExist(String playerName){
-	String str="name";
+    public static boolean isUserExist(String playerName) throws SQLException{
+  String str="name";
         boolean isExist = false;
-        try { 
+        PreparedStatement sqlStatement = null;
+        Connection connectToDB = null;
             DriverManager.registerDriver(new ClientDriver());
-            Connection connectToDB = DriverManager.getConnection(
+            connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
-            PreparedStatement sqlStatement = connectToDB.prepareStatement (
+            sqlStatement = connectToDB.prepareStatement (
                     "SELECT * FROM PLAYER where NAME = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             sqlStatement.setString(1, playerName);
             ResultSet resSet = sqlStatement.executeQuery();
@@ -32,9 +33,9 @@ public class DataAccessObject {
                 }
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+        sqlStatement.close();
+        connectToDB.close();
         return isExist;
 }
 
@@ -42,11 +43,10 @@ public class DataAccessObject {
     
     
 public static boolean isUserValid(String playerName , String playerPassword) throws SQLException{
-	String str="password";
+  String str="password";
         boolean isValid = false;
         Connection connectToDB = null;
         PreparedStatement sqlStatement = null;
-        try {
             DriverManager.registerDriver(new ClientDriver());
             connectToDB = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/Player", "root", "root");
@@ -60,9 +60,6 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
                 }
             }
             
-        } catch (SQLException ex) {
-            Logger.getLogger(DataAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-        }
         sqlStatement.close();
         connectToDB.close();
         return isValid;
