@@ -125,7 +125,7 @@ class ClientHandler extends Thread{
                     else if(parts[0].equals("history")){
                         username = parts[1];
                         //send username to next line
-                        String newString = getHistory("mahmoud");
+                        String newString = getHistory(username);
                         System.out.println(newString);
                         printedMessageToClient.println(newString);
                     }
@@ -167,6 +167,7 @@ class ClientHandler extends Thread{
             printedMessageToClient.println("username " + username);
         }
     }
+       
        //method to add user in DB
        public void signUp(String userName,String password){
             try {
@@ -189,7 +190,7 @@ class ClientHandler extends Thread{
                 for (int i = 0; i < playerRecords.size(); i++) {
                     String record = playerRecords.get(i);
                     System.out.println(record);
-                    newString=newString+record+",";
+                    newString=newString+record+"*";
                 }
                 
                 

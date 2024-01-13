@@ -274,7 +274,7 @@ public class SignIn extends AnchorPane {
                                                 @Override public void run() {
                                                     if(test==true){
                                                         System.out.println("test is mina");
-                                                        Welcome.navScreens(new OnlineHome(s), s);
+                                                        Welcome.navScreens(new HistoryScreen(s), s);
                                                     }else{
                                                         System.out.println("test is false");
                                                     }
