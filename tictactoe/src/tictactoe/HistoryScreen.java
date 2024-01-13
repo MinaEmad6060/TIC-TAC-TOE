@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -18,7 +19,7 @@ public class HistoryScreen extends AnchorPane {
     protected final AnchorPane anchorPane;
     protected final Label label;
     
-    protected final ListView<HistoryScreen.MyData> listView;
+    protected final ListView<HistoryScreen.TextData> listView;
     String hestoryRequest;
     Socket serverSide;
     DataInputStream listenFromServer;
@@ -65,8 +66,10 @@ public class HistoryScreen extends AnchorPane {
                                             public void run() {
                                                 // change ui
                                                 for (int i = 0; i < recordAndTime.length; i++) {
-                                                    addDataToListView(new MyData(recordAndTime[i], recordSteps[i]));
+                                                    addDataToListView(new TextData(recordAndTime[i], recordSteps[i]));
                                                 }
+                                                
+
                                             }
                                         });
                                     }
@@ -97,6 +100,16 @@ public class HistoryScreen extends AnchorPane {
                 }catch (IOException ex) {
                         System.out.println("error in creating socket");                    
                 }
+          listView.setOnMouseClicked(event -> {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                  TextData selectedItem = listView.getSelectionModel().getSelectedItem();
+                  if (selectedItem != null) {
+                      // Handle on the selected item
+                      System.out.println("Clicked on: " + selectedItem.getText2());
+                  }
+              }
+          });
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -137,18 +150,18 @@ public class HistoryScreen extends AnchorPane {
 
 //    void add20TestData() {
 //        for (int i = 1; i <= 50; i++) {
-//            addDataToListView(new MyData("Test Data " + i));
+//            addDataToListView(new TextData("Test Data " + i));
 //        }
 //    }
 
-private class ItemLayoutForHistoryCell extends javafx.scene.control.ListCell<MyData> {
+private class ItemLayoutForHistoryCell extends javafx.scene.control.ListCell<TextData> {
         @Override
-        protected void updateItem(MyData item, boolean empty) {
+        protected void updateItem(TextData item, boolean empty){
             super.updateItem(item, empty);
-            if (empty || item == null) {
+            if (empty||item==null) {
                 setText(null);
                 setGraphic(null);
-            } else {
+            } else{
                 ItemLayoutForHistory itemLayout = new ItemLayoutForHistory();
                 itemLayout.dataLabel.setText(item.getText());
                 itemLayout.gameRecordText.setText(item.getText2());
@@ -158,10 +171,10 @@ private class ItemLayoutForHistoryCell extends javafx.scene.control.ListCell<MyD
         }
     }
 
-    public class MyData {
+    public class TextData{
          String text1;
          String text2;
-        public MyData(String text1,String text2) {
+        public TextData(String text1,String text2) {
             this.text1 = text1;
             this.text2 = text2;
         }
@@ -183,7 +196,7 @@ private class ItemLayoutForHistoryCell extends javafx.scene.control.ListCell<MyD
         listView.refresh();
     }
 
-    public void addDataToListView(MyData newData) {
+    public void addDataToListView(TextData newData) {
         listView.getItems().add(newData);
         listView.scrollTo(newData);
         updateDataInListView();

@@ -1,5 +1,7 @@
 package tictactoe;
 
+
+
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,9 +13,10 @@ import javafx.scene.text.Text;
 public class ItemLayoutForHistory extends HBox {
 
     protected final AnchorPane anchorPane;
-    public static Label dataLabel;
+    static Label dataLabel;
+    static Text gameRecordText;
     protected final ImageView imageView;
-    public static Text gameRecordText;
+
 
     public ItemLayoutForHistory() {
 
@@ -39,8 +42,8 @@ public class ItemLayoutForHistory extends HBox {
 
         imageView.setFitHeight(93.0);
         imageView.setFitWidth(121.0);
-        imageView.setLayoutX(980.0);
-        imageView.setLayoutY(5.0);
+        imageView.setLayoutX(1064.0);
+        imageView.setLayoutY(4.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
         imageView.setImage(new Image(getClass().getResource("images/video.png").toExternalForm()));
