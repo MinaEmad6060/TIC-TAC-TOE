@@ -63,7 +63,7 @@ public class HistoryScreen extends AnchorPane {
                                         });
                                     }
                                 
-                                
+                                break;
                                 }catch (IOException ex) {
                                     break;
                                 }

@@ -11,8 +11,6 @@ import java.lang.Thread;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ServerSide {
 
@@ -60,7 +58,7 @@ public class ServerSide {
 
     public static void main(String[] args) {
 
-        //new ServerSide();
+        new ServerSide();
     }
 }
 
@@ -72,18 +70,14 @@ class ClientHandler extends Thread {
     String name;
     Socket socket;
 
-    public ClientHandler(Socket clientSocket, String userName) {
-        name = userName;
+    public ClientHandler(Socket clientSocket, String userName) throws IOException {
+        //name = userName;
         socket = clientSocket;
         ServerSide.clientHandler = this;
-        try {
-            listenFromClient = new DataInputStream(socket.getInputStream());
-            printedMessageToClient = new PrintStream(socket.getOutputStream());
+        listenFromClient = new DataInputStream(socket.getInputStream());
+        printedMessageToClient = new PrintStream(socket.getOutputStream());
+        start();
 
-            start();
-        } catch (IOException ex) {
-            System.out.println("Erorr handle!");
-        }
     }
 
     public void run() {
@@ -104,15 +98,12 @@ class ClientHandler extends Thread {
                     password = parts[2];
 
                     validateLogin(username, password);
-                } else if (parts[0].equals("available")) {
+                } else if (parts[0].equals("AvUsers")) {
                     System.out.println("fffffffffff");
-                    username = parts[1];
-                    System.out.println("user name" + username);
-                    String available = displayAvailableList(username);
+                    String available = displayAvailableList();
                     System.out.println(available);
                     printedMessageToClient.println(available);
-                }
-                else if (parts[0].equals("signUp")) {
+                } else if (parts[0].equals("signUp")) {
                     username = parts[1];
                     password = parts[2];
                     boolean isExist = DataAccessObject.isUserExist(username);
@@ -179,40 +170,33 @@ class ClientHandler extends Thread {
         }
     }
 
-    public String displayAvailableList(String username) {
+    public String displayAvailableList() throws SQLException {
         Player player = new Player();
         String available = "";
-        try {
-            List<String> availableList = DataAccessObject.getAvailableList();
 
-            for (int i = 0; i < availableList.size(); i++) {
-                available = availableList.get(i) + ",";
-                System.out.println(available);
+        List<String> availableList = DataAccessObject.getAvailableList();
 
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+        for (int i = 0; i < availableList.size(); i++) {
+            available = available + availableList.get(i) + " ";
+            System.out.println(available);
+
         }
+
         return available;
     }
 
     public void validateLogin(String username, String password) throws SQLException {
         boolean isExist = DataAccessObject.isUserExist(username);
         if (isExist) {
-            try {
-                boolean isValid = DataAccessObject.isUserValid(username, password);
-                if (isValid) {
-                    printedMessageToClient.println("confirm " + username);
-                    //mina
-                    DataAccessObject.updateOnlineState(username, true);
-                    System.out.println("con");
-                    ClientHandler.clientsVector.add(this);
-                } else {
-                    printedMessageToClient.println("password " + username);
-                }
-            } catch (SQLException ex) {
-                ex.getErrorCode();
-                ex.getMessage();
+            boolean isValid = DataAccessObject.isUserValid(username, password);
+            if (isValid) {
+                printedMessageToClient.println("confirm " + username);
+                DataAccessObject.updateOnlineState(username, true);
+                System.out.println("con");
+                name=username;
+                ClientHandler.clientsVector.add(ServerSide.clientHandler);
+            } else {
+                printedMessageToClient.println("password " + username);
             }
         } else {
             printedMessageToClient.println("username " + username);
@@ -220,51 +204,40 @@ class ClientHandler extends Thread {
     }
 
     //method to add user in DB
-    public void signUp(String userName, String password) {
-        try {
-            DataAccessObject.addUser(userName, password);
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void signUp(String userName, String password) throws SQLException {
+        DataAccessObject.addUser(userName, password);
         System.out.println("user added");
         // DataAccessObject.addPassword(password);
         //System.out.println("password added");
         printedMessageToClient.println("confirm");
     }
 
-    public String getHistory(String userName) {
+    public String getHistory(String userName) throws SQLException {
         String newString = "";
-        try {
 
-            List<String> playerRecords = DataAccessObject.getRecords(userName);
+        List<String> playerRecords = DataAccessObject.getRecords(userName);
 
-            for (int i = 0; i < playerRecords.size(); i++) {
-                String record = playerRecords.get(i);
-                System.out.println(record);
-                newString = newString + record + "*";
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+        for (int i = 0; i < playerRecords.size(); i++) {
+            String record = playerRecords.get(i);
+            System.out.println(record);
+            newString = newString + record + "*";
         }
+
         return newString;
 
     }
 
-    public void getStatistics() {
+    public void getStatistics() throws SQLException {
         if (ServerSide.isRunning) {
-            try {
-                String info = "";
-                int allUsers = DataAccessObject.getAllUsers();
-                int onlineUsers = DataAccessObject.getOnlineUsers();
-                int availableUsers = DataAccessObject.getAvailableUsers();
-                info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers)
-                        + " " + String.valueOf(availableUsers);
-                printedMessageToClient.println(info);
 
-            } catch (SQLException ex) {
-                Logger.getLogger(ServerSide.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String info = "";
+            int allUsers = DataAccessObject.getAllUsers();
+            int onlineUsers = DataAccessObject.getOnlineUsers();
+            int availableUsers = DataAccessObject.getAvailableUsers();
+            info = String.valueOf(allUsers) + " " + String.valueOf(onlineUsers)
+                    + " " + String.valueOf(availableUsers);
+            printedMessageToClient.println(info);
+
         }
     }
 

@@ -290,7 +290,7 @@ public class BoardOnline extends AnchorPane {
             public void handle(ActionEvent event) {
                 if(availableUsers.turn == 1){
                     gameBoard[0][0].setText("x");
-                    String step = "step " + "sls " + "x.0.0";
+                    String step = "step " + "nnn " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
                 }
             }

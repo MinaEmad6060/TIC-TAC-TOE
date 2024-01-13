@@ -38,9 +38,6 @@ public  class OnlineHome extends AnchorPane {
     protected final Button btnPlay;
     protected final Button btnHistory;
     Stage stage;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
     String availableRequest;
     String logoutRequest;
     boolean test=false;
@@ -181,18 +178,9 @@ public  class OnlineHome extends AnchorPane {
         btnPlay.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        try {
                             availableRequest="Available " + SignIn.currentUser;
-                            serverSide = new Socket("127.0.0.1", 2000);
-                            listenFromServer = new DataInputStream(serverSide.getInputStream());
-                            sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-                            sendMessageToServer.println(availableRequest);
-                            
-                            //Welcome.navScreens(new (stage), stage);
+                            SignIn.sendMessageToServer.println(availableRequest);
                             Welcome.navScreens(new availableUsers(stage), stage);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
                     }
                 });
 
@@ -264,16 +252,9 @@ public  class OnlineHome extends AnchorPane {
                 yesButton.setOnAction(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        try {
                             logoutRequest="Logout " + SignIn.currentUser;
-                            serverSide = new Socket("127.0.0.1", 2000);
-                            listenFromServer = new DataInputStream(serverSide.getInputStream());
-                            sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-                            sendMessageToServer.println(logoutRequest);
+                            SignIn.sendMessageToServer.println(logoutRequest);
                             Welcome.navScreens(new SignIn(stage), stage);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
                     }
                 });
                 alert.showAndWait();

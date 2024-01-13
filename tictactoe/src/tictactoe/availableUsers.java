@@ -9,6 +9,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,22 +23,19 @@ import javafx.stage.Stage;
 
 public class availableUsers extends BorderPane {
 
-    
-
     protected final Label label;
     protected final ScrollPane scroll;
     protected final ListView<MyData> listView;
     String loginRequest;
-    boolean test=false;
+    boolean test = false;
     String targetPlayer;
     Alert waitingAlert;
     Alert invitationAlert;
     Stage stage;
-    static int turn; 
+    static int turn;
     static String player2Name;
     boolean running = true;
-    
-   
+
     public void ShowWaitingAlert(String nameee) {
         waitingAlert = new Alert(Alert.AlertType.NONE);
         waitingAlert.setTitle("Waiting");
@@ -45,14 +44,13 @@ public class availableUsers extends BorderPane {
         DialogPane dialogPane = waitingAlert.getDialogPane();
         dialogPane.setStyle("-fx-background-color: white;");
         dialogPane.getStyleClass().remove("alert");
-        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
-                "-fx-pref-height: 73.0;" +
-                "-fx-pref-width: 400.0;" +
-                "-fx-text-fill: #d1a823;" +
-                "-fx-font-family: \"Cooper Black\";" +
-                "-fx-font-size: 33.0;" +
-                  "-fx-padding: 10.0;");
-
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
 
         ButtonType cancelButtonType = new ButtonType("Cansel");
         waitingAlert.getButtonTypes().addAll(cancelButtonType);
@@ -72,7 +70,7 @@ public class availableUsers extends BorderPane {
         });
         waitingAlert.showAndWait();
     }
-    
+
     public void ShowInvitationAlert(String opponentPlayer) {
         invitationAlert = new Alert(Alert.AlertType.NONE);
         invitationAlert.setTitle("Invitation");
@@ -81,17 +79,17 @@ public class availableUsers extends BorderPane {
         DialogPane dialogPane = invitationAlert.getDialogPane();
         dialogPane.setStyle("-fx-background-color: white;");
         dialogPane.getStyleClass().remove("alert");
-        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
-                "-fx-pref-height: 73.0;" +
-                "-fx-pref-width: 665.0;" +
-                "-fx-text-fill: #d1a823;" +
-                "-fx-font-family: \"Cooper Black\";" +
-                "-fx-font-size: 33.0;" +
-                  "-fx-padding: 10.0;");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
 
         ButtonType noButtonType = new ButtonType("Refuse");
         ButtonType yesButtonType = new ButtonType("Accept");
-        invitationAlert.getButtonTypes().addAll(noButtonType , yesButtonType);
+        invitationAlert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
         Button noButton = (Button) invitationAlert.getDialogPane().lookupButton(noButtonType);
         noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
@@ -124,180 +122,257 @@ public class availableUsers extends BorderPane {
         });
         invitationAlert.showAndWait();
     }
+
     public availableUsers(Stage s) {
 
-        stage = s;
-        label = new Label();
-        scroll = new ScrollPane();
-        listView = new ListView<>();
-        String AvailableRequest;
-        
-        AvailableRequest="available " + SignIn.currentUser;
-        System.out.println(AvailableRequest);
-        SignIn.sendMessageToServer.println(AvailableRequest);
-        new Thread(){
-            @Override
-            public void run(){
-                while(true)
-                {
-                    try {
-                        System.out.println("uuuuuuuuuuuuuu");
-                        String msg = SignIn.listenFromServer.readLine();
-                        System.out.println(msg);
-                        String[] allAvailables = msg.split(",");
-                        //maha:50,mina:30,sals:40,
-                        for (int i = 0; i < allAvailables.length; i++) {
-                            String[] availablePlayer = allAvailables[i].split(":");
-                            //if (availablePlayer.length == 2) {
-                            System.out.println("Availllllllll");
-                            String playerName = availablePlayer[i];
-                            String PlayerScore = availablePlayer[i];
-
-                            Platform.runLater(() -> {
+            stage = s;
+            label = new Label();
+            scroll = new ScrollPane();
+            listView = new ListView<>();
+            String AvailableRequest;
+            
+            AvailableRequest = "AvUsers ";
+            System.out.println(AvailableRequest);
+            SignIn.sendMessageToServer.println(AvailableRequest);
+            String msg;
+        try {
+            msg = SignIn.listenFromServer.readLine();
+            String[] parts = msg.split(" ");
+             System.out.println("false");
+            for (int i = 0; i < parts.length; i++) {
+                String[] availablePlayer = parts[i].split(":");
+                //if (availablePlayer.length == 2) {
+                System.out.println("Availllllllll");
+                String playerName = availablePlayer[0];
+                String PlayerScore = availablePlayer[1];
+                System.out.println(playerName + " " + PlayerScore);
+                Platform.runLater(() -> {
+                    // change ui
+                    addDataToListView(new MyData(playerName, PlayerScore));
+                });
+                //}
+        }
+            
+           
+            
+            new Thread() {
+                @Override
+                public void run() {
+                    while (true) {
+                        try {
+                            System.out.println("uuuuuuuuuuuuuu");
+                            String msg = SignIn.listenFromServer.readLine();
+                            System.out.println(msg);
+                            //String[] allAvailables = msg.split(" ");
+                            //maha:50,mina:30,sals:40,
+                            
+                            String[] parts = msg.split(" ");
+                            System.out.println(parts[0] + "testttttttttttttttt");
+                            
+                            if (parts[0].equals("play")) {
+                                String opponentPlayer = parts[1];
+                                System.out.println(opponentPlayer);
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ShowInvitationAlert(opponentPlayer);
+                                    }
+                                });
+                                break;
+                            }
+                            if (parts[0].equals("accept")) {
+                                String opponentPlayer = parts[1];
+                                System.out.println(opponentPlayer);
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        waitingAlert.close();
+                                        turn = 1;
+                                        running = false;
+                                        
+                                        Welcome.navScreens(new BoardOnline(s), s);
+                                    }
+                                });
+                                break;
+                            }
+                            System.out.println(running);
+                            if (parts[0].equals("refuse")) {
+                                String opponentPlayer = parts[1];
+                                System.out.println(opponentPlayer);
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        waitingAlert.close();
+                                    }
+                                });
+                                break;
+                                
+                            }
+                            if (parts[0].equals("cancel")) {
+                                String opponentPlayer = parts[1];
+                                System.out.println(opponentPlayer);
+                                
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invitationAlert.close();
+                                    }
+                                });
+                                break;
+                            } else {
+                                /*System.out.println("false");
+                                for (int i = 0; i < parts.length; i++) {
+                                String[] availablePlayer = parts[i].split(":");
+                                //if (availablePlayer.length == 2) {
+                                System.out.println("Availllllllll");
+                                String playerName = availablePlayer[0];
+                                String PlayerScore = availablePlayer[1];
+                                System.out.println(playerName + " " + PlayerScore);
+                                Platform.runLater(() -> {
                                 // change ui
                                 addDataToListView(new MyData(playerName, PlayerScore));
-                            });
-                            //}
+                                });
+                                //}
+                                }*/
+                                break;
+                            }
+                        } catch (IOException ex) {
+                            break;
                         }
-                        
-                    }catch (IOException ex) {
-                        break;
                     }
+                    
                 }
-                
-                
-            }
-        }.start();
-
-        setMaxHeight(USE_PREF_SIZE);
-        setMaxWidth(USE_PREF_SIZE);
-        setMinHeight(USE_PREF_SIZE);
-        setMinWidth(USE_PREF_SIZE);
-        setPrefHeight(784.0);
-        setPrefWidth(1200.0);
-        setStyle("-fx-background-color: #1d1e3d;");
-
-        BorderPane.setAlignment(label, javafx.geometry.Pos.TOP_LEFT);
-        label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
-        label.setText("Available Users");
-        label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
-        label.setFont(new Font("Cooper Black", 48.0));
-        BorderPane.setMargin(label, new Insets(10.0));
-        label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
-        setTop(label);
-
-        BorderPane.setAlignment(scroll, javafx.geometry.Pos.CENTER);
-        scroll.setStyle("-fx-background-color: #1d1e3d;");
-
-        listView.setPrefHeight(784.0);
-        listView.setPrefWidth(1181.0);
-        listView.setStyle("-fx-background-color: #1d1e3d;");
-        scroll.setContent(listView);
-        setCenter(scroll);
-        listView.setCellFactory(param -> new ItemLayoutForAvailableCell());
-        
-        ObservableList<String> items = FXCollections.observableArrayList();
-        items.add(0 , "slsabel");
-        items.add(1 , "sls");
-        //listView.setItems(items);
-        
-        
-        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            MyData data  = listView.getSelectionModel().getSelectedItem();
-            //targetPlayer = data.text1;
-            targetPlayer = "sls";
-            String playRequest = "play " + SignIn.currentUser + " " + targetPlayer;
-            SignIn.sendMessageToServer.println(playRequest);
-            ShowWaitingAlert(targetPlayer);   
-                                             
-        } 
-    });
-    
-          new Thread(){
+            }.start();
+            
+            setMaxHeight(USE_PREF_SIZE);
+            setMaxWidth(USE_PREF_SIZE);
+            setMinHeight(USE_PREF_SIZE);
+            setMinWidth(USE_PREF_SIZE);
+            setPrefHeight(784.0);
+            setPrefWidth(1200.0);
+            setStyle("-fx-background-color: #1d1e3d;");
+            
+            BorderPane.setAlignment(label, javafx.geometry.Pos.TOP_LEFT);
+            label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+            label.setText("Available Users");
+            label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
+            label.setFont(new Font("Cooper Black", 48.0));
+            BorderPane.setMargin(label, new Insets(10.0));
+            label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
+            setTop(label);
+            
+            BorderPane.setAlignment(scroll, javafx.geometry.Pos.CENTER);
+            scroll.setStyle("-fx-background-color: #1d1e3d;");
+            
+            listView.setPrefHeight(784.0);
+            listView.setPrefWidth(1181.0);
+            listView.setStyle("-fx-background-color: #1d1e3d;");
+            scroll.setContent(listView);
+            setCenter(scroll);
+            listView.setCellFactory(param -> new ItemLayoutForAvailableCell());
+            
+            ObservableList<String> items = FXCollections.observableArrayList();
+            items.add(0, "slsabel");
+            items.add(1, "sls");
+            //listView.setItems(items);
+            
+            listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    MyData data = listView.getSelectionModel().getSelectedItem();
+                    //targetPlayer = data.text1;
+                    targetPlayer = "nnn";
+                    String playRequest = "play " + SignIn.currentUser + " " + targetPlayer;
+                    SignIn.sendMessageToServer.println(playRequest);
+                    ShowWaitingAlert(targetPlayer);
+                    
+                }
+            });
+            
+            /*new Thread(){
             @Override
             public void run(){
-                while(running)
-                {
-                    System.out.println("while trueeee");
-                    String msg;
-                    System.out.println("string");
-                    try {
-                        System.out.println("msg available");
-                        msg = SignIn.listenFromServer.readLine();
-                        
-                        System.out.println("message");
-                        String[] parts = msg.split(" ");
-                        System.out.println(parts[0] + "testttttttttttttttt");
-                        if(parts[0].equals("play")){
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override public void run() {
-                                  ShowInvitationAlert(opponentPlayer);
-                                }
-                            });
-                            break;
-                        }
-                        if(parts[0].equals("accept")){
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override public void run() {
-                                  waitingAlert.close();
-                                  turn = 1;
-                                  running = false;
-                                    
-                                  Welcome.navScreens(new BoardOnline(s), s);
-                                }
-                            });
-                            break;
-                        }
-                        System.out.println(running);
-                        if(parts[0].equals("refuse")){
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override public void run() {
-                                  waitingAlert.close();
-                                }
-                            });
-                            break;
-                            
-                        }
-                        if(parts[0].equals("cancel")){
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            
-                            Platform.runLater(new Runnable() {
-                                @Override public void run() {
-                                  invitationAlert.close();
-                                }
-                            });
-                            break;
-                        }
-                        else{
-                            System.out.println("false");
-                            break;
-                        }
-                    } catch (IOException ex) {
-                        break;
-                    }
-                }
+            while(running)
+            {
+            System.out.println("while trueeee");
+            String msg;
+            System.out.println("string");
+            try {
+            System.out.println("msg available");
+            msg = SignIn.listenFromServer.readLine();
+            
+            System.out.println("message");
+            String[] parts = msg.split(" ");
+            System.out.println(parts[0] + "testttttttttttttttt");
+            if(parts[0].equals("play")){
+            String opponentPlayer = parts[1];
+            System.out.println(opponentPlayer);
+            Platform.runLater(new Runnable() {
+            @Override public void run() {
+            ShowInvitationAlert(opponentPlayer);
             }
-        }.start();
-        
+            });
+            break;
+            }
+            if(parts[0].equals("accept")){
+            String opponentPlayer = parts[1];
+            System.out.println(opponentPlayer);
+            Platform.runLater(new Runnable() {
+            @Override public void run() {
+            waitingAlert.close();
+            turn = 1;
+            running = false;
+            
+            Welcome.navScreens(new BoardOnline(s), s);
+            }
+            });
+            break;
+            }
+            System.out.println(running);
+            if(parts[0].equals("refuse")){
+            String opponentPlayer = parts[1];
+            System.out.println(opponentPlayer);
+            Platform.runLater(new Runnable() {
+            @Override public void run() {
+            waitingAlert.close();
+            }
+            });
+            break;
+            
+            }
+            if(parts[0].equals("cancel")){
+            String opponentPlayer = parts[1];
+            System.out.println(opponentPlayer);
+            
+            Platform.runLater(new Runnable() {
+            @Override public void run() {
+            invitationAlert.close();
+            }
+            });
+            break;
+            }
+            else{
+            System.out.println("false");
+            break;
+            }
+            } catch (IOException ex) {
+            break;
+            }
+            }
+            }
+            }.start();*/
+        } catch (IOException ex) {
+            Logger.getLogger(availableUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    
+
 //    private void add20TestData() {
 //        for (int i = 1; i <= 50; i++) {
 //            addDataToListView(new MyData("Test Data " + i));
 //        }
 //    }
-
     private class ItemLayoutForAvailableCell extends javafx.scene.control.ListCell<MyData> {
+
         @Override
         protected void updateItem(MyData item, boolean empty) {
             super.updateItem(item, empty);
@@ -307,19 +382,23 @@ public class availableUsers extends BorderPane {
                 setGraphic(null);
             } else {
                 itemLayoutForAvailable itemLayout = new itemLayoutForAvailable();
-                itemLayout.dataLabel.setText(item.getText().toUpperCase());
+                itemLayout.dataLabel.setText(item.getText());
+                itemLayout.label.setText(item.getText2().toUpperCase());
                 setGraphic(itemLayout);
             }
         }
     }
-    
-      public class MyData {
-         String text1;
-         String text2;
-        public MyData(String text1,String text2) {
+
+    public class MyData {
+
+        String text1;
+        String text2;
+
+        public MyData(String text1, String text2) {
             this.text1 = text1;
             this.text2 = text2;
         }
+
         public String getText2() {
             return text2;
         }
@@ -327,13 +406,16 @@ public class availableUsers extends BorderPane {
         public void setText2(String text2) {
             this.text2 = text2;
         }
+
         public void setText(String text1) {
             this.text1 = text1;
         }
+
         public String getText() {
             return text1;
         }
     }
+
     public void updateDataInListView() {
         listView.refresh();
     }
@@ -343,6 +425,5 @@ public class availableUsers extends BorderPane {
         listView.scrollTo(newData);
         updateDataInListView();
     }
-    
-    
+
 }
