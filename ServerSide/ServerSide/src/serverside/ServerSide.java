@@ -109,20 +109,17 @@ class ClientHandler extends Thread{
                         password = parts[2];  
                         validateLogin(username , password);
                     }
-                    else if(parts[0].equals("signUp")){
+                    else if (parts[0].equals("signUp")) {
                         username = parts[1];
                         password = parts[2];
                         boolean isExist = DataAccessObject.isUserExist(username);
-                        if(isExist){
-                                System.out.println("user Exist");
-                                printedMessageToClient.println("Existing " + username);
-                            }
-                        else{
-                           signUp(username , password); 
-                        }  
-                    }
-                    
-                    else if(parts[0].equals("history")){
+                        if (isExist) {
+                            System.out.println("user Exist");
+                            printedMessageToClient.println("Existing " + username);
+                        } else {
+                            signUp(username, password);
+                        }
+                    } else if (parts[0].equals("history")) {
                         username = parts[1];
                         //send username to next line
                         String newString = getHistory(username);
