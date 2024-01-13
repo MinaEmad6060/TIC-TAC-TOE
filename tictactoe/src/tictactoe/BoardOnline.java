@@ -288,7 +288,7 @@ public class BoardOnline extends AnchorPane {
         button00.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(availableUsersBase.turn == 1){
+                if(availableUsers.turn == 1){
                     gameBoard[0][0].setText("x");
                     String step = "step " + "sls " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
@@ -472,15 +472,15 @@ public class BoardOnline extends AnchorPane {
                                     System.out.println("row col printed");
                                 }
                             });
-                            break;
+                            //break;
                         }
                         
                         else{
                             System.out.println("false");
-                            break;
+                            //break;
                         }
                     } catch (IOException ex) {
-                        break;
+                        //break;
                     }
                 }
             }

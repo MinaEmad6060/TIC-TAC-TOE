@@ -277,7 +277,7 @@ public class SignIn extends AnchorPane {
                                                         String updateonline = "update " + "slsa";
                                                         System.out.println(updateonline);
                                                         sendMessageToServer.println(updateonline);
-                                                        Welcome.navScreens(new availableUsersBase(s), s);
+                                                        Welcome.navScreens(new availableUsers(s), s);
                                                     }else{
                                                         System.out.println("test is false");
                                                     }

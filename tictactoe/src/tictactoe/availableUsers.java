@@ -25,7 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class availableUsersBase extends BorderPane {
+public class availableUsers extends BorderPane {
 
     
 
@@ -43,6 +43,7 @@ public class availableUsersBase extends BorderPane {
     Stage stage;
     static int turn; 
     static String player2Name;
+    boolean running = true;
     
    
     public void ShowWaitingAlert(String nameee) {
@@ -132,7 +133,7 @@ public class availableUsersBase extends BorderPane {
         });
         invitationAlert.showAndWait();
     }
-    public availableUsersBase(Stage s) {
+    public availableUsers(Stage s) {
 
         stage = s;
         label = new Label();
@@ -188,10 +189,10 @@ public class availableUsersBase extends BorderPane {
     });
     
         
-        new Thread(){
+          new Thread(){
             @Override
             public void run(){
-                while(true)
+                while(running)
                 {
                     System.out.println("while trueeee");
                     String msg;
@@ -220,12 +221,14 @@ public class availableUsersBase extends BorderPane {
                                 @Override public void run() {
                                   waitingAlert.close();
                                   turn = 1;
+                                  running = false;
+                                    
                                   Welcome.navScreens(new BoardOnline(s), s);
-                                  
                                 }
                             });
                             break;
                         }
+                        System.out.println(running);
                         if(parts[0].equals("refuse")){
                             String opponentPlayer = parts[1];
                             System.out.println(opponentPlayer);
@@ -243,16 +246,7 @@ public class availableUsersBase extends BorderPane {
                             
                             Platform.runLater(new Runnable() {
                                 @Override public void run() {
-                                  
-                                    //System.out.println("close invitation");
-                                    //invitationAlert.close();
-                                    //System.out.println("close invitation222");
-                                    if (invitationAlert.isShowing()) {
-                                        invitationAlert.close();
-                                        System.out.println("invitationAlert closed");
-                                    } else {
-                                        System.out.println("invitationAlert is not currently showing");
-                                    }
+                                  invitationAlert.close();
                                 }
                             });
                             break;
