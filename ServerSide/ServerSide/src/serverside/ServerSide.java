@@ -71,7 +71,7 @@ public class ServerSide {
     
     
     public static void main(String[] args) {
-        //new ServerSide();
+        new ServerSide();
       
     }
 }
@@ -118,8 +118,9 @@ class ClientHandler extends Thread{
                         password = parts[2];  
                       //  validateLogin(username , password);
                     }   else if(parts[0].equals("available")){
+                        System.out.println("fffffffffff");
                         username = parts[1];
-                    
+                    System.out.println("user name"+ username);
                         String available = displayAvailableList(username);
                         System.out.println(available);
                         printedMessageToClient.println(available);

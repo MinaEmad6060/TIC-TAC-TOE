@@ -124,12 +124,13 @@ boolean isUserValid(String playerPassword){
  public static List<String> getAvailableList() throws SQLException {
    ResultSet resultSet;
     Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player" , "root" , "root");
- PreparedStatement ps = con.prepareStatement("SELECT * FROM Player where  available=true" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
-   resultSet = ps.executeQuery();
+ PreparedStatement ps = con.prepareStatement("SELECT * FROM Player where  available = ?" , ResultSet.TYPE_SCROLL_SENSITIVE , ResultSet.CONCUR_READ_ONLY);
+   ps.setBoolean(1, true);
+ resultSet = ps.executeQuery();
    List<String> availableList =new ArrayList<>();
    while (resultSet.next()) {
 
-     String availablePlayers = resultSet.getString("playerName")+":"+resultSet.getString("score");
+     String availablePlayers = resultSet.getString("Name")+":"+resultSet.getString("score");
        availableList.add(availablePlayers);
    }
    ps.close();
