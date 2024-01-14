@@ -1,5 +1,7 @@
 package tictactoe;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -7,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import static tictactoe.Welcome.navScreens;
 
 public  class OnlineHome extends AnchorPane {
 
@@ -151,6 +154,14 @@ public  class OnlineHome extends AnchorPane {
         btnPlay.setText("Play");
         btnPlay.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         btnPlay.setFont(new Font("Cooper Black", 70.0));
+        btnPlay.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+
+                navScreens(new AvailableUsers(s), s);
+    }
+            
+        });
 
         btnHistory.setLayoutX(425.0);
         btnHistory.setLayoutY(456.0);

@@ -21,6 +21,10 @@ public class Player {
 		this.available=available;
 	}
 
+    public Player() {
+       //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getPlayerName() {
         return playerName;
     }

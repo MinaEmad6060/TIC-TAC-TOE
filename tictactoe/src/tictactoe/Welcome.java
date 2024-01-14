@@ -178,7 +178,8 @@ public class Welcome extends BorderPane {
             @Override
             public void handle(ActionEvent event) {
 
-                navScreens(new Modes(s), s);
+                //navScreens(new Modes(s), s);
+                navScreens(new AvailableUsers(s), s);
     }
             
         });
