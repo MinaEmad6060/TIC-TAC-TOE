@@ -80,7 +80,7 @@
                   <Image url="@images/playero.png" />
                </image>
             </ImageView>
-            <Text fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
+            <Text fx:id="timeAndDate" fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
                <font>
                   <Font name="Berlin Sans FB" size="30.0" />
                </font>
