@@ -32,7 +32,8 @@ public class AvailableUsers extends BorderPane {
     Stage stage;
     static int turn;
     static String player2Name;
-    boolean running = true;
+    static boolean running = true;
+    static Thread testThread;
 
     public void ShowWaitingAlert(String nameee) {
         waitingAlert = new Alert(Alert.AlertType.NONE);
@@ -64,6 +65,7 @@ public class AvailableUsers extends BorderPane {
             public void handle(Event event) {
                 String canselRequest = "cansel " + SignIn.currentUser + " " + "sls";
                 SignIn.sendMessageToServer.println(canselRequest);
+
             }
         });
         waitingAlert.showAndWait();
@@ -116,6 +118,7 @@ public class AvailableUsers extends BorderPane {
             public void handle(Event event) {
                 String refuseRequest = "refuse " + SignIn.currentUser + " " + opponentPlayer;
                 SignIn.sendMessageToServer.println(refuseRequest);
+                StartThread();
             }
         });
         invitationAlert.showAndWait();
@@ -204,77 +207,7 @@ public class AvailableUsers extends BorderPane {
             }
         });
 
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.out.println("while trueeee");
-                    String msg;
-                    System.out.println("string");
-                    try {
-                        System.out.println("msg available");
-                        msg = SignIn.listenFromServer.readLine();
-
-                        System.out.println("message");
-                        String[] parts = msg.split(" ");
-                        System.out.println(parts[0] + "testttttttttttttttt");
-                        if (parts[0].equals("play")) {
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ShowInvitationAlert(opponentPlayer);
-                                }
-                            });
-                            break;
-                        }
-                        if (parts[0].equals("accept")) {
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    waitingAlert.close();
-                                    turn = 1;
-                                    running = false;
-                                    Welcome.navScreens(new BoardOnline(s), s);
-                                }
-                            });
-                            break;
-                        }
-                        System.out.println(running);
-                        if (parts[0].equals("refuse")) {
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    waitingAlert.close();
-                                }
-                            });
-                            break;
-                        }
-                        if (parts[0].equals("cancel")) {
-                            String opponentPlayer = parts[1];
-                            System.out.println(opponentPlayer);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    invitationAlert.close();
-                                }
-                            });
-                            break;
-                        } else {
-                            System.out.println("false");
-                            break;
-                        }
-                    } catch (IOException ex) {
-                        break;
-                    }
-                }
-            }
-        }.start();
+        StartThread();
 
     }
 
@@ -331,5 +264,80 @@ public class AvailableUsers extends BorderPane {
         listView.getItems().add(newData);
         listView.scrollTo(newData);
         updateDataInListView();
+    }
+    
+    public void StartThread(){
+        testThread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("while trueeee");
+                    String msg;
+                    System.out.println("string");
+                    try {
+                        System.out.println("msg available");
+                        msg = SignIn.listenFromServer.readLine();
+                        System.out.println("message");
+                        String[] parts = msg.split(" ");
+                        System.out.println(parts[0] + "testttttttttttttttt");
+                        if (parts[0].equals("play")) {
+                            String opponentPlayer = parts[1];
+                            System.out.println(opponentPlayer);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowInvitationAlert(opponentPlayer);
+                                }
+                            });
+                            break;
+                        }
+                        if (parts[0].equals("accept")) {
+                            String opponentPlayer = parts[1];
+                            System.out.println(opponentPlayer);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    waitingAlert.close();
+                                    turn = 1;
+                                    running = false;
+                                    Welcome.navScreens(new BoardOnline(stage), stage);
+                                }
+                            });
+                            break;
+                        }
+                        System.out.println(running);
+                        if (parts[0].equals("refuse")) {
+                            String opponentPlayer = parts[1];
+                            System.out.println(opponentPlayer);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    waitingAlert.close();
+                                    StartThread();
+                                }
+                            });
+                            break;
+                        }
+                        if (parts[0].equals("cancel")) {
+                            String opponentPlayer = parts[1];
+                            System.out.println(opponentPlayer);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    invitationAlert.close();
+                                }
+                            });
+                            break;
+                        }else {
+                            System.out.println("false");
+                            break;
+                        }
+                    } catch (IOException ex) {
+                        break;
+                    }
+                }
+            }
+        };
+        testThread.start();
     }
 }
