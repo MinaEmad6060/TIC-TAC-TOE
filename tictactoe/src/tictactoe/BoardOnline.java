@@ -4,8 +4,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,7 +18,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import static tictactoe.SignIn.serverSide;
 
 public class BoardOnline extends AnchorPane {
 
@@ -62,7 +59,7 @@ public class BoardOnline extends AnchorPane {
     protected final Text scoreX;
     protected final ImageView recordBtn;
     Button[][] gameBoard = new Button[3][3];
-    
+
     static Socket serverSide;
     static DataInputStream listenFromServer;
     static PrintStream sendMessageToServer;
@@ -101,21 +98,21 @@ public class BoardOnline extends AnchorPane {
         button20 = new Button();
         button21 = new Button();
         button22 = new Button();
-        gameBoard[0][0]=button00;
-        gameBoard[0][1]=button01;
-        gameBoard[0][2]=button02;
-        gameBoard[1][0]=button10;
-        gameBoard[1][1]=button11;
-        gameBoard[1][2]=button12;
-        gameBoard[2][0]=button20;
-        gameBoard[2][1]=button21;
-        gameBoard[2][2]=button22;
+        gameBoard[0][0] = button00;
+        gameBoard[0][1] = button01;
+        gameBoard[0][2] = button02;
+        gameBoard[1][0] = button10;
+        gameBoard[1][1] = button11;
+        gameBoard[1][2] = button12;
+        gameBoard[2][0] = button20;
+        gameBoard[2][1] = button21;
+        gameBoard[2][2] = button22;
         text8 = new Text();
         text9 = new Text();
         scoreO = new Text();
         scoreX = new Text();
         recordBtn = new ImageView();
-
+     
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -288,9 +285,9 @@ public class BoardOnline extends AnchorPane {
         button00.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(availableUsers.turn == 1){
+                if (AvailableUsers.turn == 1) {
                     gameBoard[0][0].setText("x");
-                    String step = "step " + "nnn " + "x.0.0";
+                    String step = "step " + "sls " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
                 }
             }
@@ -399,7 +396,7 @@ public class BoardOnline extends AnchorPane {
         recordBtn.setLayoutY(646.0);
         recordBtn.setPickOnBounds(true);
         recordBtn.setPreserveRatio(true);
-  //      recordBtn.setImage(new Image(getClass().getResource("../../../../../Users/slsabel/Downloads/recording%201.png").toExternalForm()));
+        //      recordBtn.setImage(new Image(getClass().getResource("../../../../../Users/slsabel/Downloads/recording%201.png").toExternalForm()));
 
         anchorPane.getChildren().add(imageView);
         anchorPane.getChildren().add(text);
@@ -438,18 +435,11 @@ public class BoardOnline extends AnchorPane {
         getChildren().add(scoreO);
         getChildren().add(scoreX);
         getChildren().add(recordBtn);
-        /*try{
-         serverSide = new Socket("127.0.0.1", 2000);
-        listenFromServer = new DataInputStream(serverSide.getInputStream());
-        sendMessageToServer = new PrintStream(serverSide.getOutputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(BoardOnline.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        new Thread(){
+    
+        new Thread() {
             @Override
-            public void run(){
-                while(true)
-                {
+            public void run() {
+                while (true) {
                     System.out.println("while trueeee");
                     String msg;
                     System.out.println("string");
@@ -459,7 +449,7 @@ public class BoardOnline extends AnchorPane {
                         System.out.println("message");
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
-                        if(parts[0].equals("step")){
+                        if (parts[0].equals("step")) {
                             String step = parts[1];
                             String[] location = step.split("\\.");
                             System.out.println(location[0] + "  " + location[1] + "  " + location[2]);
@@ -467,15 +457,14 @@ public class BoardOnline extends AnchorPane {
                             int row = Integer.parseInt(location[1]);
                             int col = Integer.parseInt(location[2]);
                             Platform.runLater(new Runnable() {
-                                @Override public void run() {
-                                  gameBoard[row][col].setText(type);
+                                @Override
+                                public void run() {
+                                    gameBoard[row][col].setText(type);
                                     System.out.println("row col printed");
                                 }
                             });
                             //break;
-                        }
-                        
-                        else{
+                        } else {
                             System.out.println("false");
                             //break;
                         }
@@ -486,5 +475,24 @@ public class BoardOnline extends AnchorPane {
             }
         }.start();
 
+    }
+
+    void DisableBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameBoard[i][j].getText().equals("")) {
+                    gameBoard[i][j].setDisable(true);
+                }
+            }
+        }
+    }
+    void EnableBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameBoard[i][j].getText().equals("")) {
+                    gameBoard[i][j].setDisable(false);
+                }
+            }
+        }
     }
 }

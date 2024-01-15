@@ -8,21 +8,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox prefHeight="100.0" prefWidth="1100.0" style="-fx-border-color: #ffffff; -fx-border-radius: 20; -fx-border-style: dashed; -fx-border-width: 3; -fx-background-color: #1d1e3d;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tist.list.YourItemController">
+<HBox prefHeight="75.0" prefWidth="900.0" style="-fx-border-color: #ffffff; -fx-border-radius: 20; -fx-border-style: dashed; -fx-border-width: 3; -fx-background-color: #1d1e3d;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tist.list.YourItemController">
    <children>
-      <AnchorPane prefHeight="100.0" prefWidth="1100.0">
+      <AnchorPane prefHeight="75.0" prefWidth="900.0" style="-fx-background-color: #1d1e3d; -fx-border-width: 3; -fx-border-radius: 20;">
          <children>
-            <Label fx:id="dataLabel" layoutX="44.0" layoutY="18.0" prefHeight="65.0" prefWidth="649.0" text="Name" textFill="WHITE">
+            <Label fx:id="dataLabel" layoutX="36.0" layoutY="14.0" prefHeight="40.0" prefWidth="600.0" text="Name" textFill="WHITE">
                <font>
-                  <Font name="Cooper Black" size="30.0" />
+                  <Font name="Cooper Black" size="25.0" />
                </font>
             </Label>
-            <ImageView fitHeight="93.0" fitWidth="121.0" layoutX="980.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="851.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/video.png" />
                </image>
             </ImageView>
-            <Text fx:id="gameRecordText" fill="WHITE" layoutX="636.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0">
+            <Text fx:id="gameRecordText" fill="WHITE" layoutX="700.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="test" wrappingWidth="80.0">
                <font>
                   <Font size="30.0" />
                </font>

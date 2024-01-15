@@ -1,10 +1,5 @@
 package tictactoe;
 
-import javafx.event.ActionEvent;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.Socket;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -18,10 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import static tictactoe.Welcome.navScreens;
 
-
-public  class OnlineHome extends AnchorPane {
+public class OnlineHome extends AnchorPane {
 
     protected final AnchorPane anchorPane;
     protected final Text text;
@@ -40,11 +33,10 @@ public  class OnlineHome extends AnchorPane {
     Stage stage;
     String availableRequest;
     String logoutRequest;
-    boolean test=false;
-
+    boolean test = false;
 
     public OnlineHome(Stage s) {
-        stage=s;
+        stage = s;
         anchorPane = new AnchorPane();
         text = new Text();
         text0 = new Text();
@@ -160,7 +152,7 @@ public  class OnlineHome extends AnchorPane {
         btnBack.setPreserveRatio(true);
         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
         //mina
-        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 exitAlert();
             }
@@ -176,13 +168,13 @@ public  class OnlineHome extends AnchorPane {
         btnPlay.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         btnPlay.setFont(new Font("Cooper Black", 70.0));
         btnPlay.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                            availableRequest="Available " + SignIn.currentUser;
-                            SignIn.sendMessageToServer.println(availableRequest);
-                            Welcome.navScreens(new availableUsers(stage), stage);
-                    }
-                });
+            @Override
+            public void handle(Event event) {
+                availableRequest = "Available " + SignIn.currentUser;
+                SignIn.sendMessageToServer.println(availableRequest);
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+            }
+        });
 
         btnHistory.setLayoutX(425.0);
         btnHistory.setLayoutY(456.0);
@@ -193,7 +185,7 @@ public  class OnlineHome extends AnchorPane {
         btnHistory.setText("History");
         btnHistory.setTextFill(javafx.scene.paint.Color.valueOf("#d7b33e"));
         btnHistory.setFont(new Font("Cooper Black", 65.0));
-        btnHistory.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        btnHistory.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 Welcome.navScreens(new HistoryScreen(stage), stage);
             }
@@ -215,48 +207,48 @@ public  class OnlineHome extends AnchorPane {
         getChildren().add(btnHistory);
 
     }
-    
+
     //mina
     public void exitAlert() {
         Alert alert = new Alert(Alert.AlertType.NONE);
-                alert.setTitle("Exit Game");
-                alert.setHeaderText("");
-                alert.setContentText("Do you want to Sign out?");
-                DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.setStyle("-fx-background-color: white;");
-                dialogPane.getStyleClass().remove("alert");
-                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
-                        "-fx-pref-height: 73.0;" +
-                        "-fx-pref-width: 665.0;" +
-                        "-fx-text-fill: #d1a823;" +
-                        "-fx-font-family: \"Cooper Black\";" +
-                        "-fx-font-size: 33.0;" +
-                          "-fx-padding: 10.0;");
+        alert.setTitle("Exit Game");
+        alert.setHeaderText("");
+        alert.setContentText("Do you want to Sign out?");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
 
-                ButtonType noButtonType = new ButtonType("No");
-                ButtonType yesButtonType = new ButtonType("Yes");
-                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+        ButtonType noButtonType = new ButtonType("No");
+        ButtonType yesButtonType = new ButtonType("Yes");
+        alert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
-                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
-                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: red; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
-                noButton.setTranslateX(-230);
+        Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+        noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+        noButton.setTranslateX(-230);
 
-                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
-                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: green; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-pref-height: 50;");
-                yesButton.setTranslateX(-100);
-                
-                yesButton.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                            logoutRequest="Logout " + SignIn.currentUser;
-                            SignIn.sendMessageToServer.println(logoutRequest);
-                            Welcome.navScreens(new SignIn(stage), stage);
-                    }
-                });
-                alert.showAndWait();
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+        yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: green; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        yesButton.setTranslateX(-100);
+
+        yesButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                logoutRequest = "Logout " + SignIn.currentUser;
+                SignIn.sendMessageToServer.println(logoutRequest);
+                Welcome.navScreens(new SignIn(stage), stage);
+            }
+        });
+        alert.showAndWait();
     }
 }
