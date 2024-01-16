@@ -4,11 +4,17 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +24,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import static tictactoe.EmptyBoard.turn;
 
 public class BoardOnline extends AnchorPane {
 
@@ -59,12 +67,21 @@ public class BoardOnline extends AnchorPane {
     protected final Text scoreX;
     protected final ImageView recordBtn;
     Button[][] gameBoard = new Button[3][3];
+    Stage stage;
+    Timeline timeline;
+    static int xScore=0;
+    static int oScore=0;
+    int drawCount=0;   
 
     static Socket serverSide;
     static DataInputStream listenFromServer;
     static PrintStream sendMessageToServer;
 
     public BoardOnline(Stage s) {
+        
+         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            Welcome.navScreens(new VideoWin(stage), stage);
+        }));
 
         anchorPane = new AnchorPane();
         imageView = new ImageView();
@@ -112,6 +129,7 @@ public class BoardOnline extends AnchorPane {
         scoreO = new Text();
         scoreX = new Text();
         recordBtn = new ImageView();
+        stage = s;
      
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -286,9 +304,30 @@ public class BoardOnline extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 if (AvailableUsers.turn == 1) {
-                    gameBoard[0][0].setText("x");
-                    String step = "step " + "sls " + "x.0.0";
+                    EnableBoard();
+                    button00.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if(availableToCheck()){
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+                else{
+                    EnableBoard();
+                    button00.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.0.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if(availableToCheck()){
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
                 }
             }
         });
@@ -494,5 +533,292 @@ public class BoardOnline extends AnchorPane {
                 }
             }
         }
+    }
+    public boolean checkDraw(){
+        if(drawCount == 9)
+            return true;
+        else
+            return false;
+    }
+
+    //initialize Board
+        public void initBoard(){
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                   gameBoard[i][j].setText(" "); 
+                   gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
+                   gameBoard[i][j].setDisable(false);
+                }
+            }
+        }
+        //indecates availability of check
+        public boolean availableToCheck(){
+            boolean avFlag=false;
+            int count=0;
+            System.out.println("available method");
+            
+            for(int i=0; i<3; i++){
+                if(count>4){
+                    avFlag=true;
+                    break;
+                }
+                for(int j=0; j<3; j++){
+                    if(!gameBoard[i][j].getText().equals(" ")){
+                        count++;
+                        if(count>4){
+                            avFlag=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return avFlag;
+        }
+    public void checkWinner(){
+        short checkWinnerRes;
+        checkWinnerRes = checkOnGame();
+        
+        if(checkWinnerRes == 2)
+        {
+            updateScore();
+            DisableBoard();
+            timeline.play();
+        }
+        else
+        {
+            drawCount++;
+        }
+        if (checkWinnerRes == 1)
+        {
+            drawAlert();
+        }
+    }
+    
+    public short checkRows()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+            
+            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()) &&!gameBoard[i][i].getText().equals(" "))
+            {
+                result = 2;
+                hilightWin(i , j , i , j+1 , i , j+2);
+                System.out.println("check row");
+                System.out.println("i"+i+" j"+j);
+                System.out.println("i"+(i)+" j"+(j+1));
+                System.out.println("i"+i+" j"+ (j+2));
+                return result;
+            }
+            
+        }
+        return result;
+    }
+    
+    public short checkColumns()
+    {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+
+
+ 
+
+            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
+
+            {
+                result = 2;
+                hilightWin(j , i , j+1 , i , j+2 , i);
+                System.out.println("check col");
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public short checkDiagonals()
+    {
+        short result = 0;
+        System.out.println("check daigonal");
+        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) &&!gameBoard[0][0].getText().equals(" "))
+        {
+            result = 2;
+            System.out.println("daigonal Win");
+            hilightWin(0 , 0 , 1 , 1 , 2 , 2);
+            System.out.println("check daig1");
+            return result;
+        }
+        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[1][1].getText().equals(" "))
+        {
+            result = 2;
+            hilightWin(0 , 2 , 1 , 1 , 2 , 0);
+            System.out.println("check daig2");
+            return result;
+        }
+        return result;
+    }
+   
+    public short checkOnGame(){
+        short result = 0;
+        System.out.println("checkongame");
+        
+        result = checkRows();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkColumns();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        result = checkDiagonals();
+        if(result == 2)
+        {
+            return result;
+        }
+        
+        if(result != 2)
+
+        {
+            drawCount++;
+            if(checkDraw())
+            {
+                result = 1;
+            }
+        }
+        
+        return result;
+    
+    }
+      public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
+      if(!turn){
+          gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row1][col1].setOpacity(1);
+          gameBoard[row2][col2].setOpacity(1);
+          gameBoard[row3][col3].setOpacity(1);
+      }
+      else{
+          gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+          gameBoard[row1][col1].setOpacity(1);
+          gameBoard[row2][col2].setOpacity(1);
+          gameBoard[row3][col3].setOpacity(1);
+      }
+    }
+      public void updateScore(){
+          if(!turn){
+              System.out.println("x win");
+              xScore++;
+              scoreX.setText((xScore)+"");//update x score
+          }
+          else{
+             oScore++;
+             scoreO.setText(""+oScore);
+          }
+      }
+
+    public void drawAlert() {
+        if(turn){
+            turn = false;
+        }
+        else{
+            turn = true;
+        }
+        Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Game Tie");
+                alert.setHeaderText("");
+                alert.setContentText("Game Tie, Do you want to play again?");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle("-fx-background-color: white;");
+                dialogPane.getStyleClass().remove("alert");
+                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
+                        "-fx-pref-height: 73.0;" +
+                        "-fx-pref-width: 665.0;" +
+                        "-fx-text-fill: #d1a823;" +
+                        "-fx-font-family: \"Cooper Black\";" +
+                        "-fx-font-size: 33.0;" +
+                          "-fx-padding: 10.0;");
+
+                ButtonType noButtonType = new ButtonType("No");
+                ButtonType yesButtonType = new ButtonType("Yes");
+                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+
+                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: red; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+                noButton.setTranslateX(-230);
+
+                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: green; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-pref-height: 50;");
+                yesButton.setTranslateX(-100);
+                
+                yesButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Welcome.navScreens(new EmptyBoard(stage), stage);
+                    }
+                });
+                noButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                       Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
+                    }
+                });
+                 alert.showAndWait();
+    }
+
+    public void exitAlert() {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+                alert.setTitle("Exit Game");
+                alert.setHeaderText("");
+                alert.setContentText("Do you want to Exit?");
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.setStyle("-fx-background-color: white;");
+                dialogPane.getStyleClass().remove("alert");
+                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
+                        "-fx-pref-height: 73.0;" +
+                        "-fx-pref-width: 665.0;" +
+                        "-fx-text-fill: #d1a823;" +
+                        "-fx-font-family: \"Cooper Black\";" +
+                        "-fx-font-size: 33.0;" +
+                          "-fx-padding: 10.0;");
+
+                ButtonType noButtonType = new ButtonType("No");
+                ButtonType yesButtonType = new ButtonType("Yes");
+                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+
+                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: red; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+                noButton.setTranslateX(-230);
+
+                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                        + "-fx-background-color: green; -fx-background-radius: 10;"
+                        + "-fx-text-fill: white; -fx-pref-height: 50;");
+                yesButton.setTranslateX(-100);
+                
+                yesButton.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Welcome.navScreens(new Modes(stage), stage);
+                        xScore = 0;
+                        oScore = 0;
+                    }
+                });
+                alert.showAndWait();
+                //test
     }
 }
