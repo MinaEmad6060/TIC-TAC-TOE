@@ -25,7 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import static tictactoe.EmptyBoard.turn;
+//import static tictactoe.EmptyBoard.turn;
 
 public class BoardOnline extends AnchorPane {
 
@@ -73,9 +73,8 @@ public class BoardOnline extends AnchorPane {
     static int oScore = 0;
     int drawCount = 0;
 
-    static Socket serverSide;
-    static DataInputStream listenFromServer;
-    static PrintStream sendMessageToServer;
+    static boolean winner = true;
+    Thread thread;
 
     public BoardOnline(Stage s) {
 
@@ -305,6 +304,7 @@ public class BoardOnline extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 if (AvailableUsers.turn == 1) {
+                    System.out.println(AvailableUsers.turn);
                     EnableBoard();
                     button00.setText("x");
                     String step = "step " +  AvailableUsers.player2Name + " " + "x.0.0";
@@ -321,7 +321,7 @@ public class BoardOnline extends AnchorPane {
                     button00.setText("o");
                     String step = "step " + AvailableUsers.player2Name + " " + "o.0.0";
                     SignIn.sendMessageToServer.println(step);
-                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
                     if (availableToCheck()) {
@@ -338,6 +338,36 @@ public class BoardOnline extends AnchorPane {
         button01.setPrefHeight(150.0);
         button01.setPrefWidth(174.0);
         button01.setStyle("-fx-background-color: #7949D0;");
+        button01.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button01.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button01.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.0.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button01, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button02, 2);
@@ -345,6 +375,36 @@ public class BoardOnline extends AnchorPane {
         button02.setPrefHeight(150.0);
         button02.setPrefWidth(174.0);
         button02.setStyle("-fx-background-color: #7949D0;");
+        button02.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button02.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button02.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.0.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button02, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setRowIndex(button10, 1);
@@ -352,6 +412,36 @@ public class BoardOnline extends AnchorPane {
         button10.setPrefHeight(150.0);
         button10.setPrefWidth(174.0);
         button10.setStyle("-fx-background-color: #7949D0;");
+        button10.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button10.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button10.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button10, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button11, 1);
@@ -360,6 +450,36 @@ public class BoardOnline extends AnchorPane {
         button11.setPrefHeight(150.0);
         button11.setPrefWidth(174.0);
         button11.setStyle("-fx-background-color: #7949D0;");
+        button11.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button11.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button11.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button11, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button12, 2);
@@ -368,6 +488,36 @@ public class BoardOnline extends AnchorPane {
         button12.setPrefHeight(150.0);
         button12.setPrefWidth(174.0);
         button12.setStyle("-fx-background-color: #7949D0;");
+        button12.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button12.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button12.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button12, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setRowIndex(button20, 2);
@@ -375,6 +525,36 @@ public class BoardOnline extends AnchorPane {
         button20.setPrefHeight(150.0);
         button20.setPrefWidth(174.0);
         button20.setStyle("-fx-background-color: #7949D0;");
+        button20.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button20.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button20.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button20, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button21, 1);
@@ -383,6 +563,36 @@ public class BoardOnline extends AnchorPane {
         button21.setPrefHeight(150.0);
         button21.setPrefWidth(174.0);
         button21.setStyle("-fx-background-color: #7949D0;");
+        button21.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button21.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button21.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button21, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button22, 2);
@@ -391,6 +601,36 @@ public class BoardOnline extends AnchorPane {
         button22.setPrefHeight(150.0);
         button22.setPrefWidth(174.0);
         button22.setStyle("-fx-background-color: #7949D0;");
+        button22.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button22.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button22.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button22, new Insets(0.0, 0.0, 0.0, 15.0));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
@@ -475,7 +715,7 @@ public class BoardOnline extends AnchorPane {
         getChildren().add(scoreX);
         getChildren().add(recordBtn);
 
-        new Thread() {
+        thread = new Thread() {
             @Override
             public void run() {
                 while (true) {
@@ -485,6 +725,7 @@ public class BoardOnline extends AnchorPane {
                     try {
                         System.out.println("msggggggggggggg");
                         msg = SignIn.listenFromServer.readLine();
+
                         System.out.println("message");
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
@@ -495,16 +736,42 @@ public class BoardOnline extends AnchorPane {
                             String type = location[0];
                             int row = Integer.parseInt(location[1]);
                             int col = Integer.parseInt(location[2]);
+                            System.out.println("type " + type);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     gameBoard[row][col].setText(type);
+                                    if (type.equals("x")) {
+                                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                        AvailableUsers.turn = 2;
+                                    } else {
+                                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                        AvailableUsers.turn = 1;
+                                    }
+                                    EnableBoard();
                                     System.out.println("row col printed");
                                     gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                     
                                 }
                             });
                             //break;
+                        } else if (parts[0].equals("win")) {
+                            winner = false;
+                            String step = parts[1];
+                            String[] location = step.split("\\.");
+                            int row1 = Integer.parseInt(location[0]);
+                            int col1 = Integer.parseInt(location[1]);
+                            int row2 = Integer.parseInt(location[2]);
+                            int col2 = Integer.parseInt(location[3]);
+                            int row3 = Integer.parseInt(location[4]);
+                            int col3 = Integer.parseInt(location[5]);
+                             Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hilightWin(row1, col1, row2, col2, row3, col3);
+                                    Welcome.navScreens(new OnlineVideoWin(s), s);
+                                }});
+                             break;
                         } else {
                             System.out.println("false");
                             //break;
@@ -514,16 +781,17 @@ public class BoardOnline extends AnchorPane {
                     }
                 }
             }
-        }.start();
+        };
+                thread.start();
 
     }
 
     void DisableBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameBoard[i][j].getText().equals("")) {
-                    gameBoard[i][j].setDisable(true);
-                }
+                //if (gameBoard[i][j].getText().equals(" ")) {
+                gameBoard[i][j].setDisable(true);
+                //}
             }
         }
     }
@@ -531,7 +799,7 @@ public class BoardOnline extends AnchorPane {
     void EnableBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameBoard[i][j].getText().equals("")) {
+                if (gameBoard[i][j].getText().equals(" ")) {
                     gameBoard[i][j].setDisable(false);
                 }
             }
@@ -609,6 +877,14 @@ public class BoardOnline extends AnchorPane {
                 System.out.println("i" + i + " j" + j);
                 System.out.println("i" + (i) + " j" + (j + 1));
                 System.out.println("i" + i + " j" + (j + 2));
+
+                String btn1 = Integer.toString(i) + "." + Integer.toString(j);
+                String btn2 = Integer.toString(i) + "." + Integer.toString(j + 1);
+                String btn3 = Integer.toString(i) + "." + Integer.toString(j + 2);
+                String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+                SignIn.sendMessageToServer.println(winReq);
+                thread.stop();
+
                 return result;
             }
 
@@ -624,7 +900,13 @@ public class BoardOnline extends AnchorPane {
             if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
                 hilightWin(j, i, j + 1, i, j + 2, i);
+                String btn1 = Integer.toString(j) + "." + Integer.toString(i);
+                String btn2 = Integer.toString(j + 1) + "." + Integer.toString(i);
+                String btn3 = Integer.toString(j + 2) + "." + Integer.toString(i);
+                String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+                SignIn.sendMessageToServer.println(winReq);
                 System.out.println("check col");
+                thread.stop();
                 return result;
             }
         }
@@ -639,11 +921,23 @@ public class BoardOnline extends AnchorPane {
             System.out.println("daigonal Win");
             hilightWin(0, 0, 1, 1, 2, 2);
             System.out.println("check daig1");
+            String btn1 = Integer.toString(0) + "." + Integer.toString(0);
+            String btn2 = Integer.toString(1) + "." + Integer.toString(1);
+            String btn3 = Integer.toString(2) + "." + Integer.toString(2);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);
+            thread.stop();
             return result;
         } else if (gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()) && !gameBoard[1][1].getText().equals(" ")) {
             result = 2;
             hilightWin(0, 2, 1, 1, 2, 0);
             System.out.println("check daig2");
+            String btn1 = Integer.toString(0) + "." + Integer.toString(2);
+            String btn2 = Integer.toString(1) + "." + Integer.toString(1);
+            String btn3 = Integer.toString(2) + "." + Integer.toString(0);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);
+            thread.stop();
             return result;
         }
         return result;
@@ -680,13 +974,16 @@ public class BoardOnline extends AnchorPane {
     }
 
     public void hilightWin(int row1, int col1, int row2, int col2, int row3, int col3) {//change background of button to image
-        if (!turn) {
+
+        if (AvailableUsers.turn == 2) {
+
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
+
         } else {
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -694,11 +991,21 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
+
+            /*AvailableUsers.turn = 2;
+            String btn1 = Integer.toString(row1) + "." + Integer.toString(col1);
+            String btn2 = Integer.toString(row2) + "." + Integer.toString(col2);
+            String btn3 = Integer.toString(row3) + "." + Integer.toString(col3);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);*/
+
         }
     }
 
     public void updateScore() {
-        if (!turn) {
+
+        if (AvailableUsers.turn == 2) {
+
             System.out.println("x win");
             xScore++;
             scoreX.setText((xScore) + "");//update x score
@@ -709,10 +1016,12 @@ public class BoardOnline extends AnchorPane {
     }
 
     public void drawAlert() {
-        if (turn) {
-            turn = false;
+
+        if (AvailableUsers.turn == 1) {
+            AvailableUsers.turn = 2;
         } else {
-            turn = true;
+            AvailableUsers.turn = 1;
+
         }
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle("Game Tie");
