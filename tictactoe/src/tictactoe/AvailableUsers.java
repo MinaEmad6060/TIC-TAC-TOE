@@ -57,12 +57,14 @@ public class AvailableUsers extends BorderPane {
                         //if (availablePlayer.length == 2) {
                         System.out.println("Availllllllll");
                             String playerName = availablePlayer[i];
-                            String PlayerScore = availablePlayer[i];
+                            String PlayerScore = availablePlayer[i+1];
 
                             Platform.runLater(() -> {
                                 // change ui
+                               
                                 addDataToListView(new MyData(playerName, PlayerScore));
-                            });
+                                
+                                });
                         //}
                     }
 
@@ -141,7 +143,8 @@ public class AvailableUsers extends BorderPane {
                 setGraphic(null);
             } else {
                 itemLayoutForAvailable itemLayout = new itemLayoutForAvailable();
-                itemLayout.dataLabel.setText(item.getText().toUpperCase());
+                itemLayout.dataLabel.setText(item.getText());
+                itemLayout.label.setText(item.getText2());
                 setGraphic(itemLayout);
             }
         }
