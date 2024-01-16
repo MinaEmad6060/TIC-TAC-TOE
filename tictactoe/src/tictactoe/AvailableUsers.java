@@ -9,6 +9,6 @@ package tictactoe;
  *
  * @author minae
  */
-public class AvailableUsers {
+public class AvailableUsers  extends BorderPane {
     
 }
