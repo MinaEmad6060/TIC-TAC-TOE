@@ -25,7 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import static tictactoe.EmptyBoard.turn;
+//import static tictactoe.EmptyBoard.turn;
 
 public class BoardOnline extends AnchorPane {
 
@@ -69,17 +69,15 @@ public class BoardOnline extends AnchorPane {
     Button[][] gameBoard = new Button[3][3];
     Stage stage;
     Timeline timeline;
-    static int xScore=0;
-    static int oScore=0;
-    int drawCount=0;   
-
-    static Socket serverSide;
-    static DataInputStream listenFromServer;
-    static PrintStream sendMessageToServer;
+    static int xScore = 0;
+    static int oScore = 0;
+    int drawCount = 0;
+    static boolean winner = true;
+    Thread thread;
 
     public BoardOnline(Stage s) {
-        
-         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
         }));
 
@@ -130,7 +128,8 @@ public class BoardOnline extends AnchorPane {
         scoreX = new Text();
         recordBtn = new ImageView();
         stage = s;
-     
+
+        initBoard();
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -304,6 +303,7 @@ public class BoardOnline extends AnchorPane {
             @Override
             public void handle(ActionEvent event) {
                 if (AvailableUsers.turn == 1) {
+                    System.out.println(AvailableUsers.turn);
                     EnableBoard();
                     button00.setText("x");
                     String step = "step " + AvailableUsers.player2Name + " " + "x.0.0";
@@ -311,20 +311,19 @@ public class BoardOnline extends AnchorPane {
                     button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
-                    if(availableToCheck()){
+                    if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
-                }
-                else{
+                } else {
                     EnableBoard();
                     button00.setText("o");
                     String step = "step " + AvailableUsers.player2Name + " " + "o.0.0";
                     SignIn.sendMessageToServer.println(step);
-                    button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    button00.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
-                    if(availableToCheck()){
+                    if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
                     }
@@ -338,6 +337,36 @@ public class BoardOnline extends AnchorPane {
         button01.setPrefHeight(150.0);
         button01.setPrefWidth(174.0);
         button01.setStyle("-fx-background-color: #7949D0;");
+        button01.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button01.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button01.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.0.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button01.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button01, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button02, 2);
@@ -345,6 +374,36 @@ public class BoardOnline extends AnchorPane {
         button02.setPrefHeight(150.0);
         button02.setPrefWidth(174.0);
         button02.setStyle("-fx-background-color: #7949D0;");
+        button02.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button02.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button02.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.0.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button02.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button02, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setRowIndex(button10, 1);
@@ -352,6 +411,36 @@ public class BoardOnline extends AnchorPane {
         button10.setPrefHeight(150.0);
         button10.setPrefWidth(174.0);
         button10.setStyle("-fx-background-color: #7949D0;");
+        button10.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button10.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button10.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button10.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button10, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button11, 1);
@@ -360,6 +449,36 @@ public class BoardOnline extends AnchorPane {
         button11.setPrefHeight(150.0);
         button11.setPrefWidth(174.0);
         button11.setStyle("-fx-background-color: #7949D0;");
+        button11.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button11.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button11.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button11.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button11, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button12, 2);
@@ -368,6 +487,36 @@ public class BoardOnline extends AnchorPane {
         button12.setPrefHeight(150.0);
         button12.setPrefWidth(174.0);
         button12.setStyle("-fx-background-color: #7949D0;");
+        button12.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button12.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.1.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button12.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.1.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button12.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button12, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setRowIndex(button20, 2);
@@ -375,6 +524,36 @@ public class BoardOnline extends AnchorPane {
         button20.setPrefHeight(150.0);
         button20.setPrefWidth(174.0);
         button20.setStyle("-fx-background-color: #7949D0;");
+        button20.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button20.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button20.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.0";
+                    SignIn.sendMessageToServer.println(step);
+                    button20.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button20, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button21, 1);
@@ -383,6 +562,36 @@ public class BoardOnline extends AnchorPane {
         button21.setPrefHeight(150.0);
         button21.setPrefWidth(174.0);
         button21.setStyle("-fx-background-color: #7949D0;");
+        button21.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button21.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button21.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.1";
+                    SignIn.sendMessageToServer.println(step);
+                    button21.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button21, new Insets(0.0, 0.0, 0.0, 15.0));
 
         GridPane.setColumnIndex(button22, 2);
@@ -391,6 +600,36 @@ public class BoardOnline extends AnchorPane {
         button22.setPrefHeight(150.0);
         button22.setPrefWidth(174.0);
         button22.setStyle("-fx-background-color: #7949D0;");
+        button22.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (AvailableUsers.turn == 1) {
+                    EnableBoard();
+                    button22.setText("x");
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.2.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 2;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                } else {
+                    EnableBoard();
+                    button22.setText("o");
+                    String step = "step " + AvailableUsers.player2Name + " " + "o.2.2";
+                    SignIn.sendMessageToServer.println(step);
+                    button22.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                    DisableBoard();
+                    AvailableUsers.turn = 1;
+                    if (availableToCheck()) {
+                        System.out.println("avaliaple to");
+                        checkWinner();
+                    }
+                }
+            }
+        });
         GridPane.setMargin(button22, new Insets(0.0, 0.0, 0.0, 15.0));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#fcfcfc"));
@@ -474,8 +713,8 @@ public class BoardOnline extends AnchorPane {
         getChildren().add(scoreO);
         getChildren().add(scoreX);
         getChildren().add(recordBtn);
-    
-        new Thread() {
+
+        thread = new Thread() {
             @Override
             public void run() {
                 while (true) {
@@ -485,6 +724,7 @@ public class BoardOnline extends AnchorPane {
                     try {
                         System.out.println("msggggggggggggg");
                         msg = SignIn.listenFromServer.readLine();
+
                         System.out.println("message");
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
@@ -495,14 +735,40 @@ public class BoardOnline extends AnchorPane {
                             String type = location[0];
                             int row = Integer.parseInt(location[1]);
                             int col = Integer.parseInt(location[2]);
+                            System.out.println("type " + type);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     gameBoard[row][col].setText(type);
+                                    if (type.equals("x")) {
+                                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                        AvailableUsers.turn = 2;
+                                    } else {
+                                        gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                        AvailableUsers.turn = 1;
+                                    }
+                                    EnableBoard();
                                     System.out.println("row col printed");
                                 }
                             });
                             //break;
+                        } else if (parts[0].equals("win")) {
+                            winner = false;
+                            String step = parts[1];
+                            String[] location = step.split("\\.");
+                            int row1 = Integer.parseInt(location[0]);
+                            int col1 = Integer.parseInt(location[1]);
+                            int row2 = Integer.parseInt(location[2]);
+                            int col2 = Integer.parseInt(location[3]);
+                            int row3 = Integer.parseInt(location[4]);
+                            int col3 = Integer.parseInt(location[5]);
+                             Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hilightWin(row1, col1, row2, col2, row3, col3);
+                                    Welcome.navScreens(new OnlineVideoWin(s), s);
+                                }});
+                             break;
                         } else {
                             System.out.println("false");
                             //break;
@@ -512,313 +778,328 @@ public class BoardOnline extends AnchorPane {
                     }
                 }
             }
-        }.start();
+        };
+                thread.start();
 
     }
 
     void DisableBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameBoard[i][j].getText().equals("")) {
-                    gameBoard[i][j].setDisable(true);
-                }
+                //if (gameBoard[i][j].getText().equals(" ")) {
+                gameBoard[i][j].setDisable(true);
+                //}
             }
         }
     }
+
     void EnableBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameBoard[i][j].getText().equals("")) {
+                if (gameBoard[i][j].getText().equals(" ")) {
                     gameBoard[i][j].setDisable(false);
                 }
             }
         }
     }
-    public boolean checkDraw(){
-        if(drawCount == 9)
+
+    public boolean checkDraw() {
+        if (drawCount == 9) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     //initialize Board
-        public void initBoard(){
-            for(int i=0; i<3; i++){
-                for(int j=0; j<3; j++){
-                   gameBoard[i][j].setText(" "); 
-                   gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
-                   gameBoard[i][j].setDisable(false);
-                }
+    public void initBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                gameBoard[i][j].setText(" ");
+                gameBoard[i][j].setStyle("-fx-background-image: url('tictactoe/images/empty.png'); -fx-background-size: cover;");
+                gameBoard[i][j].setDisable(false);
             }
         }
-        //indecates availability of check
-        public boolean availableToCheck(){
-            boolean avFlag=false;
-            int count=0;
-            System.out.println("available method");
-            
-            for(int i=0; i<3; i++){
-                if(count>4){
-                    avFlag=true;
-                    break;
-                }
-                for(int j=0; j<3; j++){
-                    if(!gameBoard[i][j].getText().equals(" ")){
-                        count++;
-                        if(count>4){
-                            avFlag=true;
-                            break;
-                        }
+    }
+    //indecates availability of check
+
+    public boolean availableToCheck() {
+        boolean avFlag = false;
+        int count = 0;
+        System.out.println("available method");
+
+        for (int i = 0; i < 3; i++) {
+            if (count > 4) {
+                avFlag = true;
+                break;
+            }
+            for (int j = 0; j < 3; j++) {
+                if (!gameBoard[i][j].getText().equals(" ")) {
+                    count++;
+                    if (count > 4) {
+                        avFlag = true;
+                        break;
                     }
                 }
             }
-            return avFlag;
         }
-    public void checkWinner(){
+        return avFlag;
+    }
+
+    public void checkWinner() {
         short checkWinnerRes;
         checkWinnerRes = checkOnGame();
-        
-        if(checkWinnerRes == 2)
-        {
+
+        if (checkWinnerRes == 2) {
             updateScore();
             DisableBoard();
             timeline.play();
-        }
-        else
-        {
+        } else {
             drawCount++;
         }
-        if (checkWinnerRes == 1)
-        {
+        if (checkWinnerRes == 1) {
             drawAlert();
         }
     }
-    
-    public short checkRows()
-    {
+
+    public short checkRows() {
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
-            
-            if(gameBoard[i][j].getText().equals(gameBoard[i][j+1].getText()) && gameBoard[i][j+1].getText().equals(gameBoard[i][j+2].getText()) &&!gameBoard[i][i].getText().equals(" "))
-            {
+
+            if (gameBoard[i][j].getText().equals(gameBoard[i][j + 1].getText()) && gameBoard[i][j + 1].getText().equals(gameBoard[i][j + 2].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
-                hilightWin(i , j , i , j+1 , i , j+2);
+                hilightWin(i, j, i, j + 1, i, j + 2);
                 System.out.println("check row");
-                System.out.println("i"+i+" j"+j);
-                System.out.println("i"+(i)+" j"+(j+1));
-                System.out.println("i"+i+" j"+ (j+2));
+                System.out.println("i" + i + " j" + j);
+                System.out.println("i" + (i) + " j" + (j + 1));
+                System.out.println("i" + i + " j" + (j + 2));
+                String btn1 = Integer.toString(i) + "." + Integer.toString(j);
+                String btn2 = Integer.toString(i) + "." + Integer.toString(j + 1);
+                String btn3 = Integer.toString(i) + "." + Integer.toString(j + 2);
+                String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+                SignIn.sendMessageToServer.println(winReq);
+                thread.stop();
                 return result;
             }
-            
+
         }
         return result;
     }
-    
-    public short checkColumns()
-    {
+
+    public short checkColumns() {
         short result = 0;
         int j = 0;
         for (int i = 0; i < 3; i++) {
 
-
- 
-
-            if(gameBoard[j][i].getText().equals(gameBoard[j+1][i].getText()) && gameBoard[j+1][i].getText().equals(gameBoard[j+2][i].getText())&&!gameBoard[i][i].getText().equals(" "))
-
-            {
+            if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
-                hilightWin(j , i , j+1 , i , j+2 , i);
+                hilightWin(j, i, j + 1, i, j + 2, i);
+                //AvailableUsers.turn = 1;
+                String btn1 = Integer.toString(j) + "." + Integer.toString(i);
+                String btn2 = Integer.toString(j + 1) + "." + Integer.toString(i);
+                String btn3 = Integer.toString(j + 2) + "." + Integer.toString(i);
+                String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+                SignIn.sendMessageToServer.println(winReq);
                 System.out.println("check col");
+                thread.stop();
                 return result;
             }
         }
         return result;
     }
-    
-    public short checkDiagonals()
-    {
+
+    public short checkDiagonals() {
         short result = 0;
         System.out.println("check daigonal");
-        if(gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) &&!gameBoard[0][0].getText().equals(" "))
-        {
+        if (gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) && !gameBoard[0][0].getText().equals(" ")) {
             result = 2;
             System.out.println("daigonal Win");
-            hilightWin(0 , 0 , 1 , 1 , 2 , 2);
+            hilightWin(0, 0, 1, 1, 2, 2);
             System.out.println("check daig1");
+            String btn1 = Integer.toString(0) + "." + Integer.toString(0);
+            String btn2 = Integer.toString(1) + "." + Integer.toString(1);
+            String btn3 = Integer.toString(2) + "." + Integer.toString(2);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);
+            thread.stop();
             return result;
-        }
-        else if(gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText())&&!gameBoard[1][1].getText().equals(" "))
-        {
+        } else if (gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()) && !gameBoard[1][1].getText().equals(" ")) {
             result = 2;
-            hilightWin(0 , 2 , 1 , 1 , 2 , 0);
+            hilightWin(0, 2, 1, 1, 2, 0);
             System.out.println("check daig2");
+            String btn1 = Integer.toString(0) + "." + Integer.toString(2);
+            String btn2 = Integer.toString(1) + "." + Integer.toString(1);
+            String btn3 = Integer.toString(2) + "." + Integer.toString(0);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);
+            thread.stop();
             return result;
         }
         return result;
     }
-   
-    public short checkOnGame(){
+
+    public short checkOnGame() {
         short result = 0;
         System.out.println("checkongame");
-        
-        result = checkRows();
-        if(result == 2)
-        {
-            return result;
-        }
-        
-        result = checkColumns();
-        if(result == 2)
-        {
-            return result;
-        }
-        
-        result = checkDiagonals();
-        if(result == 2)
-        {
-            return result;
-        }
-        
-        if(result != 2)
 
-        {
+        result = checkRows();
+        if (result == 2) {
+            return result;
+        }
+
+        result = checkColumns();
+        if (result == 2) {
+            return result;
+        }
+
+        result = checkDiagonals();
+        if (result == 2) {
+            return result;
+        }
+
+        if (result != 2) {
             drawCount++;
-            if(checkDraw())
-            {
+            if (checkDraw()) {
                 result = 1;
             }
         }
-        
+
         return result;
-    
+
     }
-      public void hilightWin(int row1 , int col1 , int row2 , int col2 , int row3 , int col3){//change background of button to image
-      if(!turn){
-          gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row1][col1].setOpacity(1);
-          gameBoard[row2][col2].setOpacity(1);
-          gameBoard[row3][col3].setOpacity(1);
-      }
-      else{
-          gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
-          gameBoard[row1][col1].setOpacity(1);
-          gameBoard[row2][col2].setOpacity(1);
-          gameBoard[row3][col3].setOpacity(1);
-      }
+
+    public void hilightWin(int row1, int col1, int row2, int col2, int row3, int col3) {//change background of button to image
+        if (AvailableUsers.turn == 2) {
+            gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row1][col1].setOpacity(1);
+            gameBoard[row2][col2].setOpacity(1);
+            gameBoard[row3][col3].setOpacity(1);
+
+        } else {
+            gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row1][col1].setOpacity(1);
+            gameBoard[row2][col2].setOpacity(1);
+            gameBoard[row3][col3].setOpacity(1);
+            /*AvailableUsers.turn = 2;
+            String btn1 = Integer.toString(row1) + "." + Integer.toString(col1);
+            String btn2 = Integer.toString(row2) + "." + Integer.toString(col2);
+            String btn3 = Integer.toString(row3) + "." + Integer.toString(col3);
+            String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
+            SignIn.sendMessageToServer.println(winReq);*/
+        }
     }
-      public void updateScore(){
-          if(!turn){
-              System.out.println("x win");
-              xScore++;
-              scoreX.setText((xScore)+"");//update x score
-          }
-          else{
-             oScore++;
-             scoreO.setText(""+oScore);
-          }
-      }
+
+    public void updateScore() {
+        if (AvailableUsers.turn == 2) {
+            System.out.println("x win");
+            xScore++;
+            scoreX.setText((xScore) + "");//update x score
+        } else {
+            oScore++;
+            scoreO.setText("" + oScore);
+        }
+    }
 
     public void drawAlert() {
-        if(turn){
-            turn = false;
-        }
-        else{
-            turn = true;
+        if (AvailableUsers.turn == 1) {
+            AvailableUsers.turn = 2;
+        } else {
+            AvailableUsers.turn = 1;
         }
         Alert alert = new Alert(Alert.AlertType.NONE);
-                alert.setTitle("Game Tie");
-                alert.setHeaderText("");
-                alert.setContentText("Game Tie, Do you want to play again?");
-                DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.setStyle("-fx-background-color: white;");
-                dialogPane.getStyleClass().remove("alert");
-                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
-                        "-fx-pref-height: 73.0;" +
-                        "-fx-pref-width: 665.0;" +
-                        "-fx-text-fill: #d1a823;" +
-                        "-fx-font-family: \"Cooper Black\";" +
-                        "-fx-font-size: 33.0;" +
-                          "-fx-padding: 10.0;");
+        alert.setTitle("Game Tie");
+        alert.setHeaderText("");
+        alert.setContentText("Game Tie, Do you want to play again?");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
 
-                ButtonType noButtonType = new ButtonType("No");
-                ButtonType yesButtonType = new ButtonType("Yes");
-                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+        ButtonType noButtonType = new ButtonType("No");
+        ButtonType yesButtonType = new ButtonType("Yes");
+        alert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
-                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
-                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: red; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
-                noButton.setTranslateX(-230);
+        Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+        noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+        noButton.setTranslateX(-230);
 
-                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
-                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: green; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-pref-height: 50;");
-                yesButton.setTranslateX(-100);
-                
-                yesButton.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                        Welcome.navScreens(new EmptyBoard(stage), stage);
-                    }
-                });
-                noButton.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                       Welcome.navScreens(new Modes(stage), stage);
-                        xScore = 0;
-                        oScore = 0;
-                    }
-                });
-                 alert.showAndWait();
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+        yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: green; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        yesButton.setTranslateX(-100);
+
+        yesButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new EmptyBoard(stage), stage);
+            }
+        });
+        noButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+                xScore = 0;
+                oScore = 0;
+            }
+        });
+        alert.showAndWait();
     }
 
     public void exitAlert() {
         Alert alert = new Alert(Alert.AlertType.NONE);
-                alert.setTitle("Exit Game");
-                alert.setHeaderText("");
-                alert.setContentText("Do you want to Exit?");
-                DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.setStyle("-fx-background-color: white;");
-                dialogPane.getStyleClass().remove("alert");
-                dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;" +
-                        "-fx-pref-height: 73.0;" +
-                        "-fx-pref-width: 665.0;" +
-                        "-fx-text-fill: #d1a823;" +
-                        "-fx-font-family: \"Cooper Black\";" +
-                        "-fx-font-size: 33.0;" +
-                          "-fx-padding: 10.0;");
+        alert.setTitle("Exit Game");
+        alert.setHeaderText("");
+        alert.setContentText("Do you want to Exit?");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
 
-                ButtonType noButtonType = new ButtonType("No");
-                ButtonType yesButtonType = new ButtonType("Yes");
-                alert.getButtonTypes().addAll(noButtonType , yesButtonType);
+        ButtonType noButtonType = new ButtonType("No");
+        ButtonType yesButtonType = new ButtonType("Yes");
+        alert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
-                Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
-                noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: red; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
-                noButton.setTranslateX(-230);
+        Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+        noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+        noButton.setTranslateX(-230);
 
-                Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
-                yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
-                        + "-fx-background-color: green; -fx-background-radius: 10;"
-                        + "-fx-text-fill: white; -fx-pref-height: 50;");
-                yesButton.setTranslateX(-100);
-                
-                yesButton.setOnAction(new EventHandler() {
-                    @Override
-                    public void handle(Event event) {
-                        Welcome.navScreens(new Modes(stage), stage);
-                        xScore = 0;
-                        oScore = 0;
-                    }
-                });
-                alert.showAndWait();
-                //test
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+        yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: green; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        yesButton.setTranslateX(-100);
+
+        yesButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+                xScore = 0;
+                oScore = 0;
+            }
+        });
+        alert.showAndWait();
+        //test
     }
 }

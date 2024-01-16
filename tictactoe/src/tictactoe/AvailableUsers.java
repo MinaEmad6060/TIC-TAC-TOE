@@ -200,7 +200,8 @@ public class AvailableUsers extends BorderPane {
             @Override
             public void handle(MouseEvent event) {
                 MyData mydata = listView.getSelectionModel().getSelectedItem();
-                String playRequest = "play " + SignIn.currentUser + " " + "sls";
+                String playRequest = "play " + SignIn.currentUser + " " + mydata.text1;
+                player2Name = mydata.text1;
                 SignIn.sendMessageToServer.println(playRequest);
                 ShowWaitingAlert(targetPlayer);
 

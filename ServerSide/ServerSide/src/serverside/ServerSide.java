@@ -90,6 +90,7 @@ class ClientHandler extends Thread {
                 String playerName = null;
                 String playerTargetName = null;
                 String step = null;
+                String winBtns = null;
 
                 if (parts[0].equals("information")) {
                     getStatistics();
@@ -147,6 +148,10 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[1];
                     step = parts[2];
                     sendStepToClient(playerTargetName, "step", step);
+                } else if (parts[0].equals("win")){
+                    playerTargetName = parts[1];
+                    winBtns = parts[2];
+                    sendStepToClient(playerTargetName, "win", winBtns);
                 }
 
                 /*if (message.equalsIgnoreCase("Close")) {
