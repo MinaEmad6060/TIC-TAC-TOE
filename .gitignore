@@ -3,7 +3,7 @@
 /ServerSide/ServerSide/nbproject/private/
 /ServerSide/ServerSide/build/
 /ServerSide/ServerSide/dist/
-/private.xml
+/tictactoe/nbproject/private/private.xml
 # Ignore compiled files
 *.class
 *.jar
