@@ -177,7 +177,7 @@ class ClientHandler extends Thread {
         }
     }
 
-    /*public String displayAvailableList() throws SQLException {
+    public String displayAvailableList() throws SQLException {
         Player player = new Player();
         String available = "";
         
@@ -197,10 +197,10 @@ class ClientHandler extends Thread {
         }
 
         return available;
-    }*/
+    }
     
     
-    public String displayAvailableList() throws SQLException {
+    /*public String displayAvailableList() throws SQLException {
         Player player = new Player();
         String available = "";
 
@@ -213,7 +213,7 @@ class ClientHandler extends Thread {
         }
 
         return available;
-    }
+    }*/
     
 
     public void validateLogin(String username, String password) throws SQLException {
