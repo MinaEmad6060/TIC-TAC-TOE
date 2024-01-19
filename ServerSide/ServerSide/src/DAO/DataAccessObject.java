@@ -90,6 +90,16 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
 
     
 
+    public static ResultSet getAvailableList() throws SQLException {
+        ResultSet resultSet;
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Player where  available = ?", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ps.setBoolean(1, true);
+        resultSet = ps.executeQuery();
+        return resultSet;
+    }
+      
+    /*
     public static List<String> getAvailableList() throws SQLException {
         ResultSet resultSet;
         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
@@ -106,8 +116,7 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
         con.close();
         return availableList;
     }
-      
-      
+    */  
       
       
       
