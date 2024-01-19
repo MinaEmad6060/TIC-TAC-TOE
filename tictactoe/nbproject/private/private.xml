@@ -5,13 +5,16 @@
         <group>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/AvailableUsers.java</file>
 =======
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/SignIn.java</file>
+=======
+>>>>>>> min-online
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/Tictactoe.java</file>
-            <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/VideoWin.java</file>
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/BoardOnline.java</file>
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/AvailableUsers.java</file>
+<<<<<<< HEAD
             <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/OnlineVideoWin.java</file>
 >>>>>>> min-online
 =======
@@ -19,6 +22,8 @@
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/AvailableUsers.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
 >>>>>>> b27b91bb755d65a761dce06b82ffae05e60e9caa
+=======
+>>>>>>> min-online
         </group>
     </open-files>
 </project-private>
