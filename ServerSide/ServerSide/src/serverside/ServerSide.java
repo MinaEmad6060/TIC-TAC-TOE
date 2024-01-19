@@ -274,7 +274,7 @@ class ClientHandler extends Thread {
                 System.out.println(message + " " + step);
                 return;
             } else {
-                System.out.println("falseeeeeeeeeeeeee");
+                //System.out.println("falseeeeeeeeeeeeee");
             }
         }
     }
