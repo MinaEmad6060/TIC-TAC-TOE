@@ -72,6 +72,7 @@ public class BoardOnline extends AnchorPane {
     static int xScore = 0;
     static int oScore = 0;
     int drawCount = 0;
+
     static boolean winner = true;
     Thread thread;
 
@@ -80,7 +81,7 @@ public class BoardOnline extends AnchorPane {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Welcome.navScreens(new VideoWin(stage), stage);
         }));
-
+        
         anchorPane = new AnchorPane();
         imageView = new ImageView();
         text = new Text();
@@ -128,8 +129,8 @@ public class BoardOnline extends AnchorPane {
         scoreX = new Text();
         recordBtn = new ImageView();
         stage = s;
-
         initBoard();
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -306,7 +307,7 @@ public class BoardOnline extends AnchorPane {
                     System.out.println(AvailableUsers.turn);
                     EnableBoard();
                     button00.setText("x");
-                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.0";
+                    String step = "step " +  AvailableUsers.player2Name + " " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
                     button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
@@ -749,6 +750,8 @@ public class BoardOnline extends AnchorPane {
                                     }
                                     EnableBoard();
                                     System.out.println("row col printed");
+                                    gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                    
                                 }
                             });
                             //break;
@@ -874,12 +877,14 @@ public class BoardOnline extends AnchorPane {
                 System.out.println("i" + i + " j" + j);
                 System.out.println("i" + (i) + " j" + (j + 1));
                 System.out.println("i" + i + " j" + (j + 2));
+
                 String btn1 = Integer.toString(i) + "." + Integer.toString(j);
                 String btn2 = Integer.toString(i) + "." + Integer.toString(j + 1);
                 String btn3 = Integer.toString(i) + "." + Integer.toString(j + 2);
                 String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
                 SignIn.sendMessageToServer.println(winReq);
                 thread.stop();
+
                 return result;
             }
 
@@ -895,7 +900,6 @@ public class BoardOnline extends AnchorPane {
             if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
                 hilightWin(j, i, j + 1, i, j + 2, i);
-                //AvailableUsers.turn = 1;
                 String btn1 = Integer.toString(j) + "." + Integer.toString(i);
                 String btn2 = Integer.toString(j + 1) + "." + Integer.toString(i);
                 String btn3 = Integer.toString(j + 2) + "." + Integer.toString(i);
@@ -970,7 +974,9 @@ public class BoardOnline extends AnchorPane {
     }
 
     public void hilightWin(int row1, int col1, int row2, int col2, int row3, int col3) {//change background of button to image
+
         if (AvailableUsers.turn == 2) {
+
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -985,17 +991,21 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
+
             /*AvailableUsers.turn = 2;
             String btn1 = Integer.toString(row1) + "." + Integer.toString(col1);
             String btn2 = Integer.toString(row2) + "." + Integer.toString(col2);
             String btn3 = Integer.toString(row3) + "." + Integer.toString(col3);
             String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
             SignIn.sendMessageToServer.println(winReq);*/
+
         }
     }
 
     public void updateScore() {
+
         if (AvailableUsers.turn == 2) {
+
             System.out.println("x win");
             xScore++;
             scoreX.setText((xScore) + "");//update x score
@@ -1006,10 +1016,12 @@ public class BoardOnline extends AnchorPane {
     }
 
     public void drawAlert() {
+
         if (AvailableUsers.turn == 1) {
             AvailableUsers.turn = 2;
         } else {
             AvailableUsers.turn = 1;
+
         }
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle("Game Tie");
@@ -1100,6 +1112,5 @@ public class BoardOnline extends AnchorPane {
             }
         });
         alert.showAndWait();
-        //test
     }
 }
