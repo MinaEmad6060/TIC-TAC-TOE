@@ -276,6 +276,5 @@ public class AvailableUsers extends BorderPane {
         listView.scrollTo(newData);
         updateDataInListView();
     }
->>>>>>> min-online
     
 }
