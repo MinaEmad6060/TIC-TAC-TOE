@@ -51,7 +51,7 @@ public class AvailableUsers extends BorderPane {
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
 
-        ButtonType cancelButtonType = new ButtonType("Cansel");
+        ButtonType cancelButtonType = new ButtonType("cancel");
         waitingAlert.getButtonTypes().addAll(cancelButtonType);
 
         Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
@@ -63,8 +63,8 @@ public class AvailableUsers extends BorderPane {
         cancelButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                String canselRequest = "cansel " + SignIn.currentUser + " " + "sls";
-                SignIn.sendMessageToServer.println(canselRequest);
+                String cancelRequest = "cancel " + SignIn.currentUser + " " + "n";
+                SignIn.sendMessageToServer.println(cancelRequest);
 
             }
         });
@@ -146,14 +146,16 @@ public class AvailableUsers extends BorderPane {
                 System.out.println("Availllllllll");
                 String playerName = availablePlayer[0];
                 String PlayerScore = availablePlayer[1];
-
-                Platform.runLater(() -> {
-                    // change ui
-                    addDataToListView(new MyData(playerName, PlayerScore));
-                });
+                if(!playerName.equals(SignIn.currentUser)){
+                    Platform.runLater(() -> {
+                        // change ui
+                        addDataToListView(new MyData(playerName, PlayerScore));
+                    });
+                }
             }
         } catch (IOException ex) {
-            Logger.getLogger(AvailableUsers.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getStackTrace();
+            ex.getMessage();
         }
 
         s.setOnCloseRequest(new EventHandler<WindowEvent>() {

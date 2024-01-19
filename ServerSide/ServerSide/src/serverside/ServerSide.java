@@ -145,7 +145,7 @@ class ClientHandler extends Thread {
                 } else if (parts[0].equals("cancel")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
-                    sendMessageToClient(playerName, playerTargetName, "cansel");
+                    sendMessageToClient(playerName, playerTargetName, "cancel");
                 } else if (parts[0].equals("step")) {
                     playerTargetName = parts[1];
                     step = parts[2];
