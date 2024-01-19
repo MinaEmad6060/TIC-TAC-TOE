@@ -674,7 +674,7 @@ public class BoardOnline extends AnchorPane {
         recordBtn.setLayoutY(646.0);
         recordBtn.setPickOnBounds(true);
         recordBtn.setPreserveRatio(true);
-        //      recordBtn.setImage(new Image(getClass().getResource("../../../../../Users/slsabel/Downloads/recording%201.png").toExternalForm()));
+        recordBtn.setImage(new Image(getClass().getResource("images/rec.png").toExternalForm()));
 
         anchorPane.getChildren().add(imageView);
         anchorPane.getChildren().add(text);
