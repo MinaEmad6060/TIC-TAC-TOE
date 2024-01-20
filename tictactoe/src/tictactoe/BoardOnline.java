@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -17,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -72,14 +75,22 @@ public class BoardOnline extends AnchorPane {
     static int xScore = 0;
     static int oScore = 0;
     int drawCount = 0;
-
+    String recordDetails;
+    String currentDateTime ;
     static boolean winner = true;
     Thread thread;
-
+    boolean recordBtnClicked;
+    boolean avilableToRecord;
+    
     public BoardOnline(Stage s) {
-
+        currentDateTime= getCurrentDateTime();
+        recordDetails="record "+SignIn.currentUser+"-"+AvailableUsers.player2Name+" "+currentDateTime+".";
+        System.out.println(recordDetails);
+        recordBtnClicked=false;
+        avilableToRecord=true;
+        
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Welcome.navScreens(new VideoWin(stage), stage);
+            Welcome.navScreens(new OnlineVideoWin(stage), stage);
         }));
         
         anchorPane = new AnchorPane();
@@ -307,6 +318,8 @@ public class BoardOnline extends AnchorPane {
                     System.out.println(AvailableUsers.turn);
                     EnableBoard();
                     button00.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X00,";
                     String step = "step " +  AvailableUsers.player2Name + " " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
                     button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -319,6 +332,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button00.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O00,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.0.0";
                     SignIn.sendMessageToServer.println(step);
                     button00.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -344,6 +359,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button01.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X01,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.0.1";
                     SignIn.sendMessageToServer.println(step);
                     button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -356,6 +373,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button01.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O01,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.0.1";
                     SignIn.sendMessageToServer.println(step);
                     button01.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -381,6 +400,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button02.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X02,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.0.2";
                     SignIn.sendMessageToServer.println(step);
                     button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -393,6 +414,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button02.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O02,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.0.2";
                     SignIn.sendMessageToServer.println(step);
                     button02.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -418,6 +441,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button10.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X10,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.1.0";
                     SignIn.sendMessageToServer.println(step);
                     button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -430,6 +455,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button10.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O10,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.1.0";
                     SignIn.sendMessageToServer.println(step);
                     button10.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -456,6 +483,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button11.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X11,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.1.1";
                     SignIn.sendMessageToServer.println(step);
                     button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -468,6 +497,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button11.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O11,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.1.1";
                     SignIn.sendMessageToServer.println(step);
                     button11.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -494,6 +525,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button12.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X12,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.1.2";
                     SignIn.sendMessageToServer.println(step);
                     button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -506,6 +539,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button12.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O12,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.1.2";
                     SignIn.sendMessageToServer.println(step);
                     button12.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -531,6 +566,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button20.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X20,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.2.0";
                     SignIn.sendMessageToServer.println(step);
                     button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -543,6 +580,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button20.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O20,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.2.0";
                     SignIn.sendMessageToServer.println(step);
                     button20.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -569,6 +608,8 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button21.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X21,";
                     String step = "step " + AvailableUsers.player2Name + " " + "x.2.1";
                     SignIn.sendMessageToServer.println(step);
                     button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -581,6 +622,8 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button21.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O21,";
                     String step = "step " + AvailableUsers.player2Name + " " + "o.2.1";
                     SignIn.sendMessageToServer.println(step);
                     button21.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -607,6 +650,9 @@ public class BoardOnline extends AnchorPane {
                 if (AvailableUsers.turn == 1) {
                     EnableBoard();
                     button22.setText("x");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"X22,";
+                    System.out.println(recordDetails);
                     String step = "step " + AvailableUsers.player2Name + " " + "x.2.2";
                     SignIn.sendMessageToServer.println(step);
                     button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -619,6 +665,9 @@ public class BoardOnline extends AnchorPane {
                 } else {
                     EnableBoard();
                     button22.setText("o");
+                    avilableToRecord=false;
+                    recordDetails=recordDetails+"O22,";
+                    System.out.println(recordDetails);
                     String step = "step " + AvailableUsers.player2Name + " " + "o.2.2";
                     SignIn.sendMessageToServer.println(step);
                     button22.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
@@ -668,15 +717,22 @@ public class BoardOnline extends AnchorPane {
         scoreX.setText("0");
         scoreX.setWrappingWidth(93.39843392372131);
         scoreX.setFont(new Font("Cooper Black", 40.0));
-
+        
         recordBtn.setFitHeight(88.0);
         recordBtn.setFitWidth(123.0);
         recordBtn.setLayoutX(989.0);
         recordBtn.setLayoutY(646.0);
         recordBtn.setPickOnBounds(true);
         recordBtn.setPreserveRatio(true);
-        //      recordBtn.setImage(new Image(getClass().getResource("../../../../../Users/slsabel/Downloads/recording%201.png").toExternalForm()));
-
+        recordBtn.setImage(new Image(getClass().getResource("images/rec.png").toExternalForm()));
+        recordBtn.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent event) {
+                if(avilableToRecord){
+                    recordBtnClicked=true;
+                    System.out.println(recordDetails);
+                }
+            }
+        });
         anchorPane.getChildren().add(imageView);
         anchorPane.getChildren().add(text);
         anchorPane.getChildren().add(text0);
@@ -744,13 +800,16 @@ public class BoardOnline extends AnchorPane {
                                     if (type.equals("x")) {
                                         gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                         AvailableUsers.turn = 2;
+                                        recordDetails=recordDetails+"X"+row+col+",";
+                                        
                                     } else {
                                         gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                         AvailableUsers.turn = 1;
+                                        recordDetails=recordDetails+"O"+row+col+",";
                                     }
                                     EnableBoard();
                                     System.out.println("row col printed");
-                                    gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                                    //gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                     
                                 }
                             });
@@ -856,12 +915,21 @@ public class BoardOnline extends AnchorPane {
         if (checkWinnerRes == 2) {
             updateScore();
             DisableBoard();
+            if(recordBtnClicked){
+                SignIn.sendMessageToServer.println(recordDetails);
+            }
             timeline.play();
         } else {
             drawCount++;
+            if(recordBtnClicked){
+                SignIn.sendMessageToServer.println(recordDetails);
+            }
         }
         if (checkWinnerRes == 1) {
             drawAlert();
+            if(recordBtnClicked){
+                SignIn.sendMessageToServer.println(recordDetails);
+            }
         }
     }
 
@@ -980,6 +1048,9 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            recordDetails="@"+recordDetails+"X"+row1+col1+",";
+            recordDetails=recordDetails+"X"+row2+col2+",";
+            recordDetails=recordDetails+"X"+row3+col3;
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
@@ -988,6 +1059,9 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
             gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            recordDetails="@"+recordDetails+"O"+row1+col1+",";
+            recordDetails=recordDetails+"O"+row2+col2+",";
+            recordDetails=recordDetails+"O"+row3+col3;
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
@@ -1013,6 +1087,12 @@ public class BoardOnline extends AnchorPane {
             oScore++;
             scoreO.setText("" + oScore);
         }
+    }
+        public static String getCurrentDateTime() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        String formattedDateTime = currentDateTime.format(formatter);
+        return formattedDateTime;
     }
 
     public void drawAlert() {

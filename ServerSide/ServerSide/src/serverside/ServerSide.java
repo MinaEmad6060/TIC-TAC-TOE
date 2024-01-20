@@ -120,7 +120,13 @@ class ClientHandler extends Thread {
                     String newString = getHistory(username);
                     System.out.println(newString);
                     printedMessageToClient.println(newString);
-                } else if (parts[0].equals("Logout")) {
+                }
+                else if (parts[0].equals("record")){
+                    System.out.println(message);
+                    DataAccessObject.addRecord("mahmoud", "mahmoud-mahmoud 13/1/2024 01:30.X00,O01,X10,O11,X20");
+                }
+                
+                else if (parts[0].equals("Logout")) {
                     username = parts[1];
                     DataAccessObject.updateOnlineState(username, false);
                     //DataAccessObject.updateAvailability(username,false);
@@ -274,7 +280,7 @@ class ClientHandler extends Thread {
                 System.out.println(message + " " + step);
                 return;
             } else {
-                System.out.println("falseeeeeeeeeeeeee");
+                //System.out.println("falseeeeeeeeeeeeee");
             }
         }
     }
