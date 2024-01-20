@@ -65,12 +65,12 @@
                   <Image url="@images/xoTopIcon.png" />
                </image>
             </ImageView>
-            <Text fill="#fcfcfc" layoutX="102.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
+            <Text fx:id="player1" fill="#fcfcfc" layoutX="102.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
                <font>
                   <Font name="Cooper Black" size="40.0" />
                </font>
             </Text>
-            <Text fill="#fcfcfc" layoutX="995.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
+            <Text fx:id="player2" fill="#fcfcfc" layoutX="995.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
                <font>
                   <Font name="Cooper Black" size="40.0" />
                </font>
@@ -80,7 +80,7 @@
                   <Image url="@images/playero.png" />
                </image>
             </ImageView>
-            <Text fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
+            <Text fx:id="timeAndDate" fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
                <font>
                   <Font name="Berlin Sans FB" size="30.0" />
                </font>

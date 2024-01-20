@@ -12,10 +12,10 @@
     <jar href="lib\derbyclient.jar" size="576624" download="eager" />
     <jar href="lib\derbynet.jar" size="248898" download="eager" />
 <<<<<<< HEAD
-    <jar href="tictactoe.jar" size="18079228" download="eager" />
+    <jar href="tictactoe.jar" size="18143959" download="eager" />
 =======
-    <jar href="tictactoe.jar" size="18086459" download="eager" />
->>>>>>> login_online
+    <jar href="tictactoe.jar" size="18161527" download="eager" />
+>>>>>>> min-online
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="tictactoe" >
     <param name="requiredFXVersion" value="8.0+"/>

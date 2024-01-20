@@ -4,10 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,8 +20,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import static tictactoe.Welcome.navScreens;
 
 public class SignIn extends AnchorPane {
 
@@ -49,11 +44,13 @@ public class SignIn extends AnchorPane {
     protected final Text text8;
     protected final Text btnClick;
     String loginRequest;
-    Socket serverSide;
-    DataInputStream listenFromServer;
-    PrintStream sendMessageToServer;
+    public static Socket serverSide;
+    public static DataInputStream listenFromServer;
+    public static PrintStream sendMessageToServer;
     boolean test=false;
 
+    //mina
+    public static String currentUser="";
 
     public SignIn(Stage s) {
 
@@ -247,9 +244,10 @@ public class SignIn extends AnchorPane {
                 }
                 if(!username.getText().equals("") && !password.getText().equals("")){
                     System.out.println("Successful login");
+                    //mina
+                    currentUser=username.getText();
                     loginRequest="login " + username.getText() + " " + password.getText();
                     System.out.println(loginRequest);
-                    
                     
                     try {
                         serverSide = new Socket("127.0.0.1", 2000);
@@ -257,7 +255,7 @@ public class SignIn extends AnchorPane {
                         sendMessageToServer = new PrintStream(serverSide.getOutputStream());
                         sendMessageToServer.println(loginRequest);
 
-                        new Thread(){
+                        Thread testThread = new Thread(){
                             @Override
                             public void run(){
 
@@ -273,8 +271,11 @@ public class SignIn extends AnchorPane {
                                             Platform.runLater(new Runnable() {
                                                 @Override public void run() {
                                                     if(test==true){
-                                                        System.out.println("test is mina");
+                                                        String updateonline = "update " + "slsa";
+                                                        System.out.println(updateonline);
+                                                        sendMessageToServer.println(updateonline);
                                                         Welcome.navScreens(new OnlineHome(s), s);
+                                                        
                                                     }else{
                                                         System.out.println("test is false");
                                                     }
@@ -302,7 +303,9 @@ public class SignIn extends AnchorPane {
                                     }
                                         else{
                                             System.out.println("false");
+                                            break;
                                         }
+                                        
                                     } catch (IOException ex) {
                                         break;
                                     }
@@ -310,9 +313,13 @@ public class SignIn extends AnchorPane {
                                 
                                 
                             }
-                        }.start();
+                        };
+                        testThread.start();
+                        System.out.println("Thread Break");
+                        //testThread.stop();
+                        System.out.println("Thread stop");
                         
-                                                
+                          /*                      
                         s.setOnCloseRequest(new EventHandler<WindowEvent>(){
                             @Override
                             public void handle(WindowEvent event) {
@@ -325,7 +332,8 @@ public class SignIn extends AnchorPane {
                                     System.out.println("Erorr");
                                 }
                             }
-                        }); 
+                        });
+                        */
 
                 }   catch (IOException ex) {
                         System.out.println("error in creating socket");                    
