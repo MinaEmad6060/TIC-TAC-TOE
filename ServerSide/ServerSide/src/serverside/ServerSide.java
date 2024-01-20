@@ -8,7 +8,9 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.lang.Thread;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -143,7 +145,7 @@ class ClientHandler extends Thread {
                 } else if (parts[0].equals("cancel")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
-                    sendMessageToClient(playerName, playerTargetName, "cansel");
+                    sendMessageToClient(playerName, playerTargetName, "cancel");
                 } else if (parts[0].equals("step")) {
                     playerTargetName = parts[1];
                     step = parts[2];
@@ -178,6 +180,29 @@ class ClientHandler extends Thread {
     public String displayAvailableList() throws SQLException {
         Player player = new Player();
         String available = "";
+        
+        ResultSet resultSet = DataAccessObject.getAvailableList();
+        List<String> availableList = new ArrayList<>();
+        
+        while (resultSet.next()) {
+
+            String availablePlayers = resultSet.getString("Name") + ":" + resultSet.getString("score");
+            availableList.add(availablePlayers);
+        }
+
+        for (int i = 0; i < availableList.size(); i++) {
+            available = available + availableList.get(i) + " ";
+            System.out.println(available);
+
+        }
+
+        return available;
+    }
+    
+    
+    /*public String displayAvailableList() throws SQLException {
+        Player player = new Player();
+        String available = "";
 
         List<String> availableList = DataAccessObject.getAvailableList();
 
@@ -188,7 +213,8 @@ class ClientHandler extends Thread {
         }
 
         return available;
-    }
+    }*/
+    
 
     public void validateLogin(String username, String password) throws SQLException {
         boolean isExist = DataAccessObject.isUserExist(username);
@@ -274,7 +300,7 @@ class ClientHandler extends Thread {
                 System.out.println(message + " " + step);
                 return;
             } else {
-                //System.out.println("falseeeeeeeeeeeeee");
+                System.out.println("falseeeeeeeeeeeeee");
             }
         }
     }
