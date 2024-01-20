@@ -65,8 +65,8 @@ public class BoardOnline extends AnchorPane {
     protected final Button button22;
     protected final Text text8;
     protected final Text text9;
-    protected final Text scoreO;
-    protected final Text scoreX;
+    protected static  Text scoreO;
+    protected static Text scoreX;
     protected final ImageView recordBtn;
     Button[][] gameBoard = new Button[3][3];
     Stage stage;
@@ -351,11 +351,10 @@ public class BoardOnline extends AnchorPane {
         player2Name.setFont(new Font("Cooper Black", 40.0));
 
         if (AvailableUsers.turn == 1) {
-            //drawCount = 4;
             player1Name.setText(SignIn.currentUser);
             player2Name.setText(AvailableUsers.player2Name);
         } else {
-            //drawCount = 5;
+            DisableBoard();
             player1Name.setText(AvailableUsers.player2Name);
             player2Name.setText(SignIn.currentUser);
         }
@@ -788,7 +787,7 @@ public class BoardOnline extends AnchorPane {
         scoreO.setLayoutY(289.0);
         scoreO.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scoreO.setStrokeWidth(0.0);
-        scoreO.setText("0");
+        scoreO.setText(oScore+"");
         scoreO.setWrappingWidth(93.39843392372131);
         scoreO.setFont(new Font("Cooper Black", 40.0));
 
@@ -797,7 +796,7 @@ public class BoardOnline extends AnchorPane {
         scoreX.setLayoutY(290.0);
         scoreX.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scoreX.setStrokeWidth(0.0);
-        scoreX.setText("0");
+        scoreX.setText(xScore+"");
         scoreX.setWrappingWidth(93.39843392372131);
         scoreX.setFont(new Font("Cooper Black", 40.0));
 
@@ -996,7 +995,7 @@ public class BoardOnline extends AnchorPane {
                             });
                             System.out.println("enter b3d runlaterrrr");
                             break;
-                        }else if (parts[0].equals("exit")) {
+                        } else if (parts[0].equals("exit")) {
 
                             System.out.println("enterdddddxxxxx");
                             Platform.runLater(new Runnable() {
@@ -1009,7 +1008,27 @@ public class BoardOnline extends AnchorPane {
                             });
                             System.out.println("enter b3d runlaterrrr");
                             break;
-                        }
+                        } else if (parts[0].equals("xScore")) {
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String xScore = parts[1];
+                                    scoreX.setText(xScore);
+                                }
+                            });
+                            break;
+                        } else if (parts[0].equals("oScore")) {
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String oScore = parts[1];
+                                    scoreO.setText(oScore);
+                                }
+                            });
+                            break;
+                        } 
                         else {
                             System.out.println("false");
                             //break;
@@ -1028,9 +1047,7 @@ public class BoardOnline extends AnchorPane {
     void DisableBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                //if (gameBoard[i][j].getText().equals(" ")) {
                 gameBoard[i][j].setDisable(true);
-                //}
             }
         }
     }
@@ -1230,6 +1247,7 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
+            //AvailableUsers.turn = 1;
 
         } else {
             gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
@@ -1238,7 +1256,7 @@ public class BoardOnline extends AnchorPane {
             gameBoard[row1][col1].setOpacity(1);
             gameBoard[row2][col2].setOpacity(1);
             gameBoard[row3][col3].setOpacity(1);
-
+            //AvailableUsers.turn = 2;
             /*AvailableUsers.turn = 2;
             String btn1 = Integer.toString(row1) + "." + Integer.toString(col1);
             String btn2 = Integer.toString(row2) + "." + Integer.toString(col2);
@@ -1255,9 +1273,13 @@ public class BoardOnline extends AnchorPane {
             System.out.println("x win");
             xScore++;
             scoreX.setText((xScore) + "");//update x score
+            //SignIn.sendMessageToServer.println("xScore " + AvailableUsers.player2Name + " " + xScore + "");
+            AvailableUsers.turn = 1;
         } else {
             oScore++;
             scoreO.setText("" + oScore);
+            SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + oScore + "");
+            AvailableUsers.turn = 2;
         }
     }
 
@@ -1372,7 +1394,7 @@ public class BoardOnline extends AnchorPane {
                 SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
                 thread.stop();
                 Welcome.navScreens(new AvailableUsers(stage), stage);
-                
+
                 xScore = 0;
                 oScore = 0;
             }

@@ -91,6 +91,8 @@ class ClientHandler extends Thread {
                 String playerTargetName = null;
                 String step = null;
                 String winBtns = null;
+                String oScore = null;
+                String xScore = null;
 
                 if (parts[0].equals("information")) {
                     getStatistics();
@@ -169,6 +171,33 @@ class ClientHandler extends Thread {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, parts[0]);
+                }
+                else if (parts[0].equals("playAgain")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, "playAgain");
+                }
+                else if (parts[0].equals("no")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    System.out.println("part 0 is " + parts[0]);
+                    sendMessageToClient(playerName, playerTargetName, " no");
+                }
+                else if (parts[0].equals("yes")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    System.out.println("part 0 is " + parts[0]);
+                    sendMessageToClient(playerName, playerTargetName, " yes");
+                }
+                else if (parts[0].equals("xScore")){
+                    playerTargetName = parts[1];
+                    xScore = parts[2];
+                    sendStepToClient(playerTargetName, "xScore", xScore);
+                }
+                else if (parts[0].equals("oScore")){
+                    playerTargetName = parts[1];
+                    oScore = parts[2];
+                    sendStepToClient(playerTargetName, "oScore", oScore);
                 }
 
                 /*if (message.equalsIgnoreCase("Close")) {
@@ -271,6 +300,7 @@ class ClientHandler extends Thread {
             System.out.println("aftername");
             if (client.name.equals(targetUsername)) {
                 System.out.println("found");
+                System.out.println(message + " " + username + " " + targetUsername);
                 client.printedMessageToClient.println(message + " " + username + " " + targetUsername);
                 return;
             } else {

@@ -1,9 +1,15 @@
 package tictactoe;
 
+import java.io.IOException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,6 +41,14 @@ public class OnlineVideoWin extends BorderPane {
     protected final ImageView xoImage;
     protected final MediaView mediaView;
     String path;
+    Thread thread;
+    Alert invitationAlert;
+    Alert waitingAlert;
+    ButtonType noButtonTypeInvite;
+    ButtonType cancelButtonType;
+    Stage stage;
+    //static String playerXScore = BoardOnline.xScore+"";
+    //static String playerOScore = BoardOnline.oScore+"";
 
     public OnlineVideoWin(Stage s) {
 
@@ -51,9 +65,10 @@ public class OnlineVideoWin extends BorderPane {
         winIconImage = new ImageView();
         playerNumber = new Label();
         xoImage = new ImageView();
-        
+        stage = s;
+
         playerNumber.setText(SignIn.currentUser);
-        
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -62,16 +77,25 @@ public class OnlineVideoWin extends BorderPane {
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1D1E3D;");
         String path;
-        if(!BoardOnline.winner){
+        if (!BoardOnline.winner) {
             path = getClass().getResource("/tictactoe/videos/looser.mp4").toExternalForm();
-        }else{
+            BoardOnline.winner = true;
+        } else {
             path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
+            BoardOnline.winner = true;
+            if (AvailableUsers.turn == 1) {
+                SignIn.sendMessageToServer.println("xScore " + AvailableUsers.player2Name + " " + BoardOnline.xScore + "");
+            } else {
+                SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + BoardOnline.oScore + "");
+
+            }
         }
-        Media media = new Media(path); 
-        MediaPlayer mediaPlayer = new MediaPlayer(media);  
+
+        Media media = new Media(path);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaView = new MediaView(mediaPlayer);
         mediaPlayer.play();
-        
+
         BorderPane.setAlignment(flowPane, javafx.geometry.Pos.CENTER);
         flowPane.setPrefHeight(200.0);
         flowPane.setPrefWidth(1200.0);
@@ -84,12 +108,15 @@ public class OnlineVideoWin extends BorderPane {
         winExitBtn.setText("Exit <<");
         winExitBtn.setTextFill(javafx.scene.paint.Color.WHITE);
         winExitBtn.setFont(new Font("Cooper Black", 35.0));
-        winExitBtn.setOnAction(new EventHandler<ActionEvent>(){
+        winExitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 mediaPlayer.stop();
+                SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+                thread.stop();
                 Welcome.navScreens(new AvailableUsers(s), s);
-            }});
+            }
+        });
 
         winPlayAgainBtn.setMnemonicParsing(false);
         winPlayAgainBtn.setPrefHeight(75.0);
@@ -98,14 +125,24 @@ public class OnlineVideoWin extends BorderPane {
         winPlayAgainBtn.setText("Play Again");
         winPlayAgainBtn.setTextFill(javafx.scene.paint.Color.valueOf("#7949d0"));
         winPlayAgainBtn.setFont(new Font("Cooper Black", 35.0));
-        winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>(){
+        winPlayAgainBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 mediaPlayer.stop();
-                Welcome.navScreens(new BoardOnline(s), s);
-            }});
+                SignIn.sendMessageToServer.println("playAgain " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShowWaitingAlert("");
+                        System.out.println("after send tie invitationn");
+
+                    }
+                });
+            }
+        });
         FlowPane.setMargin(winPlayAgainBtn, new Insets(0.0, 0.0, 50.0, 200.0));
-        
+
         flowPane.setPadding(new Insets(80.0, 0.0, 0.0, 250.0));
         setBottom(flowPane);
 
@@ -156,7 +193,6 @@ public class OnlineVideoWin extends BorderPane {
         playerNumber.setFont(new Font("Cooper Black", 35.0));
         flowPane0.setPadding(new Insets(50.0, 0.0, 0.0, -65.0));
 
-
         GridPane.setValignment(xoImage, javafx.geometry.VPos.TOP);
         xoImage.setFitHeight(47.0);
         xoImage.setFitWidth(77.0);
@@ -184,5 +220,215 @@ public class OnlineVideoWin extends BorderPane {
         gridPane.getChildren().add(flowPane0);
         gridPane.getChildren().add(xoImage);
 
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("while trueeee");
+                    String msg;
+                    System.out.println("string");
+                    try {
+                        System.out.println("msggggggggggggg");
+                        msg = SignIn.listenFromServer.readLine();
+
+                        System.out.println("message");
+                        System.out.println(msg);
+                        String[] parts = {"", "", "", ""};
+                        parts = msg.split(" ");
+
+                        System.out.println(parts[0] + "tesssssss");
+                        if (parts[0].equals("exit")) {
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Welcome.navScreens(new AvailableUsers(s), s);
+                                }
+                            });
+                            break;
+
+                        } else if (parts[0].equals("playAgain")) {
+                            System.out.println("part 0 is " + parts[0]);
+                            System.out.println("part 1 is " + parts[1]);
+                            System.out.println("part 2 is " + parts[2]);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowInvitationAlert("");
+                                }
+                            });
+                            System.out.println("");
+                            break;
+
+                        } else if (parts[0].equals("cancel")) {
+                            System.out.println("test cancel");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    invitationAlert.setResult(noButtonTypeInvite);
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+                                }
+                            });
+                            System.out.println("test cancel after run later");
+                            break;
+
+                        } else if (parts[0].equals("no")) {
+
+                            System.out.println("enterddddd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before ref");
+                                    waitingAlert.setResult(cancelButtonType);
+                                    System.out.println("after reff");
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr ref");
+                            break;
+                        } else if (parts[0].equals("yes")) {
+
+                            System.out.println("enterddddd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before ref");
+                                    waitingAlert.setResult(cancelButtonType);
+                                    System.out.println("after reff");
+                                    Welcome.navScreens(new BoardOnline(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr");
+                            break;
+                        } else if (parts[0].equals("xScore")) {
+                            System.out.println("inside xScoore");
+                            String xScore = parts[1];
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //playerXScore = xScore;
+                                    BoardOnline.xScore = Integer.parseInt(xScore);
+                                }
+                            });
+                            //break;
+                        } else if (parts[0].equals("oScore")) {
+                            System.out.println("inside oScoore");
+                            String oScore = parts[1];
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //playerOScore = oScore;
+                                    BoardOnline.oScore = Integer.parseInt(oScore);
+                                }
+                            });
+                            //break;
+                        } else {
+                            System.out.println("false");
+                            //break;
+                        }
+                    } catch (IOException ex) {
+                        System.out.println("catchhhhhhhhhh");
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+        };
+        thread.start();
+    }
+
+    public void ShowWaitingAlert(String nameee) {
+        waitingAlert = new Alert(Alert.AlertType.NONE);
+        waitingAlert.setTitle("Waiting");
+        waitingAlert.setHeaderText("");
+        waitingAlert.setContentText("Waiting...");
+        DialogPane dialogPane = waitingAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        cancelButtonType = new ButtonType("Cansel");
+        waitingAlert.getButtonTypes().addAll(cancelButtonType);
+
+        Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String cancelRequest = "cancel " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(cancelRequest);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+
+            }
+        });
+        waitingAlert.showAndWait();
+    }
+
+    public void ShowInvitationAlert(String opponentPlayer) {
+        invitationAlert = new Alert(Alert.AlertType.NONE);
+        invitationAlert.setTitle("Invitation");
+        invitationAlert.setHeaderText("");
+        invitationAlert.setContentText(opponentPlayer + " Wants to play with you");
+        DialogPane dialogPane = invitationAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        noButtonTypeInvite = new ButtonType("No");
+        ButtonType yesButtonType = new ButtonType("Yes");
+        invitationAlert.getButtonTypes().addAll(noButtonTypeInvite, yesButtonType);
+
+        Button noButton = (Button) invitationAlert.getDialogPane().lookupButton(noButtonTypeInvite);
+        noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+        noButton.setTranslateX(-230);
+
+        Button yesButton = (Button) invitationAlert.getDialogPane().lookupButton(yesButtonType);
+        yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: green; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        yesButton.setTranslateX(-100);
+
+        yesButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String acceptRequest = "yes " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(acceptRequest);
+                thread.stop();
+                Welcome.navScreens(new BoardOnline(stage), stage);
+            }
+        });
+        noButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+
+                String refuseRequest = "no " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(refuseRequest);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+
+            }
+        });
+        invitationAlert.showAndWait();
     }
 }
