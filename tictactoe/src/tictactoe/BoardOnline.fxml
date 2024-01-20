@@ -20,71 +20,71 @@
                   <Image url="@images/playerx.png" />
                </image>
             </ImageView>
-            <Text fill="#00d6ff" layoutX="400.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="H">
+            <Text fill="#00d6ff" layoutX="331.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#ffd652" layoutX="464.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E">
+            <Text fill="#ffd652" layoutX="371.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#ffd652" layoutX="342.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
+            <Text fill="#ffd652" layoutX="258.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#00d6ff" layoutX="519.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
+            <Text fill="#00d6ff" layoutX="473.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#ffd652" layoutX="577.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="K">
+            <Text fill="#ffd652" layoutX="539.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#00d6ff" layoutX="653.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="V">
+            <Text fill="#00d6ff" layoutX="626.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#ffd652" layoutX="705.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A">
+            <Text fill="#ffd652" layoutX="725.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
-            <Text fill="#00d6ff" layoutX="772.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="R">
+            <Text fill="#00d6ff" layoutX="798.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O">
                <font>
-                  <Font name="Cooper Black" size="80.0" />
+                  <Font name="Cooper Black" size="100.0" />
+               </font>
+            </Text>
+            <Text fill="#ffd652" layoutX="882.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E">
+               <font>
+                  <Font name="Cooper Black" size="100.0" />
                </font>
             </Text>
             <ImageView fitHeight="53.0" fitWidth="102.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/xoTopIcon.png" />
+                  <Image url="@images/xo.png" />
                </image>
             </ImageView>
-            <Text fx:id="player1" fill="#fcfcfc" layoutX="102.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
+            <Text fx:id="player1Name" fill="#fcfcfc" layoutX="88.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player 1" wrappingWidth="190.3984339237213">
                <font>
                   <Font name="Cooper Black" size="40.0" />
                </font>
             </Text>
-            <Text fx:id="player2" fill="#fcfcfc" layoutX="995.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player " wrappingWidth="190.3984339237213">
+            <Text fx:id="player2Name" fill="#fcfcfc" layoutX="978.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="player 2" wrappingWidth="190.3984339237213">
                <font>
                   <Font name="Cooper Black" size="40.0" />
                </font>
             </Text>
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="977.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="978.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/playero.png" />
                </image>
             </ImageView>
-            <Text fx:id="timeAndDate" fill="WHITE" layoutX="498.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00  4/1/2024" wrappingWidth="204.603515625">
-               <font>
-                  <Font name="Berlin Sans FB" size="30.0" />
-               </font>
-            </Text>
          </children>
       </AnchorPane>
       <ImageView fx:id="exitButton" fitHeight="134.0" fitWidth="174.0" layoutX="93.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
@@ -93,16 +93,16 @@
          </image>
       </ImageView>
       <GridPane layoutX="300.0" layoutY="238.0" prefHeight="508.0" prefWidth="600.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="238.0">
-        <columnConstraints>
+         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
             <Button fx:id="button00" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;">
                <GridPane.margin>
@@ -112,36 +112,69 @@
             <Button fx:id="button01" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button02" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button10" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button11" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button12" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button20" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button21" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
             <Button fx:id="button22" mnemonicParsing="false" prefHeight="150.0" prefWidth="174.0" style="-fx-background-color: #7949D0;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="15.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin>
+            </Button>
          </children>
       </GridPane>
+      <Text fill="#fcfcfc" layoutX="93.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="score: " wrappingWidth="190.3984339237213">
+         <font>
+            <Font name="Cooper Black" size="40.0" />
+         </font>
+      </Text>
+      <Text fill="#fcfcfc" layoutX="982.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="score: " wrappingWidth="190.3984339237213">
+         <font>
+            <Font name="Cooper Black" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="scoreO" fill="#f5f5f5" layoutX="1106.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="93.39843392372131">
+         <font>
+            <Font name="Cooper Black" size="40.0" />
+         </font>
+      </Text>
+      <Text fx:id="scoreX" fill="#f5f5f5" layoutX="220.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="93.39843392372131">
+         <font>
+            <Font name="Cooper Black" size="40.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="recordBtn" fitHeight="88.0" fitWidth="123.0" layoutX="989.0" layoutY="646.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Users/slsabel/Downloads/recording%201.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

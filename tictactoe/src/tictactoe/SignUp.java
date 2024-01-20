@@ -262,7 +262,7 @@ public  class SignUp extends AnchorPane {
                             if(checkPasswords(password.getText() , confPass.getText())){
                                 System.out.println("Successful signup");
                                 // complete sign up process
-                                  signUpRequest="sinUp " + username.getText() + " " + password.getText();
+                                  signUpRequest="signUp " + username.getText() + " " + password.getText();
                                   System.out.println( signUpRequest);
                                  try {
                         serverSide = new Socket("127.0.0.1", 2000);
@@ -287,7 +287,7 @@ public  class SignUp extends AnchorPane {
                                                 @Override public void run() {
                                                     if(test==true){
                                                         
-                                                        Welcome.navScreens(new OnlineHome(s), s);
+                                                        Welcome.navScreens(new SignIn(s), s);
                                                     }else{
                                                         System.out.println("test is false");
                                                     }
@@ -295,10 +295,16 @@ public  class SignUp extends AnchorPane {
                                             });
                                             break;
                                         }
-                                        else
-                                        {
-                                            System.out.println("false");
-                                        }
+                                        else if(parts[0].equals("Existing")){
+             
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lableUser.setText(" Username already exist ");
+                                                }
+                                            });
+                                            break;
+                                    
+                                    }
                                     } catch (IOException ex) {
                                         break;
                                     }
