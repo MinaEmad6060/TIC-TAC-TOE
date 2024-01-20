@@ -54,9 +54,6 @@ public class OnlineVideoWin extends BorderPane {
         
         playerNumber.setText(SignIn.currentUser);
         
-        
-        
-
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);

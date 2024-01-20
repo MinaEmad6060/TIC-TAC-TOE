@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -25,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import static tictactoe.AvailableUsers.player2Name;
 //import static tictactoe.EmptyBoard.turn;
 
 public class BoardOnline extends AnchorPane {
@@ -72,16 +74,115 @@ public class BoardOnline extends AnchorPane {
     static int xScore = 0;
     static int oScore = 0;
     int drawCount = 0;
+    Alert drawAlert;
+    ButtonType noButtonTypeDraw;
+    ButtonType noButtonTypeInvite;
+    Alert waitingAlert;
+    Alert invitationAlert;
+    ButtonType cancelButtonType;
 
     static boolean winner = true;
     Thread thread;
 
+    public void ShowWaitingAlert(String nameee) {
+        waitingAlert = new Alert(Alert.AlertType.NONE);
+        waitingAlert.setTitle("Waiting");
+        waitingAlert.setHeaderText("");
+        waitingAlert.setContentText("Waiting...");
+        DialogPane dialogPane = waitingAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        cancelButtonType = new ButtonType("Cansel");
+        waitingAlert.getButtonTypes().addAll(cancelButtonType);
+
+        Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String cancelRequest = "cancel " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(cancelRequest);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+
+            }
+        });
+        waitingAlert.showAndWait();
+    }
+
+    public void ShowInvitationAlert(String opponentPlayer) {
+        invitationAlert = new Alert(Alert.AlertType.NONE);
+        invitationAlert.setTitle("Invitation");
+        invitationAlert.setHeaderText("");
+        invitationAlert.setContentText(opponentPlayer + " Wants to play with you");
+        DialogPane dialogPane = invitationAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 665.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        noButtonTypeInvite = new ButtonType("No");
+        ButtonType yesButtonType = new ButtonType("Yes");
+        invitationAlert.getButtonTypes().addAll(noButtonTypeInvite, yesButtonType);
+
+        Button noButton = (Button) invitationAlert.getDialogPane().lookupButton(noButtonTypeInvite);
+        noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
+        noButton.setTranslateX(-230);
+
+        Button yesButton = (Button) invitationAlert.getDialogPane().lookupButton(yesButtonType);
+        yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: green; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        yesButton.setTranslateX(-100);
+
+        yesButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                String acceptRequest = "accept " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(acceptRequest);
+                thread.stop();
+                Welcome.navScreens(new BoardOnline(stage), stage);
+            }
+        });
+        noButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+
+                String refuseRequest = "refuse " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                SignIn.sendMessageToServer.println(refuseRequest);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+
+            }
+        });
+        invitationAlert.showAndWait();
+    }
+
     public BoardOnline(Stage s) {
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Welcome.navScreens(new VideoWin(stage), stage);
+            Welcome.navScreens(new OnlineVideoWin(stage), stage);
         }));
-        
+
         anchorPane = new AnchorPane();
         imageView = new ImageView();
         text = new Text();
@@ -249,6 +350,15 @@ public class BoardOnline extends AnchorPane {
         player2Name.setWrappingWidth(190.3984339237213);
         player2Name.setFont(new Font("Cooper Black", 40.0));
 
+        if (AvailableUsers.turn == 1) {
+            //drawCount = 4;
+            player1Name.setText(SignIn.currentUser);
+            player2Name.setText(AvailableUsers.player2Name);
+        } else {
+            //drawCount = 5;
+            player1Name.setText(AvailableUsers.player2Name);
+            player2Name.setText(SignIn.currentUser);
+        }
         imageView1.setFitHeight(150.0);
         imageView1.setFitWidth(150.0);
         imageView1.setLayoutX(978.0);
@@ -264,7 +374,11 @@ public class BoardOnline extends AnchorPane {
         exitButton.setPickOnBounds(true);
         exitButton.setPreserveRatio(true);
         exitButton.setImage(new Image(getClass().getResource("images/exit.png").toExternalForm()));
-
+        exitButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                exitAlert();
+            }
+        });
         AnchorPane.setRightAnchor(gridPane, 300.0);
         AnchorPane.setTopAnchor(gridPane, 238.0);
         gridPane.setLayoutX(300.0);
@@ -307,11 +421,12 @@ public class BoardOnline extends AnchorPane {
                     System.out.println(AvailableUsers.turn);
                     EnableBoard();
                     button00.setText("x");
-                    String step = "step " +  AvailableUsers.player2Name + " " + "x.0.0";
+                    String step = "step " + AvailableUsers.player2Name + " " + "x.0.0";
                     SignIn.sendMessageToServer.println(step);
                     button00.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -324,6 +439,7 @@ public class BoardOnline extends AnchorPane {
                     button00.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -349,6 +465,7 @@ public class BoardOnline extends AnchorPane {
                     button01.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -361,6 +478,7 @@ public class BoardOnline extends AnchorPane {
                     button01.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -386,6 +504,7 @@ public class BoardOnline extends AnchorPane {
                     button02.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -398,6 +517,7 @@ public class BoardOnline extends AnchorPane {
                     button02.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -423,6 +543,7 @@ public class BoardOnline extends AnchorPane {
                     button10.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -435,6 +556,7 @@ public class BoardOnline extends AnchorPane {
                     button10.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -461,6 +583,7 @@ public class BoardOnline extends AnchorPane {
                     button11.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -473,6 +596,7 @@ public class BoardOnline extends AnchorPane {
                     button11.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -499,6 +623,7 @@ public class BoardOnline extends AnchorPane {
                     button12.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -511,6 +636,7 @@ public class BoardOnline extends AnchorPane {
                     button12.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -536,6 +662,7 @@ public class BoardOnline extends AnchorPane {
                     button20.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -548,6 +675,7 @@ public class BoardOnline extends AnchorPane {
                     button20.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -574,6 +702,7 @@ public class BoardOnline extends AnchorPane {
                     button21.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -586,6 +715,7 @@ public class BoardOnline extends AnchorPane {
                     button21.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -612,6 +742,7 @@ public class BoardOnline extends AnchorPane {
                     button22.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 2;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -624,6 +755,7 @@ public class BoardOnline extends AnchorPane {
                     button22.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                     DisableBoard();
                     AvailableUsers.turn = 1;
+                    drawCount++;
                     if (availableToCheck()) {
                         System.out.println("avaliaple to");
                         checkWinner();
@@ -742,16 +874,23 @@ public class BoardOnline extends AnchorPane {
                                 public void run() {
                                     gameBoard[row][col].setText(type);
                                     if (type.equals("x")) {
+                                        drawCount++;
                                         gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                         AvailableUsers.turn = 2;
+                                        if (checkDraw()) {
+                                            drawAlert();
+                                        }
+
                                     } else {
+                                        drawCount++;
                                         gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
                                         AvailableUsers.turn = 1;
+                                        if (checkDraw()) {
+                                            drawAlert();
+                                        }
                                     }
                                     EnableBoard();
                                     System.out.println("row col printed");
-                                    gameBoard[row][col].setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
-                                    
                                 }
                             });
                             //break;
@@ -765,14 +904,113 @@ public class BoardOnline extends AnchorPane {
                             int col2 = Integer.parseInt(location[3]);
                             int row3 = Integer.parseInt(location[4]);
                             int col3 = Integer.parseInt(location[5]);
-                             Platform.runLater(new Runnable() {
+                            Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     hilightWin(row1, col1, row2, col2, row3, col3);
                                     Welcome.navScreens(new OnlineVideoWin(s), s);
-                                }});
-                             break;
-                        } else {
+                                }
+                            });
+                            break;
+                        } else if (parts[0].equals("tieNo")) {
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    drawAlert.setResult(noButtonTypeDraw);
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+                                }
+                            });
+                            //Welcome.navScreens(new AvailableUsers(stage), stage);
+                            xScore = 0;
+                            oScore = 0;
+                            break;
+                        } else if (parts[0].equals("tieYes")) {
+
+                            System.out.println("enterd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before close");
+                                    drawAlert.setResult(noButtonTypeDraw);
+                                    System.out.println("after close");
+
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            ShowInvitationAlert("");
+                                            System.out.println("after invitationnn insidee ");
+
+                                        }
+                                    });
+
+                                    System.out.println("after invitationnn");
+
+                                }
+                            });
+                            System.out.println("after invitationn later");
+                            //break;
+                        } else if (parts[0].equals("cancel")) {
+
+                            System.out.println("enterddddd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before cansellllll");
+                                    invitationAlert.setResult(noButtonTypeInvite);
+                                    System.out.println("after canselllllllll");
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr");
+                            break;
+                        } else if (parts[0].equals("refuse")) {
+
+                            System.out.println("enterddddd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before ref");
+                                    waitingAlert.setResult(cancelButtonType);
+                                    System.out.println("after reff");
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr ref");
+                            break;
+                        } else if (parts[0].equals("accept")) {
+
+                            System.out.println("enterddddd");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before ref");
+                                    waitingAlert.setResult(cancelButtonType);
+                                    System.out.println("after reff");
+                                    Welcome.navScreens(new BoardOnline(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr");
+                            break;
+                        }else if (parts[0].equals("exit")) {
+
+                            System.out.println("enterdddddxxxxx");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("before refxxx");
+                                    Welcome.navScreens(new AvailableUsers(stage), stage);
+
+                                }
+                            });
+                            System.out.println("enter b3d runlaterrrr");
+                            break;
+                        }
+                        else {
                             System.out.println("false");
                             //break;
                         }
@@ -781,8 +1019,9 @@ public class BoardOnline extends AnchorPane {
                     }
                 }
             }
+
         };
-                thread.start();
+        thread.start();
 
     }
 
@@ -858,10 +1097,13 @@ public class BoardOnline extends AnchorPane {
             DisableBoard();
             timeline.play();
         } else {
-            drawCount++;
+            //drawCount++;
+            System.out.println("draaaaaaaaaaaaaaaaaaaaaaaaw  " + drawCount);
         }
         if (checkWinnerRes == 1) {
+            System.out.println("rwaw alert method call");
             drawAlert();
+            System.out.println("after   rwaw alert method call");
         }
     }
 
@@ -961,13 +1203,18 @@ public class BoardOnline extends AnchorPane {
         if (result == 2) {
             return result;
         }
-
-        if (result != 2) {
+        if (checkDraw()) {
+            System.out.println("checkdrawmetoooooooood");
+            result = 1;
+        }
+        /*if (result != 2) {
             drawCount++;
+            System.out.println("draaaaaaaaaaaaaaaaaaaaaaaaw++++++++   " + drawCount);
             if (checkDraw()) {
+                System.out.println("checkdrawmetoooooooood");
                 result = 1;
             }
-        }
+        }*/
 
         return result;
 
@@ -998,7 +1245,6 @@ public class BoardOnline extends AnchorPane {
             String btn3 = Integer.toString(row3) + "." + Integer.toString(col3);
             String winReq = "win " + AvailableUsers.player2Name + " " + btn1 + "." + btn2 + "." + btn3;
             SignIn.sendMessageToServer.println(winReq);*/
-
         }
     }
 
@@ -1023,11 +1269,11 @@ public class BoardOnline extends AnchorPane {
             AvailableUsers.turn = 1;
 
         }
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle("Game Tie");
-        alert.setHeaderText("");
-        alert.setContentText("Game Tie, Do you want to play again?");
-        DialogPane dialogPane = alert.getDialogPane();
+        drawAlert = new Alert(Alert.AlertType.NONE);
+        drawAlert.setTitle("Game Tie");
+        drawAlert.setHeaderText("");
+        drawAlert.setContentText("Game Tie, Do you want to play again?");
+        DialogPane dialogPane = drawAlert.getDialogPane();
         dialogPane.setStyle("-fx-background-color: white;");
         dialogPane.getStyleClass().remove("alert");
         dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
@@ -1038,17 +1284,17 @@ public class BoardOnline extends AnchorPane {
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
 
-        ButtonType noButtonType = new ButtonType("No");
+        noButtonTypeDraw = new ButtonType("No");
         ButtonType yesButtonType = new ButtonType("Yes");
-        alert.getButtonTypes().addAll(noButtonType, yesButtonType);
+        drawAlert.getButtonTypes().addAll(noButtonTypeDraw, yesButtonType);
 
-        Button noButton = (Button) alert.getDialogPane().lookupButton(noButtonType);
+        Button noButton = (Button) drawAlert.getDialogPane().lookupButton(noButtonTypeDraw);
         noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: red; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
         noButton.setTranslateX(-230);
 
-        Button yesButton = (Button) alert.getDialogPane().lookupButton(yesButtonType);
+        Button yesButton = (Button) drawAlert.getDialogPane().lookupButton(yesButtonType);
         yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: green; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-pref-height: 50;");
@@ -1057,18 +1303,35 @@ public class BoardOnline extends AnchorPane {
         yesButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                Welcome.navScreens(new EmptyBoard(stage), stage);
+                //drawAlert.setResult(noButtonType);
+                //ShowWaitingAlert("");
+                System.out.println("after waiting alert");
+
+                SignIn.sendMessageToServer.println("tieYes " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        ShowWaitingAlert("");
+                        System.out.println("after send tie invitationn");
+
+                    }
+                });
+                System.out.println("after send tie invitationnnnnnnnnnn");
             }
         });
         noButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                Welcome.navScreens(new Modes(stage), stage);
+                SignIn.sendMessageToServer.println("tieNo " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
                 xScore = 0;
                 oScore = 0;
             }
         });
-        alert.showAndWait();
+        drawAlert.showAndWait();
     }
 
     public void exitAlert() {
@@ -1106,11 +1369,15 @@ public class BoardOnline extends AnchorPane {
         yesButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                Welcome.navScreens(new Modes(stage), stage);
+                SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+                thread.stop();
+                Welcome.navScreens(new AvailableUsers(stage), stage);
+                
                 xScore = 0;
                 oScore = 0;
             }
         });
         alert.showAndWait();
     }
+
 }

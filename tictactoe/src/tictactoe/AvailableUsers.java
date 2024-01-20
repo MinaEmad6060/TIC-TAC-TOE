@@ -34,6 +34,7 @@ public class AvailableUsers extends BorderPane {
     static String player2Name;
     static boolean running = true;
     static Thread testThread;
+    ButtonType noButtonType;
 
     public void ShowWaitingAlert(String nameee) {
         waitingAlert = new Alert(Alert.AlertType.NONE);
@@ -87,7 +88,7 @@ public class AvailableUsers extends BorderPane {
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
 
-        ButtonType noButtonType = new ButtonType("Refuse");
+        noButtonType = new ButtonType("Refuse");
         ButtonType yesButtonType = new ButtonType("Accept");
         invitationAlert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
@@ -325,7 +326,7 @@ public class AvailableUsers extends BorderPane {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    invitationAlert.close();
+                                    invitationAlert.setResult(noButtonType);
                                 }
                             });
                             break;

@@ -143,7 +143,8 @@ class ClientHandler extends Thread {
                 } else if (parts[0].equals("cancel")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
-                    sendMessageToClient(playerName, playerTargetName, "cansel");
+                    sendMessageToClient(playerName, playerTargetName, "cancel");
+                    System.out.println("test cansel from server side");
                 } else if (parts[0].equals("step")) {
                     playerTargetName = parts[1];
                     step = parts[2];
@@ -152,6 +153,22 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
                     sendStepToClient(playerTargetName, "win", winBtns);
+                } else if (parts[0].equals("tieNo")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, parts[0]);
+                }
+                else if (parts[0].equals("tieYes")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    System.out.println("tie yes inside");
+                    sendMessageToClient(playerName, playerTargetName, parts[0]);
+                    System.out.println("afterrrrrrr tie yes inside");
+                }
+                else if (parts[0].equals("exit")){
+                    playerName = parts[1];
+                    playerTargetName = parts[2];
+                    sendMessageToClient(playerName, playerTargetName, parts[0]);
                 }
 
                 /*if (message.equalsIgnoreCase("Close")) {
