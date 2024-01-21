@@ -145,7 +145,8 @@ public static boolean isUserValid(String playerName , String playerPassword) thr
             ps.setString(1, playerName);
             ps.setString(2, newRecord);
             ps.executeUpdate();
-        
+            ps.close();
+            con.close(); 
     }
 
 

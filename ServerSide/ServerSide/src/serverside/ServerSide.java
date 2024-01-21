@@ -91,6 +91,7 @@ class ClientHandler extends Thread {
                 String playerTargetName = null;
                 String step = null;
                 String winBtns = null;
+                String record = null;
 
                 if (parts[0].equals("information")) {
                     getStatistics();
@@ -120,12 +121,20 @@ class ClientHandler extends Thread {
                     String newString = getHistory(username);
                     System.out.println(newString);
                     printedMessageToClient.println(newString);
-                }
-                else if (parts[0].equals("record")){
+                } else if (parts[0].equals("record")) {
+                    //"record curUser player1-player2 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22"
+                    String[] rec = message.split(" ", 3);
                     System.out.println(message);
-                    DataAccessObject.addRecord("mahmoud", "mahmoud-mahmoud 13/1/2024 01:30.X00,O01,X10,O11,X20");
+                    username = rec[1];
+                    record = rec[2];
+                    if (record.endsWith(",")) {
+                        //Remove the last (comma)
+                        record = record.substring(0, record.length() - 1);
+                    }
+                    System.out.println(username);
+                    System.out.println(record);
+                    DataAccessObject.addRecord(username, record);
                 }
-                
                 else if (parts[0].equals("Logout")) {
                     username = parts[1];
                     DataAccessObject.updateOnlineState(username, false);
@@ -154,7 +163,7 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[1];
                     step = parts[2];
                     sendStepToClient(playerTargetName, "step", step);
-                } else if (parts[0].equals("win")){
+                } else if (parts[0].equals("win")) {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
                     sendStepToClient(playerTargetName, "win", winBtns);
@@ -204,7 +213,7 @@ class ClientHandler extends Thread {
                 printedMessageToClient.println("confirm " + username);
                 DataAccessObject.updateOnlineState(username, true);
                 System.out.println("con");
-                name=username;
+                name = username;
                 ClientHandler.clientsVector.add(ServerSide.clientHandler);
             } else {
                 printedMessageToClient.println("password " + username);
