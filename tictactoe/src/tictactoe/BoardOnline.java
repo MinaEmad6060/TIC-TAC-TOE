@@ -790,6 +790,7 @@ public class BoardOnline extends AnchorPane {
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
                         if (parts[0].equals("step")) {
+                            avilableToRecord = false;
                             String step = parts[1];
                             String[] location = step.split("\\.");
                             System.out.println(location[0] + "  " + location[1] + "  " + location[2]);

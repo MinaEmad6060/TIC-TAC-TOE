@@ -463,8 +463,13 @@ public class CheckVar extends AnchorPane {
     void runMoves() {
         for (int i = 0; i < steps.length; i++) {
             String move = steps[i];
-            Platform.runLater(() -> makeMove(getButtonByMove(move), move.contains("X") ? "X" : "O"));
-
+            String player = move.contains("X") ? "X" : "O";
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    makeMove(getButtonByMove(move), player);
+                }
+            });
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -577,7 +582,7 @@ public class CheckVar extends AnchorPane {
 
     public short checkDiagonals() {
         short result = 0;
-        System.out.println("check daigonal");
+
         if (gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) && !gameBoard[0][0].getText().equals(" ")) {
             result = 2;
             if (gameBoard[0][0].getText().equals("X")) {
@@ -597,7 +602,6 @@ public class CheckVar extends AnchorPane {
 
     public short checkOnGame() {
         short result = 0;
-        System.out.println("checkongame");
 
         result = checkRows();
         if (result == 2) {
@@ -631,6 +635,7 @@ public class CheckVar extends AnchorPane {
             gameBoard[row3][col3].setOpacity(1);
         }
     }
+
     public void initBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
