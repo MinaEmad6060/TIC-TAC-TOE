@@ -5,6 +5,7 @@
         <group>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/OnlineVideoWin.java</file>
 >>>>>>> server-online
@@ -18,6 +19,15 @@
 =======
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
 >>>>>>> server-online
+=======
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/OnlineHome.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/itemLayoutBase.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/ItemLayoutForHistory.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/HistoryScreen.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/Tictactoe.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/itemLayoutForAvailable.java</file>
+            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/AvailablePlayers.java</file>
+>>>>>>> login_online
         </group>
     </open-files>
 </project-private>
