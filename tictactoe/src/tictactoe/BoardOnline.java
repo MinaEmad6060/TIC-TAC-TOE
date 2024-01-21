@@ -1,9 +1,6 @@
 package tictactoe;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.Socket;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -65,7 +62,7 @@ public class BoardOnline extends AnchorPane {
     protected final Button button22;
     protected final Text text8;
     protected final Text text9;
-    protected static  Text scoreO;
+    protected static Text scoreO;
     protected static Text scoreX;
     protected final ImageView recordBtn;
     Button[][] gameBoard = new Button[3][3];
@@ -80,6 +77,7 @@ public class BoardOnline extends AnchorPane {
     Alert waitingAlert;
     Alert invitationAlert;
     ButtonType cancelButtonType;
+    static boolean playerXX = false;
 
     static boolean winner = true;
     Thread thread;
@@ -180,6 +178,7 @@ public class BoardOnline extends AnchorPane {
     public BoardOnline(Stage s) {
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            thread.stop();
             Welcome.navScreens(new OnlineVideoWin(stage), stage);
         }));
 
@@ -353,6 +352,7 @@ public class BoardOnline extends AnchorPane {
         if (AvailableUsers.turn == 1) {
             player1Name.setText(SignIn.currentUser);
             player2Name.setText(AvailableUsers.player2Name);
+            playerXX = true;
         } else {
             DisableBoard();
             player1Name.setText(AvailableUsers.player2Name);
@@ -787,7 +787,7 @@ public class BoardOnline extends AnchorPane {
         scoreO.setLayoutY(289.0);
         scoreO.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scoreO.setStrokeWidth(0.0);
-        scoreO.setText(oScore+"");
+        scoreO.setText(oScore + "");
         scoreO.setWrappingWidth(93.39843392372131);
         scoreO.setFont(new Font("Cooper Black", 40.0));
 
@@ -796,7 +796,7 @@ public class BoardOnline extends AnchorPane {
         scoreX.setLayoutY(290.0);
         scoreX.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
         scoreX.setStrokeWidth(0.0);
-        scoreX.setText(xScore+"");
+        scoreX.setText(xScore + "");
         scoreX.setWrappingWidth(93.39843392372131);
         scoreX.setFont(new Font("Cooper Black", 40.0));
 
@@ -860,7 +860,7 @@ public class BoardOnline extends AnchorPane {
                         System.out.println("message");
                         String[] parts = msg.split(" ");
                         System.out.println(parts[0] + "testttttttttttttttt");
-                        if (parts[0].equals("step")) {
+                        if (parts[0].contains("tep")) {
                             String step = parts[1];
                             String[] location = step.split("\\.");
                             System.out.println(location[0] + "  " + location[1] + "  " + location[2]);
@@ -907,7 +907,7 @@ public class BoardOnline extends AnchorPane {
                                 @Override
                                 public void run() {
                                     hilightWin(row1, col1, row2, col2, row3, col3);
-                                    Welcome.navScreens(new OnlineVideoWin(s), s);
+                                    timeline.play();
                                 }
                             });
                             break;
@@ -995,7 +995,7 @@ public class BoardOnline extends AnchorPane {
                             });
                             System.out.println("enter b3d runlaterrrr");
                             break;
-                        } else if (parts[0].equals("exit")) {
+                        } else if (parts[0].contains("xit")) {
 
                             System.out.println("enterdddddxxxxx");
                             Platform.runLater(new Runnable() {
@@ -1008,33 +1008,13 @@ public class BoardOnline extends AnchorPane {
                             });
                             System.out.println("enter b3d runlaterrrr");
                             break;
-                        } else if (parts[0].equals("xScore")) {
-
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String xScore = parts[1];
-                                    scoreX.setText(xScore);
-                                }
-                            });
-                            break;
-                        } else if (parts[0].equals("oScore")) {
-
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String oScore = parts[1];
-                                    scoreO.setText(oScore);
-                                }
-                            });
-                            break;
-                        } 
-                        else {
+                        } else {
                             System.out.println("false");
                             //break;
                         }
                     } catch (IOException ex) {
-                        //break;
+                        ex.printStackTrace();
+                        System.out.println("test catch");
                     }
                 }
             }
@@ -1278,7 +1258,7 @@ public class BoardOnline extends AnchorPane {
         } else {
             oScore++;
             scoreO.setText("" + oScore);
-            SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + oScore + "");
+            //SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + oScore + "");
             AvailableUsers.turn = 2;
         }
     }
@@ -1391,10 +1371,14 @@ public class BoardOnline extends AnchorPane {
         yesButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
+                if (playerXX) {
+                    SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name + " " + xScore + " " + oScore);
+                } else {
+                    SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name + " " + oScore + " " + xScore);
+                }
+                //SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
                 thread.stop();
                 Welcome.navScreens(new AvailableUsers(stage), stage);
-
                 xScore = 0;
                 oScore = 0;
             }

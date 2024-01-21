@@ -3,31 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/OnlineVideoWin.java</file>
->>>>>>> server-online
+            <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/SignIn.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/BoardOnline.java</file>
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/AvailableUsers.java</file>
-<<<<<<< HEAD
-=======
-            <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/Tictactoe.java</file>
-            <file>file:/D:/0.ITI/JAVA/0.project/XO%20game/tictactoe/src/tictactoe/AvailableUsers.java</file>
->>>>>>> d60e59b3fcae96c404c68513e5066a027f5d1a80
-=======
             <file>file:/E:/TicTacToe/TIC-TAC-TOE/tictactoe/src/tictactoe/EmptyBoard.java</file>
->>>>>>> server-online
-=======
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/OnlineHome.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/itemLayoutBase.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/ItemLayoutForHistory.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/HistoryScreen.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/Tictactoe.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/itemLayoutForAvailable.java</file>
-            <file>file:/F:/ITI/Java/java_toe/TIC-TAC-TOE/tictactoe/src/tictactoe/AvailablePlayers.java</file>
->>>>>>> login_online
         </group>
     </open-files>
 </project-private>

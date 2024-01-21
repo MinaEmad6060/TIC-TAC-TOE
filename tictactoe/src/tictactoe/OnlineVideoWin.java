@@ -47,8 +47,6 @@ public class OnlineVideoWin extends BorderPane {
     ButtonType noButtonTypeInvite;
     ButtonType cancelButtonType;
     Stage stage;
-    //static String playerXScore = BoardOnline.xScore+"";
-    //static String playerOScore = BoardOnline.oScore+"";
 
     public OnlineVideoWin(Stage s) {
 
@@ -66,6 +64,7 @@ public class OnlineVideoWin extends BorderPane {
         playerNumber = new Label();
         xoImage = new ImageView();
         stage = s;
+        String congrats = "";
 
         playerNumber.setText(SignIn.currentUser);
 
@@ -80,15 +79,21 @@ public class OnlineVideoWin extends BorderPane {
         if (!BoardOnline.winner) {
             path = getClass().getResource("/tictactoe/videos/looser.mp4").toExternalForm();
             BoardOnline.winner = true;
+            congrats = "      Good Luck!";
+            winIconImage.setImage(new Image(getClass().getResource("/tictactoe/images/loser.png").toExternalForm()));
+
         } else {
             path = getClass().getResource("/tictactoe/videos/winner.mp4").toExternalForm();
             BoardOnline.winner = true;
             if (AvailableUsers.turn == 1) {
-                SignIn.sendMessageToServer.println("xScore " + AvailableUsers.player2Name + " " + BoardOnline.xScore + "");
+                SignIn.sendMessageToServer.println("xScore " + AvailableUsers.player2Name + " " + BoardOnline.xScore + " " + SignIn.currentUser);
             } else {
-                SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + BoardOnline.oScore + "");
+                SignIn.sendMessageToServer.println("oScore " + AvailableUsers.player2Name + " " + BoardOnline.oScore + " " + SignIn.currentUser);
 
             }
+            congrats = "Congratulations!";
+            winIconImage.setImage(new Image(getClass().getResource("/tictactoe/images/winnerIcon.png").toExternalForm()));
+
         }
 
         Media media = new Media(path);
@@ -130,13 +135,12 @@ public class OnlineVideoWin extends BorderPane {
             public void handle(ActionEvent event) {
                 mediaPlayer.stop();
                 SignIn.sendMessageToServer.println("playAgain " + SignIn.currentUser + " " + AvailableUsers.player2Name);
-
+                System.out.println("dsdkjhgf");
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         ShowWaitingAlert("");
                         System.out.println("after send tie invitationn");
-
                     }
                 });
             }
@@ -172,7 +176,7 @@ public class OnlineVideoWin extends BorderPane {
         GridPane.setColumnIndex(congratsLabel, 1);
         GridPane.setValignment(congratsLabel, javafx.geometry.VPos.CENTER);
         congratsLabel.setAlignment(javafx.geometry.Pos.CENTER);
-        congratsLabel.setText("Congratulations!");
+        congratsLabel.setText(congrats);
         congratsLabel.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         congratsLabel.setFont(new Font("Cooper Black", 100.0));
         congratsLabel.setPadding(new Insets(25.0, 0.0, 0.0, 130.0));
@@ -187,7 +191,6 @@ public class OnlineVideoWin extends BorderPane {
         winIconImage.setFitWidth(129.0);
         winIconImage.setPickOnBounds(true);
         winIconImage.setPreserveRatio(true);
-        winIconImage.setImage(new Image(getClass().getResource("/tictactoe/images/winnerIcon.png").toExternalForm()));
 
         playerNumber.setTextFill(javafx.scene.paint.Color.WHITE);
         playerNumber.setFont(new Font("Cooper Black", 35.0));
@@ -233,8 +236,7 @@ public class OnlineVideoWin extends BorderPane {
 
                         System.out.println("message");
                         System.out.println(msg);
-                        String[] parts = {"", "", "", ""};
-                        parts = msg.split(" ");
+                        String[] parts = msg.split(" ");
 
                         System.out.println(parts[0] + "tesssssss");
                         if (parts[0].equals("exit")) {
@@ -247,7 +249,7 @@ public class OnlineVideoWin extends BorderPane {
                             });
                             break;
 
-                        } else if (parts[0].equals("playAgain")) {
+                        } else if (parts[0].contains("layAgain")) {
                             System.out.println("part 0 is " + parts[0]);
                             System.out.println("part 1 is " + parts[1]);
                             System.out.println("part 2 is " + parts[2]);
@@ -272,7 +274,7 @@ public class OnlineVideoWin extends BorderPane {
                             System.out.println("test cancel after run later");
                             break;
 
-                        } else if (parts[0].equals("no")) {
+                        } else if (parts[0].contains("no")) {
 
                             System.out.println("enterddddd");
                             Platform.runLater(new Runnable() {
@@ -287,7 +289,7 @@ public class OnlineVideoWin extends BorderPane {
                             });
                             System.out.println("enter b3d runlaterrrr ref");
                             break;
-                        } else if (parts[0].equals("yes")) {
+                        } else if (parts[0].contains("yes")) {
 
                             System.out.println("enterddddd");
                             Platform.runLater(new Runnable() {
@@ -412,7 +414,7 @@ public class OnlineVideoWin extends BorderPane {
         yesButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                String acceptRequest = "yes " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                String acceptRequest = "yyes " + SignIn.currentUser + " " + AvailableUsers.player2Name;
                 SignIn.sendMessageToServer.println(acceptRequest);
                 thread.stop();
                 Welcome.navScreens(new BoardOnline(stage), stage);
@@ -422,7 +424,7 @@ public class OnlineVideoWin extends BorderPane {
             @Override
             public void handle(Event event) {
 
-                String refuseRequest = "no " + SignIn.currentUser + " " + AvailableUsers.player2Name;
+                String refuseRequest = "nno " + SignIn.currentUser + " " + AvailableUsers.player2Name;
                 SignIn.sendMessageToServer.println(refuseRequest);
                 thread.stop();
                 Welcome.navScreens(new AvailableUsers(stage), stage);
