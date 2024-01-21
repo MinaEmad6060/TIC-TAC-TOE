@@ -73,7 +73,6 @@ class ClientHandler extends Thread {
     Socket socket;
 
     public ClientHandler(Socket clientSocket, String userName) throws IOException {
-        //name = userName;
         socket = clientSocket;
         ServerSide.clientHandler = this;
         listenFromClient = new DataInputStream(socket.getInputStream());
@@ -93,6 +92,9 @@ class ClientHandler extends Thread {
                 String playerTargetName = null;
                 String step = null;
                 String winBtns = null;
+
+                String record = null;
+
                 String oScore = null;
                 String xScore = null;
 
@@ -124,10 +126,24 @@ class ClientHandler extends Thread {
                     String newString = getHistory(username);
                     System.out.println(newString);
                     printedMessageToClient.println(newString);
-                } else if (parts[0].equals("Logout")) {
+                } else if (parts[0].equals("record")) {
+                    //"record curUser player1-player2 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22"
+                    String[] rec = message.split(" ", 3);
+                    System.out.println(message);
+                    username = rec[1];
+                    record = rec[2];
+                    if (record.endsWith(",")) {
+                        //Remove the last (comma)
+                        record = record.substring(0, record.length() - 1);
+                    }
+                    System.out.println(username);
+                    System.out.println(record);
+                    DataAccessObject.addRecord(username, record);
+                } 
+                else if (parts[0].equals("Logout")) {
                     username = parts[1];
+                    removeClient(username);
                     DataAccessObject.updateOnlineState(username, false);
-                    //DataAccessObject.updateAvailability(username,false);
                 } else if (parts[0].equals("Available")) {
                     username = parts[1];
                     DataAccessObject.updateAvailability(username, true);
@@ -153,78 +169,103 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[1];
                     step = parts[2];
                     sendStepToClient(playerTargetName, "step", step);
-                } else if (parts[0].equals("win")){
+                } else if (parts[0].equals("win")) {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
                     sendStepToClient(playerTargetName, "win", winBtns);
-                } else if (parts[0].equals("tieNo")){
+                } else if (parts[0].equals("tieNo")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, parts[0]);
-                }
-                else if (parts[0].equals("tieYes")){
+                    if (parts[3].equals("record")) {
+                        String[] rec = message.split(" ", 6);
+                        System.out.println(message);
+                        username = rec[4];
+
+                        record = rec[5];
+
+                        if (record.endsWith(",")) {
+                            //Remove the last (comma)
+                            record = record.substring(0, record.length() - 1);
+                        }
+                        System.out.println(username);
+                        System.out.println(record);
+                        DataAccessObject.addRecord(username, record);
+
+                    }
+                } else if (parts[0].equals("tieYes")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     System.out.println("tie yes inside");
                     sendMessageToClient(playerName, playerTargetName, parts[0]);
                     System.out.println("afterrrrrrr tie yes inside");
-                }
-                else if (parts[0].equals("exit")){
+                    if (parts[3].equals("record")) {
+                        String[] rec = message.split(" ", 6);
+                        System.out.println(message);
+                        username = rec[4];
+
+                        record = rec[5];
+
+                        if (record.endsWith(",")) {
+                            record = record.substring(0, record.length() - 1);
+                        }
+                        System.out.println(username);
+                        System.out.println(record);
+                        DataAccessObject.addRecord(username, record);
+
+                    }
+
+                } else if (parts[0].equals("exit")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, "exit");
-                }
-                else if (parts[0].equals("playAgain")){
+                } else if (parts[0].equals("playAgain")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, "playAgain");
-                }
-                else if (parts[0].equals("nno")){
+                } else if (parts[0].equals("nno")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     System.out.println("part 0 is " + parts[0]);
                     sendMessageToClient(playerName, playerTargetName, "nno");
-                }
-                else if (parts[0].equals("yyes")){
+                } else if (parts[0].equals("yyes")) {
                     playerName = parts[1];
                     playerTargetName = parts[2];
                     System.out.println("part 0 is " + parts[0]);
                     sendMessageToClient(playerName, playerTargetName, "yyes");
-                }
-                else if (parts[0].equals("xScore")){
+                } else if (parts[0].equals("xScore")) {
                     playerTargetName = parts[1];
                     xScore = parts[2];
                     playerName = parts[3];
                     int score1 = 0;
                     sendStepToClient(playerTargetName, "xScore", xScore);
                     System.out.println("test score ");
-                    try{
-                     score1 = DataAccessObject.getScore(playerName);
+                    try {
+                        score1 = DataAccessObject.getScore(playerName);
                         System.out.println("score equaal " + score1);
-                      System.out.println("before update scoree");
-                      score1++;
-                     int res = DataAccessObject.setScore(playerName, score1);
+                        System.out.println("before update scoree");
+                        score1++;
+                        int res = DataAccessObject.setScore(playerName, score1);
                         System.out.println("after update scoree " + res);
-                    }catch(SQLException ex){
+                    } catch (SQLException ex) {
                         System.out.println("exxxxx");
                         ex.printStackTrace();
                     }
-                }
-                else if (parts[0].equals("oScore")){
+                } else if (parts[0].equals("oScore")) {
                     playerTargetName = parts[1];
                     oScore = parts[2];
                     playerName = parts[3];
                     int score1 = 0;
                     sendStepToClient(playerTargetName, "oScore", oScore);
                     System.out.println("test score ");
-                    try{
-                     score1 = DataAccessObject.getScore(playerName);
+                    try {
+                        score1 = DataAccessObject.getScore(playerName);
                         System.out.println("score equaal " + score1);
-                      System.out.println("before update scoree");
-                      score1++;
-                     int res = DataAccessObject.setScore(playerName, score1);
+                        System.out.println("before update scoree");
+                        score1++;
+                        int res = DataAccessObject.setScore(playerName, score1);
                         System.out.println("after update scoree " + res);
-                    }catch(SQLException ex){
+                    } catch (SQLException ex) {
                         System.out.println("exxxxx");
                         ex.printStackTrace();
                     }
@@ -235,18 +276,6 @@ class ClientHandler extends Thread {
 
                 }
 
-                /*if (message.equalsIgnoreCase("Close")) {
-                    clientsVector.remove(clientsVector.size() - 1);
-                    System.out.println(clientsVector.size());
-                    if (clientsVector.size() == 0) {
-                        try {
-                            ServerSide.serverSocket.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                }*/
             } catch (IOException ex) {
                 ex.getStackTrace();
             } catch (SQLException ex) {
@@ -259,10 +288,10 @@ class ClientHandler extends Thread {
     public String displayAvailableList() throws SQLException {
         Player player = new Player();
         String available = "";
-        
+
         ResultSet resultSet = DataAccessObject.getAvailableList();
         List<String> availableList = new ArrayList<>();
-        
+
         while (resultSet.next()) {
 
             String availablePlayers = resultSet.getString("Name") + ":" + resultSet.getString("score");
@@ -277,24 +306,8 @@ class ClientHandler extends Thread {
 
         return available;
     }
+
     
-    
-    /*public String displayAvailableList() throws SQLException {
-        Player player = new Player();
-        String available = "";
-
-        List<String> availableList = DataAccessObject.getAvailableList();
-
-        for (int i = 0; i < availableList.size(); i++) {
-            available = available + availableList.get(i) + " ";
-            System.out.println(available);
-
-        }
-
-        return available;
-    }*/
-    
-
     public void validateLogin(String username, String password) throws SQLException {
         boolean isExist = DataAccessObject.isUserExist(username);
         if (isExist) {
@@ -303,7 +316,7 @@ class ClientHandler extends Thread {
                 printedMessageToClient.println("confirm " + username);
                 DataAccessObject.updateOnlineState(username, true);
                 System.out.println("con");
-                name=username;
+                name = username;
                 ClientHandler.clientsVector.add(ServerSide.clientHandler);
             } else {
                 printedMessageToClient.println("password " + username);
@@ -317,8 +330,6 @@ class ClientHandler extends Thread {
     public void signUp(String userName, String password) throws SQLException {
         DataAccessObject.addUser(userName, password);
         System.out.println("user added");
-        // DataAccessObject.addPassword(password);
-        //System.out.println("password added");
         printedMessageToClient.println("confirm");
     }
 
@@ -368,6 +379,16 @@ class ClientHandler extends Thread {
         }
     }
 
+    private void removeClient(String username) {
+        for (ClientHandler client : clientsVector) {
+            if (client.name.equals(username)) {
+                clientsVector.remove(client);
+            } else {
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
+    
     private void sendStepToClient(String targetUsername, String message, String step) {
         System.out.println("call stepppp");
         for (ClientHandler client : clientsVector) {

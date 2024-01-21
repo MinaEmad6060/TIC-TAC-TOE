@@ -119,19 +119,30 @@ public class DataAccessObject {
 
     }
 
-    public static int addRecord(Player player) throws SQLException {
-        int result = 0;
-        DriverManager.registerDriver(new ClientDriver());
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
-        PreparedStatement ps = con.prepareStatement("INSERT INTO history VALUES (?, ?)");
-        ps.setString(1, player.getPlayerName());
-        ps.setString(2, player.getRecord());
-        result = ps.executeUpdate();
-
-        ps.close();
-        con.close();
-
-        return result;
+//    public static int addRecord(Player player) throws SQLException {
+//        int result = 0;
+//        DriverManager.registerDriver(new ClientDriver());
+//        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+//        PreparedStatement ps = con.prepareStatement("INSERT INTO history VALUES (?, ?)");
+//        ps.setString(1, player.getPlayerName());
+//        ps.setString(2, player.getRecord());
+//        result = ps.executeUpdate();
+//
+//        ps.close();
+//        con.close();
+//
+//        return result;
+//    }
+    
+    
+    public static void addRecord(String playerName, String newRecord) throws SQLException {
+         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Player", "root", "root");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO PLAYERRECORD (NAME, RECORD) VALUES (?, ?)");
+            ps.setString(1, playerName);
+            ps.setString(2, newRecord);
+            ps.executeUpdate();
+            ps.close();
+            con.close(); 
     }
 
 

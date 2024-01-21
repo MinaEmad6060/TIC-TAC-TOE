@@ -59,10 +59,13 @@ public class CheckVar extends AnchorPane {
     String[] steps;
     Timeline timeline;
     Thread moveThread;
+    Button[][] gameBoard = new Button[3][3];
+    boolean flag = true;
 
     //mahmoud-mina 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22
     public CheckVar(Stage s) {
         this.steps = new String[]{"", "", "", "", "", "", "", "", ""};
+
         StepsString = HistoryScreen.stepsString;
         player1Name = HistoryScreen.player1;
         player2Name = HistoryScreen.player2;
@@ -100,7 +103,16 @@ public class CheckVar extends AnchorPane {
         button20 = new Button();
         button21 = new Button();
         button22 = new Button();
-
+        gameBoard[0][0] = button00;
+        gameBoard[0][1] = button01;
+        gameBoard[0][2] = button02;
+        gameBoard[1][0] = button10;
+        gameBoard[1][1] = button11;
+        gameBoard[1][2] = button12;
+        gameBoard[2][0] = button20;
+        gameBoard[2][1] = button21;
+        gameBoard[2][2] = button22;
+        initBoard();
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -432,11 +444,8 @@ public class CheckVar extends AnchorPane {
 //                }
 //            }
 //        }
-
-
 //        moveThread = new Thread(this::runMoves);
 //        moveThread.start();
-
         moveThread = new Thread(() -> {
             Timeline timeline = new Timeline();
 
@@ -449,14 +458,18 @@ public class CheckVar extends AnchorPane {
             timeline.play();
         });
         moveThread.start();
-
     }
 
     void runMoves() {
         for (int i = 0; i < steps.length; i++) {
             String move = steps[i];
-            Platform.runLater(() -> makeMove(getButtonByMove(move), move.contains("X") ? "X" : "O"));
-
+            String player = move.contains("X") ? "X" : "O";
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    makeMove(getButtonByMove(move), player);
+                }
+            });
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -470,9 +483,11 @@ public class CheckVar extends AnchorPane {
             if (move.equals("X")) {
                 button.setText("X");
                 button.setStyle("-fx-background-image: url('tictactoe/images/x.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                checkWinner();
             } else if (move.equals("O")) {
                 button.setText("O");
                 button.setStyle("-fx-background-image: url('tictactoe/images/o.png'); -fx-background-size: cover; -fx-text-fill: transparent;");
+                checkWinner();
             }
         });
     }
@@ -519,6 +534,115 @@ public class CheckVar extends AnchorPane {
                 return null;
         }
 
+    }
+
+    public void checkWinner() {
+        short checkWinnerRes;
+        checkWinnerRes = checkOnGame();
+
+    }
+
+    public short checkRows() {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+
+            if (gameBoard[i][j].getText().equals(gameBoard[i][j + 1].getText()) && gameBoard[i][j + 1].getText().equals(gameBoard[i][j + 2].getText()) && !gameBoard[i][i].getText().equals(" ")) {
+                result = 2;
+                 if (gameBoard[i][j].getText().equals("X")) {
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+               
+                hilightWin(i, j, i, j + 1, i, j + 2);
+                return result;
+            }
+        }
+        return result;
+    }
+
+    public short checkColumns() {
+        short result = 0;
+        int j = 0;
+        for (int i = 0; i < 3; i++) {
+
+            if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
+                result = 2;
+                 if (gameBoard[j][i].getText().equals("X")) {
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+                hilightWin(j, i, j + 1, i, j + 2, i);
+                return result;
+            }
+        }
+        return result;
+    }
+
+    public short checkDiagonals() {
+        short result = 0;
+
+        if (gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) && !gameBoard[0][0].getText().equals(" ")) {
+            result = 2;
+             if (gameBoard[1][1].getText().equals("X")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+            hilightWin(0, 0, 1, 1, 2, 2);
+            return result;
+        } else if (gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()) && !gameBoard[1][1].getText().equals(" ")) {
+            result = 2;
+            hilightWin(0, 2, 1, 1, 2, 0);
+            return result;
+        }
+        return result;
+    }
+
+    public short checkOnGame() {
+        short result = 0;
+
+        result = checkRows();
+        if (result == 2) {
+            return result;
+        }
+        result = checkColumns();
+        if (result == 2) {
+            return result;
+        }
+        result = checkDiagonals();
+        if (result == 2) {
+            return result;
+        }
+        return result;
+    }
+
+    public void hilightWin(int row1, int col1, int row2, int col2, int row3, int col3) {//change background of button to image
+        if (flag) {
+            gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/xwin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row1][col1].setOpacity(1);
+            gameBoard[row2][col2].setOpacity(1);
+            gameBoard[row3][col3].setOpacity(1);
+        } else {
+            gameBoard[row1][col1].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row2][col2].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row3][col3].setStyle("-fx-background-image: url('tictactoe/images/owin.png'); -fx-background-size: cover;-fx-text-fill: transparent;");
+            gameBoard[row1][col1].setOpacity(1);
+            gameBoard[row2][col2].setOpacity(1);
+            gameBoard[row3][col3].setOpacity(1);
+        }
+    }
+
+    public void initBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                gameBoard[i][j].setText(" ");
+            }
+        }
     }
 
 }

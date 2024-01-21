@@ -307,6 +307,7 @@ public class StartServer extends AnchorPane {
             @Override
             public void handle(Event event) {
                StartServer.serverSide.closeServer();
+               isStart=true;
             }
         });
 

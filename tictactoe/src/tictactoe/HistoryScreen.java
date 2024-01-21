@@ -215,7 +215,7 @@ public class HistoryScreen extends AnchorPane {
     }
 
     public void addDataToListView(TextData newData) {
-        listView.getItems().add(newData);
+        listView.getItems().add(0,newData);
         listView.scrollTo(newData);
         updateDataInListView();
     }
