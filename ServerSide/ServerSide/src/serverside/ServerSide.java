@@ -152,6 +152,9 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
                     sendStepToClient(playerTargetName, "win", winBtns);
+                } else if (parts[0].equals("NotAvailable")) {
+                    username = parts[1];
+                    DataAccessObject.updateAvailability(username, false);
                 }
 
                 /*if (message.equalsIgnoreCase("Close")) {
