@@ -15,16 +15,21 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class AvailableUsers extends BorderPane {
+public class AvailableUsers extends AnchorPane {
 
-    protected final Label label;
-    protected final ScrollPane scrollPane;
+    protected final AnchorPane anchorPane;
     protected final ListView<MyData> listView;
+    protected final Label label;
+    protected final ImageView btnBack;
     String AvailableRequest;
     String targetPlayer;
     Alert waitingAlert;
@@ -35,7 +40,12 @@ public class AvailableUsers extends BorderPane {
     static boolean running = true;
     static Thread testThread;
 
-    public void ShowWaitingAlert(String nameee) {
+    ButtonType noButtonType;
+
+
+    String availableRequest;
+  public void ShowWaitingAlert(String nameee) {
+
         waitingAlert = new Alert(Alert.AlertType.NONE);
         waitingAlert.setTitle("Waiting");
         waitingAlert.setHeaderText("");
@@ -51,7 +61,7 @@ public class AvailableUsers extends BorderPane {
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
 
-        ButtonType cancelButtonType = new ButtonType("Cansel");
+        ButtonType cancelButtonType = new ButtonType("cancel");
         waitingAlert.getButtonTypes().addAll(cancelButtonType);
 
         Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
@@ -63,8 +73,8 @@ public class AvailableUsers extends BorderPane {
         cancelButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                String canselRequest = "cansel " + SignIn.currentUser + " " + "sls";
-                SignIn.sendMessageToServer.println(canselRequest);
+                String cancelRequest = "cancel " + SignIn.currentUser + " " + "n";
+                SignIn.sendMessageToServer.println(cancelRequest);
 
             }
         });
@@ -87,7 +97,7 @@ public class AvailableUsers extends BorderPane {
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
 
-        ButtonType noButtonType = new ButtonType("Refuse");
+        noButtonType = new ButtonType("Refuse");
         ButtonType yesButtonType = new ButtonType("Accept");
         invitationAlert.getButtonTypes().addAll(noButtonType, yesButtonType);
 
@@ -125,11 +135,11 @@ public class AvailableUsers extends BorderPane {
     }
 
     public AvailableUsers(Stage s) {
-        stage = s;
+        anchorPane = new AnchorPane();
+        listView = new ListView();
         label = new Label();
-        scrollPane = new ScrollPane();
-        listView = new ListView<>();
-
+        btnBack = new ImageView();
+        stage = s;
         AvailableRequest = "AvUsers ";
         System.out.println(AvailableRequest);
         SignIn.sendMessageToServer.println(AvailableRequest);
@@ -146,15 +156,18 @@ public class AvailableUsers extends BorderPane {
                 System.out.println("Availllllllll");
                 String playerName = availablePlayer[0];
                 String PlayerScore = availablePlayer[1];
-
-                Platform.runLater(() -> {
-                    // change ui
-                    addDataToListView(new MyData(playerName, PlayerScore));
-                });
+                if(!playerName.equals(SignIn.currentUser)){
+                    Platform.runLater(() -> {
+                        // change ui
+                        addDataToListView(new MyData(playerName, PlayerScore));
+                    });
+                }
             }
         } catch (IOException ex) {
-            Logger.getLogger(AvailableUsers.class.getName()).log(Level.SEVERE, null, ex);
+            ex.getStackTrace();
+            ex.getMessage();
         }
+
 
         s.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -177,41 +190,80 @@ public class AvailableUsers extends BorderPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1d1e3d;");
+          
+        anchorPane.setPrefHeight(105.0);
+        anchorPane.setPrefWidth(1200.0);
 
-        BorderPane.setAlignment(label, javafx.geometry.Pos.TOP_LEFT);
-        label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
-        label.setText("Available Players");
-        label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
-        label.setFont(new Font("Cooper Black", 48.0));
-        BorderPane.setMargin(label, new Insets(10.0));
-        label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
-        setTop(label);
+        listView.setLayoutX(82.0);
+        listView.setLayoutY(117.0);
+        listView.setPrefHeight(551.0);
+        listView.setPrefWidth(1035.0);
+        //listView.setStyle("-fx-background-color: #1d1e3d;");
+     listView.setStyle(
+    "-fx-background-color: #1d1e3d; " +
+    "-fx-control-inner-background: #1d1e3d; " +
+    "-fx-background: #1d1e3d; " +
+    "-fx-padding: 10; " +
+    "-fx-border-color: transparent; " +
+    "-fx-scrollbar-face-color: transparent; " +
+    "-fx-scrollbar-highlight-color: transparent; " +
+    "-fx-scrollbar-shadow-color: transparent; " +
+    "-fx-scrollbar-base-color: transparent; " +
+    "-fx-background-insets: 0; " +
+    "-fx-background-radius: 0;"
+);
 
-        BorderPane.setAlignment(scrollPane, javafx.geometry.Pos.CENTER);
-        scrollPane.setStyle("-fx-background-color: #1d1e3d;");
-
-        listView.setPrefHeight(784.0);
-        listView.setPrefWidth(1181.0);
-        listView.setStyle("-fx-background-color: #1d1e3d;");
-        scrollPane.setContent(listView);
-        setCenter(scrollPane);
         listView.setCellFactory(param -> new ItemLayoutForAvailableCell());
-        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                MyData mydata = listView.getSelectionModel().getSelectedItem();
+
+        listView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+
+          MyData mydata = (AvailableUsers.MyData)listView.getSelectionModel().getSelectedItem();
+          if(mydata !=null){
                 String playRequest = "play " + SignIn.currentUser + " " + mydata.text1;
                 player2Name = mydata.text1;
                 SignIn.sendMessageToServer.println(playRequest);
                 ShowWaitingAlert(targetPlayer);
-
+          }
             }
         });
 
         StartThread();
+        
+        label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+        label.setLayoutX(10.0);
+        label.setLayoutY(10.0);
+        label.setPrefHeight(65.0);
+        label.setPrefWidth(1190.0);
+        label.setText("Available Players");
+        label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
+        label.setFont(new Font("Cooper Black", 48.0));
+        label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
+
+        btnBack.setFitHeight(68.0);
+        btnBack.setFitWidth(107.0);
+        btnBack.setLayoutX(21.0);
+        btnBack.setLayoutY(685.0);
+        btnBack.setPickOnBounds(true);
+        btnBack.setPreserveRatio(true);
+        btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
+               btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            public void handle(MouseEvent event) {
+               
+               availableRequest = "NotAvailable " + SignIn.currentUser;
+                SignIn.sendMessageToServer.println(availableRequest);
+                Welcome.navScreens(new OnlineHome(s), s);
+                testThread.stop();
+            }
+        });
+       
+        getChildren().add(anchorPane);
+        getChildren().add(listView);
+        getChildren().add(label);
+        getChildren().add(btnBack);
 
     }
-
+                            
     private class ItemLayoutForAvailableCell extends javafx.scene.control.ListCell<MyData> {
 
         @Override
@@ -224,7 +276,11 @@ public class AvailableUsers extends BorderPane {
             } else {
                 itemLayoutForAvailable itemLayout = new itemLayoutForAvailable();
                 itemLayout.dataLabel.setText(item.getText());
-                itemLayout.label.setText(item.getText2().toUpperCase());
+
+                itemLayout.label.setText(item.getText2());
+
+                itemLayout.label.setText(item.getText2());
+
                 setGraphic(itemLayout);
             }
         }
@@ -325,7 +381,7 @@ public class AvailableUsers extends BorderPane {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    invitationAlert.close();
+                                    invitationAlert.setResult(noButtonType);
                                 }
                             });
                             break;
@@ -341,4 +397,5 @@ public class AvailableUsers extends BorderPane {
         };
         testThread.start();
     }
+    
 }
