@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package DTO;
 
-/**
- *
- * @author minae
- */
 public class Player {
-    String playerName;
+        String playerName;
 	String password;
 	int totalScore;
 	boolean online;
@@ -29,6 +20,10 @@ public class Player {
 		this.online=online;
 		this.available=available;
 	}
+
+    public Player() {
+       //To change body of generated methods, choose Tools | Templates.
+    }
 
     public String getPlayerName() {
         return playerName;

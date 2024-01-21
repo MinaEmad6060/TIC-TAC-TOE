@@ -1,6 +1,10 @@
 package tictactoe;
 
-import javafx.event.ActionEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,7 +20,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import static tictactoe.Welcome.navScreens;
 
 public class SignIn extends AnchorPane {
 
@@ -40,6 +43,14 @@ public class SignIn extends AnchorPane {
     protected final Button btnSignIn;
     protected final Text text8;
     protected final Text btnClick;
+    String loginRequest;
+    public static Socket serverSide;
+    public static DataInputStream listenFromServer;
+    public static PrintStream sendMessageToServer;
+    boolean test=false;
+
+    //mina
+    public static String currentUser="";
 
     public SignIn(Stage s) {
 
@@ -221,6 +232,7 @@ public class SignIn extends AnchorPane {
         btnSignIn.setText("Sign In");
         btnSignIn.setTextFill(javafx.scene.paint.Color.valueOf("#1d1e3d"));
         btnSignIn.setFont(new Font("Cooper Black", 65.0));
+        
         btnSignIn.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -232,10 +244,105 @@ public class SignIn extends AnchorPane {
                 }
                 if(!username.getText().equals("") && !password.getText().equals("")){
                     System.out.println("Successful login");
-                    // complete login process
+                    //mina
+                    currentUser=username.getText();
+                    loginRequest="login " + username.getText() + " " + password.getText();
+                    System.out.println(loginRequest);
+                    
+                    try {
+                        serverSide = new Socket("127.0.0.1", 2000);
+                        listenFromServer = new DataInputStream(serverSide.getInputStream());
+                        sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                        
+                        
+                        sendMessageToServer.println(loginRequest);
+
+                        Thread testThread = new Thread(){
+                            @Override
+                            public void run(){
+
+                                while(true)
+                                {
+                                    try {
+                                        String msg = listenFromServer.readLine();
+                                        String[] parts = msg.split(" ", 2);
+                                        System.out.println(parts[0]);
+                                        if(parts[0].equals("confirm")){
+                                            System.out.println("true"); 
+                                            test=true;
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    if(test==true){
+                                                        String updateonline = "update " + "slsa";
+                                                        System.out.println(updateonline);
+                                                        sendMessageToServer.println(updateonline);
+                                                        Welcome.navScreens(new OnlineHome(s), s);
+                                                        
+                                                    }else{
+                                                        System.out.println("test is false");
+                                                    }
+                                                }
+                                            });
+                                            break;
+                                        }
+                                        else if(parts[0].equals("username")){
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lableUser.setText("Username not exist please sign up first");
+                                                }
+                                            });
+                                            break;
+                                    
+                                    }
+                                        else if(parts[0].equals("password")){
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lablePass.setText("Password incorrect");
+                                                }
+                                            });
+                                            break;
+                                        
+                                    }
+                                        else{
+                                            System.out.println("false");
+                                            break;
+                                        }
+                                        
+                                    } catch (IOException ex) {
+                                        break;
+                                    }
+                                }
+                                
+                                
+                            }
+                        };
+                        testThread.start();
+                        System.out.println("Thread Break");
+                        //testThread.stop();
+                        System.out.println("Thread stop");
+                        
+                          /*                      
+                        s.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                            @Override
+                            public void handle(WindowEvent event) {
+                                sendMessageToServer.println("Close");
+                                try {
+                                    sendMessageToServer.close();
+                                    listenFromServer.close();
+                                    serverSide.close();                        
+                                } catch (IOException ex) {
+                                    System.out.println("Erorr");
+                                }
+                            }
+                        });
+                        */
+
+                }   catch (IOException ex) {
+                        System.out.println("error in creating socket");                    
                 }
-            }
+            }}
         });
+        
         text8.setFill(javafx.scene.paint.Color.WHITE);
         text8.setLayoutX(364.0);
         text8.setLayoutY(729.0);

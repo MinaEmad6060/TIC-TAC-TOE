@@ -12,7 +12,7 @@
    <children>
       <AnchorPane prefHeight="105.0" prefWidth="1200.0" />
       <ListView fx:id="listView" layoutX="82.0" layoutY="117.0" prefHeight="551.0" prefWidth="1035.0" style="-fx-background-color: #1d1e3d;" />
-      <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="65.0" prefWidth="1190.0" text="History" textFill="#ffd652">
+      <Label alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="65.0" prefWidth="1190.0" text="Available Players" textFill="#ffd652">
          <font>
             <Font name="Cooper Black" size="48.0" />
          </font>

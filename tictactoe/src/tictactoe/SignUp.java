@@ -1,5 +1,10 @@
 package tictactoe;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +21,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public  class SignUp extends AnchorPane {
 
@@ -41,7 +47,11 @@ public  class SignUp extends AnchorPane {
     protected final Text text8;
     protected final Text textSignIn;
     protected final ImageView btnBack;
-
+        String signUpRequest;
+    Socket serverSide;
+    DataInputStream listenFromServer;
+    PrintStream sendMessageToServer;
+    boolean test=false;
     public SignUp(Stage s) {
 
         anchorPane = new AnchorPane();
@@ -219,7 +229,7 @@ public  class SignUp extends AnchorPane {
 
         lableConf.setPrefHeight(24.0);
         lableConf.setPrefWidth(766.0);
-        lableConf.setText("tt");
+        lableConf.setText("");
         lableConf.setTextFill(javafx.scene.paint.Color.valueOf("#dd3939"));
         lableConf.setFont(new Font("Cooper Black", 20.0));
         flowPane.setOpaqueInsets(new Insets(0.0));
@@ -252,6 +262,76 @@ public  class SignUp extends AnchorPane {
                             if(checkPasswords(password.getText() , confPass.getText())){
                                 System.out.println("Successful signup");
                                 // complete sign up process
+                                  signUpRequest="signUp " + username.getText() + " " + password.getText();
+                                  System.out.println( signUpRequest);
+                                 try {
+                        serverSide = new Socket("127.0.0.1", 2000);
+                        listenFromServer = new DataInputStream(serverSide.getInputStream());
+                        sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                        sendMessageToServer.println(signUpRequest);
+
+                        new Thread(){
+                            @Override
+                            public void run(){
+
+                                while(true)
+                                {
+                                    try {
+                                        String msg = listenFromServer.readLine();
+                                        String[] parts = msg.split(" ", 2);
+                                        System.out.println(parts[0]);
+                                        if(parts[0].equals("confirm")){
+                                            System.out.println("true"); 
+                                            test=true;
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    if(test==true){
+                                                        
+                                                        Welcome.navScreens(new SignIn(s), s);
+                                                    }else{
+                                                        System.out.println("test is false");
+                                                    }
+                                                }
+                                            });
+                                            break;
+                                        }
+                                        else if(parts[0].equals("Existing")){
+             
+                                            Platform.runLater(new Runnable() {
+                                                @Override public void run() {
+                                                    lableUser.setText(" Username already exist ");
+                                                }
+                                            });
+                                            break;
+                                    
+                                    }
+                                    } catch (IOException ex) {
+                                        break;
+                                    }
+                                }
+                                
+                                
+                            }
+                        }.start();
+                        
+                                                
+                        s.setOnCloseRequest(new EventHandler<WindowEvent>(){
+                            @Override
+                            public void handle(WindowEvent event) {
+                                sendMessageToServer.println("Close");
+                                try {
+                                    sendMessageToServer.close();
+                                    listenFromServer.close();
+                                    serverSide.close();                        
+                                } catch (IOException ex) {
+                                    System.out.println("Erorr");
+                                }
+                            }
+                        }); 
+
+                }   catch (IOException ex) {
+                        System.out.println("error in creating socket");                    
+                }
                             }
                             else{
                                 lableConf.setText("Passwords Doesn't Match.");
