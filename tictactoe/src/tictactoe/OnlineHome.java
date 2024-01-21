@@ -173,6 +173,7 @@ public class OnlineHome extends AnchorPane {
                 availableRequest = "Available " + SignIn.currentUser;
                 SignIn.sendMessageToServer.println(availableRequest);
                 Welcome.navScreens(new AvailableUsers(stage), stage);
+                
             }
         });
 

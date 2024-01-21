@@ -1,6 +1,7 @@
 package tictactoe;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -24,10 +25,11 @@ public  class itemLayoutForAvailable extends HBox {
         setStyle("-fx-background-radius: 20; -fx-border-color: #ffffff; -fx-border-radius: 20; -fx-border-style: dashed; -fx-border-width: 3; -fx-background-color: #1d1e3d;");
 
         dataLabel.setPrefHeight(29.0);
-        dataLabel.setPrefWidth(890.0);
+        dataLabel.setPrefWidth(750.0);
         dataLabel.setText("Name");
         dataLabel.setTextFill(javafx.scene.paint.Color.WHITE);
-        dataLabel.setFont(new Font("Cooper Black", 24.0));
+        dataLabel.setFont(new Font("Cooper Black", 35.0));
+       
         HBox.setMargin(dataLabel, new Insets(14.0, 0.0, 0.0, 15.0));
 
         flowPane.setMaxHeight(USE_PREF_SIZE);
@@ -42,6 +44,7 @@ public  class itemLayoutForAvailable extends HBox {
         
         label.setTextFill(javafx.scene.paint.Color.WHITE);
         label.setFont(new Font("Cooper Black", 30.0));
+      
         FlowPane.setMargin(label, new Insets(2.0, 0.0, 0.0, 10.0));
 
         getChildren().add(dataLabel);

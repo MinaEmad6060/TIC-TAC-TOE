@@ -253,6 +253,8 @@ public class SignIn extends AnchorPane {
                         serverSide = new Socket("127.0.0.1", 2000);
                         listenFromServer = new DataInputStream(serverSide.getInputStream());
                         sendMessageToServer = new PrintStream(serverSide.getOutputStream());
+                        
+                        
                         sendMessageToServer.println(loginRequest);
 
                         Thread testThread = new Thread(){
