@@ -31,7 +31,8 @@
   <li>Navigate to the tictactoe directory.</li>
   <li>Find tictactoe.jar and click on it to run client side</li>
   <li>Enjoy!</li>
- <li>client and server both run on the same machine if you want to run them on different machines one small change should be made and it's to change the connection ip in the client side project in a class called SignIn.java (IP_ADDRESS) from 127.0.0.1 to the ip of the machine which the server is runing on.</li>
+  <h2>Note</h2>
+ <li>client and server both run on the same machine if you want to run them on different machines one small change should be made and it's to change the connection ip in the client side project in a class called SignIn.java and change serverSide intialzation by changeing Socket first parameter from 127.0.0.1 to the ip of the machine which the server is runing on.</li>
   
 
 
