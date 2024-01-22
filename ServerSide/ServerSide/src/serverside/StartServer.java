@@ -173,7 +173,7 @@ public class StartServer extends AnchorPane {
         imageView.setLayoutY(14.0);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-     //   imageView.setImage(new Image(getClass().getResource("tictactoe/images/xo.png").toExternalForm()));
+        imageView.setImage(new Image(getClass().getResource("/images/xo.png").toExternalForm()));
 
         text8.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text8.setLayoutX(796.0);
@@ -307,7 +307,7 @@ public class StartServer extends AnchorPane {
             @Override
             public void handle(Event event) {
                StartServer.serverSide.closeServer();
-               isStart=true;
+               isStart=false;
             }
         });
 
