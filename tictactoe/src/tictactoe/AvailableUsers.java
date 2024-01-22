@@ -2,8 +2,6 @@ package tictactoe;
 
 import javafx.stage.WindowEvent;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -14,18 +12,17 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class AvailableUsers extends AnchorPane {
 
+    protected final ImageView refresh;
     protected final AnchorPane anchorPane;
     protected final ListView<MyData> listView;
     protected final Label label;
@@ -42,9 +39,9 @@ public class AvailableUsers extends AnchorPane {
 
     ButtonType noButtonType;
 
-
     String availableRequest;
-  public void ShowWaitingAlert(String nameee) {
+
+    public void ShowWaitingAlert(String nameee) {
 
         waitingAlert = new Alert(Alert.AlertType.NONE);
         waitingAlert.setTitle("Waiting");
@@ -73,7 +70,7 @@ public class AvailableUsers extends AnchorPane {
         cancelButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-                String cancelRequest = "cancel " + SignIn.currentUser + " " + "n";
+                String cancelRequest = "cancel " + SignIn.currentUser + " " + AvailableUsers.player2Name;
                 SignIn.sendMessageToServer.println(cancelRequest);
 
             }
@@ -120,6 +117,7 @@ public class AvailableUsers extends AnchorPane {
                 SignIn.sendMessageToServer.println(acceptRequest);
                 player2Name = opponentPlayer;
                 turn = 2;
+                testThread.stop();
                 Welcome.navScreens(new BoardOnline(stage), stage);
             }
         });
@@ -135,6 +133,7 @@ public class AvailableUsers extends AnchorPane {
     }
 
     public AvailableUsers(Stage s) {
+        refresh = new ImageView();
         anchorPane = new AnchorPane();
         listView = new ListView();
         label = new Label();
@@ -148,7 +147,8 @@ public class AvailableUsers extends AnchorPane {
         try {
             msg = SignIn.listenFromServer.readLine();
             System.out.println(msg);
-            String[] allAvailables = msg.split(" ");
+            String[] availableMsg = msg.split(",");
+            String[] allAvailables = availableMsg[1].split(" ");
             //maha:50,mina:30,sals:40,
             for (int i = 0; i < allAvailables.length; i++) {
                 String[] availablePlayer = allAvailables[i].split(":");
@@ -156,8 +156,10 @@ public class AvailableUsers extends AnchorPane {
                 System.out.println("Availllllllll");
                 String playerName = availablePlayer[0];
                 String PlayerScore = availablePlayer[1];
+
                 //if(!playerName.equals(SignIn.currentUser)){
                 if(!SignIn.currentUser.contains(playerName)){
+
                     Platform.runLater(() -> {
                         // change ui
                         addDataToListView(new MyData(playerName, PlayerScore));
@@ -168,7 +170,6 @@ public class AvailableUsers extends AnchorPane {
             ex.getStackTrace();
             ex.getMessage();
         }
-
 
         s.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -191,55 +192,72 @@ public class AvailableUsers extends AnchorPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1d1e3d;");
-          
+
+        refresh.setFitHeight(78.0);
+        refresh.setFitWidth(74.0);
+        refresh.setLayoutX(1074.0);
+        refresh.setLayoutY(30.0);
+        refresh.setPickOnBounds(true);
+        refresh.setPreserveRatio(true);
+        refresh.setImage(new Image(getClass().getResource("images/refreshh.png").toExternalForm()));
+
         anchorPane.setPrefHeight(105.0);
-        anchorPane.setPrefWidth(1200.0);
+        anchorPane.setPrefWidth(1020.0);
 
         listView.setLayoutX(82.0);
         listView.setLayoutY(117.0);
         listView.setPrefHeight(551.0);
         listView.setPrefWidth(1035.0);
         //listView.setStyle("-fx-background-color: #1d1e3d;");
-     listView.setStyle(
-    "-fx-background-color: #1d1e3d; " +
-    "-fx-control-inner-background: #1d1e3d; " +
-    "-fx-background: #1d1e3d; " +
-    "-fx-padding: 10; " +
-    "-fx-border-color: transparent; " +
-    "-fx-scrollbar-face-color: transparent; " +
-    "-fx-scrollbar-highlight-color: transparent; " +
-    "-fx-scrollbar-shadow-color: transparent; " +
-    "-fx-scrollbar-base-color: transparent; " +
-    "-fx-background-insets: 0; " +
-    "-fx-background-radius: 0;"
-);
+        listView.setStyle(
+                "-fx-background-color: #1d1e3d; "
+                + "-fx-control-inner-background: #1d1e3d; "
+                + "-fx-background: #1d1e3d; "
+                + "-fx-padding: 10; "
+                + "-fx-border-color: transparent; "
+                + "-fx-scrollbar-face-color: transparent; "
+                + "-fx-scrollbar-highlight-color: transparent; "
+                + "-fx-scrollbar-shadow-color: transparent; "
+                + "-fx-scrollbar-base-color: transparent; "
+                + "-fx-background-insets: 0; "
+                + "-fx-background-radius: 0;"
+        );
 
         listView.setCellFactory(param -> new ItemLayoutForAvailableCell());
 
         listView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
 
-          MyData mydata = (AvailableUsers.MyData)listView.getSelectionModel().getSelectedItem();
-          if(mydata !=null){
-                String playRequest = "play " + SignIn.currentUser + " " + mydata.text1;
-                player2Name = mydata.text1;
-                SignIn.sendMessageToServer.println(playRequest);
-                ShowWaitingAlert(targetPlayer);
-          }
+                MyData mydata = (AvailableUsers.MyData) listView.getSelectionModel().getSelectedItem();
+                if (mydata != null) {
+                    String playRequest = "play " + SignIn.currentUser + " " + mydata.text1;
+                    player2Name = mydata.text1;
+                    SignIn.sendMessageToServer.println(playRequest);
+                    ShowWaitingAlert(targetPlayer);
+                }
             }
         });
 
         StartThread();
-        
+
         label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label.setLayoutX(10.0);
         label.setLayoutY(10.0);
         label.setPrefHeight(65.0);
-        label.setPrefWidth(1190.0);
+        label.setPrefWidth(1020.0);
         label.setText("Available Players");
         label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         label.setFont(new Font("Cooper Black", 48.0));
         label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
+
+        refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                AvailableRequest = "AvUsers ";
+                System.out.println(AvailableRequest);
+                SignIn.sendMessageToServer.println(AvailableRequest);
+                System.out.println("agter");
+            }
+        });
 
         btnBack.setFitHeight(68.0);
         btnBack.setFitWidth(107.0);
@@ -248,23 +266,23 @@ public class AvailableUsers extends AnchorPane {
         btnBack.setPickOnBounds(true);
         btnBack.setPreserveRatio(true);
         btnBack.setImage(new Image(getClass().getResource("images/back.png").toExternalForm()));
-               btnBack.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-               
-               availableRequest = "NotAvailable " + SignIn.currentUser;
+                availableRequest = "NotAvailable " + SignIn.currentUser;
                 SignIn.sendMessageToServer.println(availableRequest);
                 Welcome.navScreens(new OnlineHome(s), s);
                 testThread.stop();
             }
         });
-       
+
+        getChildren().add(refresh);
         getChildren().add(anchorPane);
         getChildren().add(listView);
         getChildren().add(label);
         getChildren().add(btnBack);
 
     }
-                            
+
     private class ItemLayoutForAvailableCell extends javafx.scene.control.ListCell<MyData> {
 
         @Override
@@ -323,8 +341,12 @@ public class AvailableUsers extends AnchorPane {
         listView.scrollTo(newData);
         updateDataInListView();
     }
-    
-    public void StartThread(){
+
+    public void RemoveList() {
+        listView.getItems().clear();
+    }
+
+    public void StartThread() {
         testThread = new Thread() {
             @Override
             public void run() {
@@ -347,9 +369,7 @@ public class AvailableUsers extends AnchorPane {
                                     ShowInvitationAlert(opponentPlayer);
                                 }
                             });
-                            break;
-                        }
-                        if (parts[0].equals("accept")) {
+                        } else if (parts[0].equals("accept")) {
                             String opponentPlayer = parts[1];
                             System.out.println(opponentPlayer);
                             Platform.runLater(new Runnable() {
@@ -362,9 +382,7 @@ public class AvailableUsers extends AnchorPane {
                                 }
                             });
                             break;
-                        }
-                        System.out.println(running);
-                        if (parts[0].equals("refuse")) {
+                        } else if (parts[0].equals("refuse")) {
                             String opponentPlayer = parts[1];
                             System.out.println(opponentPlayer);
                             Platform.runLater(new Runnable() {
@@ -375,8 +393,7 @@ public class AvailableUsers extends AnchorPane {
                                 }
                             });
                             break;
-                        }
-                        if (parts[0].equals("cancel")) {
+                        } else if (parts[0].equals("cancel")) {
                             String opponentPlayer = parts[1];
                             System.out.println(opponentPlayer);
                             Platform.runLater(new Runnable() {
@@ -385,8 +402,30 @@ public class AvailableUsers extends AnchorPane {
                                     invitationAlert.setResult(noButtonType);
                                 }
                             });
-                            break;
-                        }else {
+                        } else if (parts[0].contains("vailable")) {
+                            String[] availableMsg = msg.split(",");
+                            String[] allAvailables = availableMsg[1].split(" ");
+                            System.out.println("inside ");
+
+                            
+                            Platform.runLater(() -> {
+                                RemoveList();
+                            });
+
+                            for (int i = 0; i < allAvailables.length; i++) {
+                                String[] availablePlayer = allAvailables[i].split(":");
+                                //if (availablePlayer.length == 2) {
+                                System.out.println("Availllllllll");
+                                String playerName = availablePlayer[0];
+                                String PlayerScore = availablePlayer[1];
+                                if (!playerName.equals(SignIn.currentUser)) {
+                                    Platform.runLater(() -> {
+                                        // change ui
+                                        addDataToListView(new MyData(playerName, PlayerScore));
+                                    });
+                                }
+                            }
+                        } else {
                             System.out.println("false");
                             break;
                         }
@@ -398,5 +437,5 @@ public class AvailableUsers extends AnchorPane {
         };
         testThread.start();
     }
-    
+
 }

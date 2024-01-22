@@ -165,10 +165,10 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, "cancel");
 
-                } else if (parts[0].equals("step")) {
+                } else if (parts[0].equals("sssssstep")) {
                     playerTargetName = parts[1];
                     step = parts[2];
-                    sendStepToClient(playerTargetName, "step", step);
+                    sendStepToClient(playerTargetName, "sssssstep", step);
                 } else if (parts[0].equals("win")) {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
@@ -304,6 +304,7 @@ class ClientHandler extends Thread {
 
         }
 
+        available = "allAvailableUsers," + available;
         return available;
     }
 
