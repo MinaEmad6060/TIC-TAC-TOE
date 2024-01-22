@@ -144,7 +144,7 @@ public class AvailableUsers extends AnchorPane {
         System.out.println(AvailableRequest);
         SignIn.sendMessageToServer.println(AvailableRequest);
         System.out.println("uuuuuuuuuuuuuu");
-        String msg;
+        String msg="";
         try {
             msg = SignIn.listenFromServer.readLine();
             System.out.println(msg);
@@ -156,7 +156,8 @@ public class AvailableUsers extends AnchorPane {
                 System.out.println("Availllllllll");
                 String playerName = availablePlayer[0];
                 String PlayerScore = availablePlayer[1];
-                if(!playerName.equals(SignIn.currentUser)){
+                //if(!playerName.equals(SignIn.currentUser)){
+                if(!SignIn.currentUser.contains(playerName)){
                     Platform.runLater(() -> {
                         // change ui
                         addDataToListView(new MyData(playerName, PlayerScore));
