@@ -28,8 +28,5 @@
  <li>Can Run the compiled JAR file: java -jar TicTacToeClient.jar</li>
  <li>client and server both run on the same machine if you want to run them on different machines one small change should be made and it's to change the connection ip in the Client            project in a class called Constant.java (IP_ADDRESS) from 127.0.0.1 to the ip of the machine which the server is runing on.</li>
   
-<h3>Libraries Used:</h3>
-<li>JSON: to handle Requests and Responses between client and server.</li>
 
-<h3>Security </h3>
-<li>Password Encrypted by using hashing algorithm (SHA-256).</li>
+
