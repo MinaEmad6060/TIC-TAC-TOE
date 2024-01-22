@@ -549,11 +549,14 @@ public class CheckVar extends AnchorPane {
 
             if (gameBoard[i][j].getText().equals(gameBoard[i][j + 1].getText()) && gameBoard[i][j + 1].getText().equals(gameBoard[i][j + 2].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
+
                 if (gameBoard[i][j].getText().equals("X")) {
+
                     flag = true;
                 } else {
                     flag = false;
                 }
+
                 hilightWin(i, j, i, j + 1, i, j + 2);
                 return result;
             }
@@ -568,13 +571,18 @@ public class CheckVar extends AnchorPane {
 
             if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
+
                 if (gameBoard[j][i].getText().equals("X")) {
-                    flag = true;
-                } else {
-                    flag = false;
+
+                    if (gameBoard[j][i].getText().equals("X")) {
+
+                        flag = true;
+                    } else {
+                        flag = false;
+                    }
+                    hilightWin(j, i, j + 1, i, j + 2, i);
+                    return result;
                 }
-                hilightWin(j, i, j + 1, i, j + 2, i);
-                return result;
             }
         }
         return result;
@@ -585,13 +593,16 @@ public class CheckVar extends AnchorPane {
 
         if (gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) && !gameBoard[0][0].getText().equals(" ")) {
             result = 2;
+
             if (gameBoard[1][1].getText().equals("X")) {
+
                 flag = true;
             } else {
                 flag = false;
             }
             hilightWin(0, 0, 1, 1, 2, 2);
             return result;
+
         } else if (gameBoard[0][2].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][0].getText()) && !gameBoard[1][1].getText().equals(" ")) {
             result = 2;
             if (gameBoard[1][1].getText().equals("X")) {

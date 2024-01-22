@@ -23,6 +23,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import static tictactoe.BoardOnline.xScore;
 
 public class OnlineVideoWin extends BorderPane {
 
@@ -119,6 +120,8 @@ public class OnlineVideoWin extends BorderPane {
                 mediaPlayer.stop();
                 SignIn.sendMessageToServer.println("exit " + SignIn.currentUser + " " + AvailableUsers.player2Name);
                 thread.stop();
+                BoardOnline.xScore=0;
+                BoardOnline.oScore=0; 
                 Welcome.navScreens(new AvailableUsers(s), s);
             }
         });
@@ -239,8 +242,9 @@ public class OnlineVideoWin extends BorderPane {
                         String[] parts = msg.split(" ");
 
                         System.out.println(parts[0] + "tesssssss");
-                        if (parts[0].equals("exit")) {
-
+                        if (parts[0].contains("xit")) {
+                            BoardOnline.xScore=0;
+                            BoardOnline.oScore=0; 
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -277,7 +281,8 @@ public class OnlineVideoWin extends BorderPane {
                             break;
 
                         } else if (parts[0].contains("no")) {
-
+                            BoardOnline.xScore=0;
+                            BoardOnline.oScore=0; 
                             System.out.println("enterddddd");
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -425,7 +430,8 @@ public class OnlineVideoWin extends BorderPane {
         noButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
-
+                BoardOnline.xScore=0;
+                BoardOnline.oScore=0; 
                 String refuseRequest = "nno " + SignIn.currentUser + " " + AvailableUsers.player2Name;
                 SignIn.sendMessageToServer.println(refuseRequest);
                 thread.stop();

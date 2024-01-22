@@ -73,7 +73,6 @@ class ClientHandler extends Thread {
     Socket socket;
 
     public ClientHandler(Socket clientSocket, String userName) throws IOException {
-        //name = userName;
         socket = clientSocket;
         ServerSide.clientHandler = this;
         listenFromClient = new DataInputStream(socket.getInputStream());
@@ -141,27 +140,10 @@ class ClientHandler extends Thread {
                     System.out.println(record);
                     DataAccessObject.addRecord(username, record);
                 } 
-//                else if (parts[3].equals("record")) {
-//                    //"record curUser player1-player2 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22"
-//                    //yes curUser user2 record curUser player1-player2 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22
-//                    String[] rec = message.split(" ", 6);
-//                    System.out.println(message);
-//                    username = rec[4];
-//
-//                    record = rec[5];
-//
-//                    if (record.endsWith(",")) {
-//                        //Remove the last (comma)
-//                        record = record.substring(0, record.length() - 1);
-//                    }
-//                    System.out.println(username);
-//                    System.out.println(record);
-//                    DataAccessObject.addRecord(username, record);
-//                }
                 else if (parts[0].equals("Logout")) {
                     username = parts[1];
+                    removeClient(username);
                     DataAccessObject.updateOnlineState(username, false);
-                    //DataAccessObject.updateAvailability(username,false);
                 } else if (parts[0].equals("Available")) {
                     username = parts[1];
                     DataAccessObject.updateAvailability(username, true);
@@ -183,10 +165,10 @@ class ClientHandler extends Thread {
                     playerTargetName = parts[2];
                     sendMessageToClient(playerName, playerTargetName, "cancel");
 
-                } else if (parts[0].equals("step")) {
+                } else if (parts[0].equals("sssssstep")) {
                     playerTargetName = parts[1];
                     step = parts[2];
-                    sendStepToClient(playerTargetName, "step", step);
+                    sendStepToClient(playerTargetName, "sssssstep", step);
                 } else if (parts[0].equals("win")) {
                     playerTargetName = parts[1];
                     winBtns = parts[2];
@@ -225,7 +207,6 @@ class ClientHandler extends Thread {
                         record = rec[5];
 
                         if (record.endsWith(",")) {
-                            //Remove the last (comma)
                             record = record.substring(0, record.length() - 1);
                         }
                         System.out.println(username);
@@ -295,18 +276,6 @@ class ClientHandler extends Thread {
 
                 }
 
-                /*if (message.equalsIgnoreCase("Close")) {
-                    clientsVector.remove(clientsVector.size() - 1);
-                    System.out.println(clientsVector.size());
-                    if (clientsVector.size() == 0) {
-                        try {
-                            ServerSide.serverSocket.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                }*/
             } catch (IOException ex) {
                 ex.getStackTrace();
             } catch (SQLException ex) {
@@ -335,23 +304,11 @@ class ClientHandler extends Thread {
 
         }
 
+        available = "allAvailableUsers," + available;
         return available;
     }
 
-    /*public String displayAvailableList() throws SQLException {
-        Player player = new Player();
-        String available = "";
-
-        List<String> availableList = DataAccessObject.getAvailableList();
-
-        for (int i = 0; i < availableList.size(); i++) {
-            available = available + availableList.get(i) + " ";
-            System.out.println(available);
-
-        }
-
-        return available;
-    }*/
+    
     public void validateLogin(String username, String password) throws SQLException {
         boolean isExist = DataAccessObject.isUserExist(username);
         if (isExist) {
@@ -374,8 +331,6 @@ class ClientHandler extends Thread {
     public void signUp(String userName, String password) throws SQLException {
         DataAccessObject.addUser(userName, password);
         System.out.println("user added");
-        // DataAccessObject.addPassword(password);
-        //System.out.println("password added");
         printedMessageToClient.println("confirm");
     }
 
@@ -425,6 +380,16 @@ class ClientHandler extends Thread {
         }
     }
 
+    private void removeClient(String username) {
+        for (ClientHandler client : clientsVector) {
+            if (client.name.equals(username)) {
+                clientsVector.remove(client);
+            } else {
+                System.out.println("falseeeeeeeeeeeeee");
+            }
+        }
+    }
+    
     private void sendStepToClient(String targetUsername, String message, String step) {
         System.out.println("call stepppp");
         for (ClientHandler client : clientsVector) {
