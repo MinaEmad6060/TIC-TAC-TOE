@@ -238,7 +238,7 @@ public class CheckVar extends AnchorPane {
         timeAndDate.setStrokeWidth(0.0);
         timeAndDate.setText(dateAndTime);
         timeAndDate.setWrappingWidth(204.603515625);
-        timeAndDate.setFont(new Font("Berlin Sans FB", 30.0));
+        timeAndDate.setFont(new Font("Berlin Sans FB", 25.0));
 
         exitButton.setFitHeight(134.0);
         exitButton.setFitWidth(174.0);
@@ -572,7 +572,7 @@ public class CheckVar extends AnchorPane {
             if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
 
-                if (gameBoard[j][i].getText().equals("X")) {
+                
 
                     if (gameBoard[j][i].getText().equals("X")) {
 
@@ -583,7 +583,7 @@ public class CheckVar extends AnchorPane {
                     hilightWin(j, i, j + 1, i, j + 2, i);
                     return result;
                 }
-            }
+            
         }
         return result;
     }
