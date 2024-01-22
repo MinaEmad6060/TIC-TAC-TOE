@@ -104,12 +104,16 @@
          <children>
             <Text fx:id="allUsersLabel" fill="#5319bd" layoutX="63.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" textAlignment="CENTER" wrappingWidth="94.66474056243896">
                <font>
+<<<<<<< HEAD
                   <Font name="MT Extra" size="40.0" />
                </font>
             </Text>
             <Text fill="#5319bd" layoutX="24.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" textAlignment="CENTER" wrappingWidth="173.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
+=======
+                  <Font name="Cooper Black" size="52.0" />
+>>>>>>> development
                </font>
             </Text>
          </children>
@@ -118,18 +122,32 @@
          <children>
             <Text fx:id="onlineUsersLabel" fill="#5319bd" layoutX="67.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="80" textAlignment="CENTER" wrappingWidth="88.00000596046448">
                <font>
+<<<<<<< HEAD
                   <Font name="MT Extra" size="40.0" />
+=======
+                  <Font name="Cooper Black" size="52.0" />
+>>>>>>> development
                </font>
             </Text>
             <Text fill="#5319bd" layoutX="40.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" textAlignment="CENTER" wrappingWidth="137.00000596046448">
                <font>
+<<<<<<< HEAD
                   <Font name="MT Extra" size="40.0" />
+=======
+                  <Font name="Cooper Black" size="40.0" />
+               </font>
+            </Text>
+            <Text fill="#5319bd" layoutX="-364.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Users" textAlignment="CENTER" wrappingWidth="214.00000596046448">
+               <font>
+                  <Font name="Cooper Black" size="40.0" />
+>>>>>>> development
                </font>
             </Text>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="865.0" layoutY="290.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FFD652; -fx-background-radius: 30;">
          <children>
+<<<<<<< HEAD
             <Text fill="#5319bd" layoutX="32.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" wrappingWidth="157.00000596046448">
                <font>
                   <Font name="MT Extra" size="40.0" />
@@ -138,6 +156,16 @@
             <Text fill="#5319bd" layoutX="84.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" textAlignment="CENTER" wrappingWidth="53.02733927965164">
                <font>
                   <Font name="MT Extra" size="40.0" />
+=======
+            <Text fill="#5319bd" layoutX="12.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaliable" textAlignment="CENTER" wrappingWidth="198.00000596046448">
+               <font>
+                  <Font name="Cooper Black" size="40.0" />
+               </font>
+            </Text>
+            <Text fx:id="availaleUsersLabel" fill="#5319bd" layoutX="84.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" textAlignment="CENTER" wrappingWidth="53.02733927965164">
+               <font>
+                  <Font name="Cooper Black" size="52.0" />
+>>>>>>> development
                </font>
             </Text>
          </children>

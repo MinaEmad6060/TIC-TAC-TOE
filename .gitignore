@@ -1,3 +1,21 @@
 /tictactoe/build/
 /tictactoe/dist/
+<<<<<<< HEAD
 /tictactoe/jar/
+=======
+/ServerSide/ServerSide/nbproject/private/
+/ServerSide/ServerSide/build/
+/ServerSide/ServerSide/dist/
+# Ignore compiled files
+*.class
+*.jar
+
+# Ignore log files
+*.log
+
+# Ignore build directories
+/build/
+
+# Ignore a specific file
+config.ini
+>>>>>>> development

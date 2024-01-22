@@ -179,7 +179,7 @@ public class Welcome extends BorderPane {
             public void handle(ActionEvent event) {
 
                 navScreens(new Modes(s), s);
-    }
+            }
             
         });
 
