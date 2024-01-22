@@ -3,7 +3,7 @@
 
 <h2>Team Members</h2>
   <li>Mina Emad Attalla.</li>
-  <li>Slsabel Hesham.</li>
+  <li>Slsabel Hesham Sediq.</li>
   <li>Mahmoud Hussein Mahmoud.</li>
   <li>Maha Farghaly Mohammed.</li>
 
