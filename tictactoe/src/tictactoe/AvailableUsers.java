@@ -162,6 +162,7 @@ public class AvailableUsers extends AnchorPane {
                         addDataToListView(new MyData(playerName, PlayerScore));
                     });
                 }
+                //}
             }
         } catch (IOException ex) {
             ex.getStackTrace();

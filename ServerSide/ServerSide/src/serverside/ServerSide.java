@@ -325,7 +325,7 @@ class ClientHandler extends Thread {
 
         while (resultSet.next()) {
 
-            String availablePlayers = resultSet.getString("Name") + ":" + resultSet.getString("score");
+            String availablePlayers = " "+resultSet.getString("Name") + ":" + resultSet.getString("score");
             availableList.add(availablePlayers);
         }
 
