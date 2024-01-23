@@ -50,7 +50,9 @@ public class ServerSide {
         ServerSide.isRunning = false;
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
+                clientHandler.sendMessageToAll("serverClosed");
                 serverSocket.close();
+                
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -62,6 +64,7 @@ public class ServerSide {
 
         new ServerSide();
     }
+
 }
 
 class ClientHandler extends Thread {
@@ -404,6 +407,11 @@ class ClientHandler extends Thread {
             } else {
                 System.out.println("falseeeeeeeeeeeeee");
             }
+        }
+    }
+    public void sendMessageToAll(String msg) {
+        for (int i = 0; i < clientsVector.size(); i++) {
+            clientsVector.get(i).printedMessageToClient.println(msg);
         }
     }
 }

@@ -23,7 +23,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import static tictactoe.BoardOnline.xScore;
 
 public class OnlineVideoWin extends BorderPane {
 
@@ -45,10 +44,46 @@ public class OnlineVideoWin extends BorderPane {
     Thread thread;
     Alert invitationAlert;
     Alert waitingAlert;
+    Alert serverAlert;
     ButtonType noButtonTypeInvite;
     ButtonType cancelButtonType;
     Stage stage;
 
+    public void ShowserverAlert(String nameee) {
+
+        serverAlert = new Alert(Alert.AlertType.NONE);
+        serverAlert.setTitle("Server Closed");
+        serverAlert.setHeaderText("");
+        serverAlert.setContentText("Server is closed");
+        DialogPane dialogPane = serverAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        ButtonType cancelButtonType = new ButtonType("OK");
+        serverAlert.getButtonTypes().addAll(cancelButtonType);
+
+        Button cancelButton = (Button) serverAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+
+            }
+        });
+        serverAlert.showAndWait();
+    }
     public OnlineVideoWin(Stage s) {
 
         flowPane = new FlowPane();
@@ -333,7 +368,16 @@ public class OnlineVideoWin extends BorderPane {
                                 }
                             });
                             //break;
-                        } else {
+                            
+                        }
+                         else if (parts[0].equals("serverClosed")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowserverAlert("");
+                                }
+                            });
+                        }else {
                             System.out.println("false");
                             //break;
                         }

@@ -21,7 +21,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class AvailableUsers extends AnchorPane {
-
+    
     protected final ImageView refresh;
     protected final AnchorPane anchorPane;
     protected final ListView<MyData> listView;
@@ -30,19 +30,56 @@ public class AvailableUsers extends AnchorPane {
     String AvailableRequest;
     String targetPlayer;
     Alert waitingAlert;
+    Alert serverAlert;
     Alert invitationAlert;
     Stage stage;
     static int turn;
     static String player2Name;
     static boolean running = true;
     static Thread testThread;
-
+    
     ButtonType noButtonType;
-
+    
     String availableRequest;
-
+    
+    public void ShowserverAlert(String nameee) {
+        
+        serverAlert = new Alert(Alert.AlertType.NONE);
+        serverAlert.setTitle("Server Closed");
+        serverAlert.setHeaderText("");
+        serverAlert.setContentText("Server is closed");
+        DialogPane dialogPane = serverAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+        
+        ButtonType cancelButtonType = new ButtonType("OK");
+        serverAlert.getButtonTypes().addAll(cancelButtonType);
+        
+        Button cancelButton = (Button) serverAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+        
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+                
+            }
+        });
+        serverAlert.showAndWait();
+    }
+    
     public void ShowWaitingAlert(String nameee) {
-
+        
         waitingAlert = new Alert(Alert.AlertType.NONE);
         waitingAlert.setTitle("Waiting");
         waitingAlert.setHeaderText("");
@@ -57,27 +94,27 @@ public class AvailableUsers extends AnchorPane {
                 + "-fx-font-family: \"Cooper Black\";"
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
-
+        
         ButtonType cancelButtonType = new ButtonType("cancel");
         waitingAlert.getButtonTypes().addAll(cancelButtonType);
-
+        
         Button cancelButton = (Button) waitingAlert.getDialogPane().lookupButton(cancelButtonType);
         cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: red; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-pref-height: 50;");
         cancelButton.setTranslateX(-150);
-
+        
         cancelButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
                 String cancelRequest = "cancel " + SignIn.currentUser + " " + AvailableUsers.player2Name;
                 SignIn.sendMessageToServer.println(cancelRequest);
-
+                
             }
         });
         waitingAlert.showAndWait();
     }
-
+    
     public void ShowInvitationAlert(String opponentPlayer) {
         invitationAlert = new Alert(Alert.AlertType.NONE);
         invitationAlert.setTitle("Invitation");
@@ -93,23 +130,23 @@ public class AvailableUsers extends AnchorPane {
                 + "-fx-font-family: \"Cooper Black\";"
                 + "-fx-font-size: 33.0;"
                 + "-fx-padding: 10.0;");
-
+        
         noButtonType = new ButtonType("Refuse");
         ButtonType yesButtonType = new ButtonType("Accept");
         invitationAlert.getButtonTypes().addAll(noButtonType, yesButtonType);
-
+        
         Button noButton = (Button) invitationAlert.getDialogPane().lookupButton(noButtonType);
         noButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: red; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-padding: 10px 20px ; -fx-pref-width: 150; -fx-pref-height: 50;");
         noButton.setTranslateX(-230);
-
+        
         Button yesButton = (Button) invitationAlert.getDialogPane().lookupButton(yesButtonType);
         yesButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
                 + "-fx-background-color: green; -fx-background-radius: 10;"
                 + "-fx-text-fill: white; -fx-pref-height: 50;");
         yesButton.setTranslateX(-100);
-
+        
         yesButton.setOnAction(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -131,7 +168,7 @@ public class AvailableUsers extends AnchorPane {
         });
         invitationAlert.showAndWait();
     }
-
+    
     public AvailableUsers(Stage s) {
         refresh = new ImageView();
         anchorPane = new AnchorPane();
@@ -143,7 +180,7 @@ public class AvailableUsers extends AnchorPane {
         System.out.println(AvailableRequest);
         SignIn.sendMessageToServer.println(AvailableRequest);
         System.out.println("uuuuuuuuuuuuuu");
-        String msg="";
+        String msg = "";
         try {
             msg = SignIn.listenFromServer.readLine();
             System.out.println(msg);
@@ -158,8 +195,8 @@ public class AvailableUsers extends AnchorPane {
                 String PlayerScore = availablePlayer[1];
 
                 //if(!playerName.equals(SignIn.currentUser)){
-                if(!SignIn.currentUser.contains(playerName)){
-
+                if (!SignIn.currentUser.contains(playerName)) {
+                    
                     Platform.runLater(() -> {
                         // change ui
                         addDataToListView(new MyData(playerName, PlayerScore));
@@ -170,7 +207,7 @@ public class AvailableUsers extends AnchorPane {
             ex.getStackTrace();
             ex.getMessage();
         }
-
+        
         s.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -184,7 +221,7 @@ public class AvailableUsers extends AnchorPane {
                 }
             }
         });
-
+        
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -192,7 +229,7 @@ public class AvailableUsers extends AnchorPane {
         setPrefHeight(784.0);
         setPrefWidth(1200.0);
         setStyle("-fx-background-color: #1d1e3d;");
-
+        
         refresh.setFitHeight(78.0);
         refresh.setFitWidth(74.0);
         refresh.setLayoutX(1074.0);
@@ -200,10 +237,10 @@ public class AvailableUsers extends AnchorPane {
         refresh.setPickOnBounds(true);
         refresh.setPreserveRatio(true);
         refresh.setImage(new Image(getClass().getResource("images/refreshh.png").toExternalForm()));
-
+        
         anchorPane.setPrefHeight(105.0);
         anchorPane.setPrefWidth(1020.0);
-
+        
         listView.setLayoutX(82.0);
         listView.setLayoutY(117.0);
         listView.setPrefHeight(551.0);
@@ -222,12 +259,12 @@ public class AvailableUsers extends AnchorPane {
                 + "-fx-background-insets: 0; "
                 + "-fx-background-radius: 0;"
         );
-
+        
         listView.setCellFactory(param -> new ItemLayoutForAvailableCell());
-
+        
         listView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-
+                
                 MyData mydata = (AvailableUsers.MyData) listView.getSelectionModel().getSelectedItem();
                 if (mydata != null) {
                     String playRequest = "play " + SignIn.currentUser + " " + mydata.text1;
@@ -237,9 +274,9 @@ public class AvailableUsers extends AnchorPane {
                 }
             }
         });
-
+        
         StartThread();
-
+        
         label.setAlignment(javafx.geometry.Pos.TOP_LEFT);
         label.setLayoutX(10.0);
         label.setLayoutY(10.0);
@@ -249,7 +286,7 @@ public class AvailableUsers extends AnchorPane {
         label.setTextFill(javafx.scene.paint.Color.valueOf("#ffd652"));
         label.setFont(new Font("Cooper Black", 48.0));
         label.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
-
+        
         refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 AvailableRequest = "AvUsers ";
@@ -258,7 +295,7 @@ public class AvailableUsers extends AnchorPane {
                 System.out.println("agter");
             }
         });
-
+        
         btnBack.setFitHeight(68.0);
         btnBack.setFitWidth(107.0);
         btnBack.setLayoutX(21.0);
@@ -274,78 +311,78 @@ public class AvailableUsers extends AnchorPane {
                 testThread.stop();
             }
         });
-
+        
         getChildren().add(refresh);
         getChildren().add(anchorPane);
         getChildren().add(listView);
         getChildren().add(label);
         getChildren().add(btnBack);
-
+        
     }
-
+    
     private class ItemLayoutForAvailableCell extends javafx.scene.control.ListCell<MyData> {
-
+        
         @Override
         protected void updateItem(MyData item, boolean empty) {
             super.updateItem(item, empty);
-
+            
             if (empty || item == null) {
                 setText(null);
                 setGraphic(null);
             } else {
                 itemLayoutForAvailable itemLayout = new itemLayoutForAvailable();
                 itemLayout.dataLabel.setText(item.getText());
-
+                
                 itemLayout.label.setText(item.getText2());
-
+                
                 itemLayout.label.setText(item.getText2());
-
+                
                 setGraphic(itemLayout);
             }
         }
     }
-
+    
     public class MyData {
-
+        
         String text1;
         String text2;
-
+        
         public MyData(String text1, String text2) {
             this.text1 = text1;
             this.text2 = text2;
         }
-
+        
         public String getText2() {
             return text2;
         }
-
+        
         public void setText2(String text2) {
             this.text2 = text2;
         }
-
+        
         public void setText(String text1) {
             this.text1 = text1;
         }
-
+        
         public String getText() {
             return text1;
         }
     }
-
+    
     public void updateDataInListView() {
         listView.refresh();
     }
-
+    
     public void addDataToListView(MyData newData) {
         listView.getItems().add(newData);
         listView.scrollTo(newData);
         updateDataInListView();
     }
-
+    
     public void RemoveList() {
         listView.getItems().clear();
     }
-
+    
     public void StartThread() {
         testThread = new Thread() {
             @Override
@@ -406,12 +443,11 @@ public class AvailableUsers extends AnchorPane {
                             String[] availableMsg = msg.split(",");
                             String[] allAvailables = availableMsg[1].split(" ");
                             System.out.println("inside ");
-
                             
                             Platform.runLater(() -> {
                                 RemoveList();
                             });
-
+                            
                             for (int i = 0; i < allAvailables.length; i++) {
                                 String[] availablePlayer = allAvailables[i].split(":");
                                 //if (availablePlayer.length == 2) {
@@ -425,6 +461,13 @@ public class AvailableUsers extends AnchorPane {
                                     });
                                 }
                             }
+                        } else if (parts[0].equals("serverClosed")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowserverAlert("");
+                                }
+                            });
                         } else {
                             System.out.println("false");
                             break;
@@ -437,5 +480,5 @@ public class AvailableUsers extends AnchorPane {
         };
         testThread.start();
     }
-
+    
 }

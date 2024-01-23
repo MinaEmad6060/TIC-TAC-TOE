@@ -1,5 +1,9 @@
 package tictactoe;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -34,6 +38,44 @@ public class OnlineHome extends AnchorPane {
     String availableRequest;
     String logoutRequest;
     boolean test = false;
+    Alert serverAlert;
+    Thread thread;
+
+    public void ShowserverAlert(String nameee) {
+
+        serverAlert = new Alert(Alert.AlertType.NONE);
+        serverAlert.setTitle("Server Closed");
+        serverAlert.setHeaderText("");
+        serverAlert.setContentText("Server is closed");
+        DialogPane dialogPane = serverAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        ButtonType cancelButtonType = new ButtonType("OK");
+        serverAlert.getButtonTypes().addAll(cancelButtonType);
+
+        Button cancelButton = (Button) serverAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+
+            }
+        });
+        serverAlert.showAndWait();
+    }
 
     public OnlineHome(Stage s) {
         stage = s;
@@ -63,6 +105,30 @@ public class OnlineHome extends AnchorPane {
 
         anchorPane.setPrefHeight(226.0);
         anchorPane.setPrefWidth(1200.0);
+
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    String msg;
+                    try {
+                        msg = SignIn.listenFromServer.readLine();
+                        if (msg.equals("serverClosed")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowserverAlert("");
+                                }
+                            });
+                        }
+                        break;
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        };
+        thread.start();
 
         text.setFill(javafx.scene.paint.Color.valueOf("#00d6ff"));
         text.setLayoutX(331.0);
@@ -172,8 +238,9 @@ public class OnlineHome extends AnchorPane {
             public void handle(Event event) {
                 availableRequest = "Available " + SignIn.currentUser;
                 SignIn.sendMessageToServer.println(availableRequest);
+                thread.stop();
                 Welcome.navScreens(new AvailableUsers(stage), stage);
-                
+
             }
         });
 
@@ -188,6 +255,7 @@ public class OnlineHome extends AnchorPane {
         btnHistory.setFont(new Font("Cooper Black", 65.0));
         btnHistory.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
+                thread.stop();
                 Welcome.navScreens(new HistoryScreen(stage), stage);
             }
         });
@@ -247,6 +315,7 @@ public class OnlineHome extends AnchorPane {
             public void handle(Event event) {
                 logoutRequest = "Logout " + SignIn.currentUser;
                 SignIn.sendMessageToServer.println(logoutRequest);
+                thread.stop();
                 Welcome.navScreens(new SignIn(stage), stage);
             }
         });

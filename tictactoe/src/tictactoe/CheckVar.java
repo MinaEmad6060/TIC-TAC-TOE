@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +17,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.util.Duration;
 
 public class CheckVar extends AnchorPane {
@@ -61,11 +66,51 @@ public class CheckVar extends AnchorPane {
     Thread moveThread;
     Button[][] gameBoard = new Button[3][3];
     boolean flag = true;
+    Thread thread;
+    Alert serverAlert;
+    Stage stage;
+
+    public void ShowserverAlert(String nameee) {
+
+        serverAlert = new Alert(Alert.AlertType.NONE);
+        serverAlert.setTitle("Server Closed");
+        serverAlert.setHeaderText("");
+        serverAlert.setContentText("Server is closed");
+        DialogPane dialogPane = serverAlert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: white;");
+        dialogPane.getStyleClass().remove("alert");
+        dialogPane.lookup(".content.label").setStyle("-fx-alignment: center;"
+                + "-fx-pref-height: 73.0;"
+                + "-fx-pref-width: 400.0;"
+                + "-fx-text-fill: #d1a823;"
+                + "-fx-font-family: \"Cooper Black\";"
+                + "-fx-font-size: 33.0;"
+                + "-fx-padding: 10.0;");
+
+        ButtonType cancelButtonType = new ButtonType("OK");
+        serverAlert.getButtonTypes().addAll(cancelButtonType);
+
+        Button cancelButton = (Button) serverAlert.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-font-family: \"Cooper Black\"; -fx-font-size: 20.0;"
+                + "-fx-background-color: red; -fx-background-radius: 10;"
+                + "-fx-text-fill: white; -fx-pref-height: 50;");
+        cancelButton.setTranslateX(-150);
+
+        cancelButton.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Welcome.navScreens(new Modes(stage), stage);
+
+            }
+        });
+        serverAlert.showAndWait();
+    }
 
     //mahmoud-mina 13/1/2024 01:30.X00,O01,X10,O11,X21,O20,X02,O12,X22
     public CheckVar(Stage s) {
         this.steps = new String[]{"", "", "", "", "", "", "", "", ""};
 
+        stage = s;
         StepsString = HistoryScreen.stepsString;
         player1Name = HistoryScreen.player1;
         player2Name = HistoryScreen.player2;
@@ -124,6 +169,29 @@ public class CheckVar extends AnchorPane {
         anchorPane.setPrefHeight(200.0);
         anchorPane.setPrefWidth(1200.0);
 
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    String msg;
+                    try {
+                        msg = SignIn.listenFromServer.readLine();
+                        if (msg.equals("serverClosed")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ShowserverAlert("");
+                                }
+                            });
+                        }
+                        break;
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        };
+        thread.start();
         AnchorPane.setTopAnchor(imageView, 43.0);
         imageView.setFitHeight(150.0);
         imageView.setFitWidth(150.0);
@@ -549,12 +617,12 @@ public class CheckVar extends AnchorPane {
 
             if (gameBoard[i][j].getText().equals(gameBoard[i][j + 1].getText()) && gameBoard[i][j + 1].getText().equals(gameBoard[i][j + 2].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
-                 if (gameBoard[i][j].getText().equals("X")) {
+                if (gameBoard[i][j].getText().equals("X")) {
                     flag = true;
                 } else {
                     flag = false;
                 }
-               
+
                 hilightWin(i, j, i, j + 1, i, j + 2);
                 return result;
             }
@@ -569,7 +637,7 @@ public class CheckVar extends AnchorPane {
 
             if (gameBoard[j][i].getText().equals(gameBoard[j + 1][i].getText()) && gameBoard[j + 1][i].getText().equals(gameBoard[j + 2][i].getText()) && !gameBoard[i][i].getText().equals(" ")) {
                 result = 2;
-                 if (gameBoard[j][i].getText().equals("X")) {
+                if (gameBoard[j][i].getText().equals("X")) {
                     flag = true;
                 } else {
                     flag = false;
@@ -586,7 +654,7 @@ public class CheckVar extends AnchorPane {
 
         if (gameBoard[0][0].getText().equals(gameBoard[1][1].getText()) && gameBoard[1][1].getText().equals(gameBoard[2][2].getText()) && !gameBoard[0][0].getText().equals(" ")) {
             result = 2;
-             if (gameBoard[1][1].getText().equals("X")) {
+            if (gameBoard[1][1].getText().equals("X")) {
                 flag = true;
             } else {
                 flag = false;
